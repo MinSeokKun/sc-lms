@@ -43,4 +43,5 @@ public class SiteUser {
 	@OneToMany
 	@JoinColumn(name = "noteId")
 	List<Note> noteList;
+
 }

@@ -1,4 +1,5 @@
 package com.lms.sc.entity;
+
 import java.util.List;
 
 import jakarta.persistence.Column;

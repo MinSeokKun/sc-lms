@@ -36,5 +36,5 @@ public class Note {
 	
 	@ManyToOne
 	@JoinColumn(name = "videoId")
-	Video video;
+	Lecture video;
 }

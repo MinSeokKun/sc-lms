@@ -1,41 +1,40 @@
 package com.lms.sc.entity;
 
-
 import java.time.LocalDateTime;
-import java.util.Set;
-
-import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @Entity
-public class Lecture {
+public class Note {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long lecId;
-	
-	@Column(length = 200)
-	private String lecTit;
+	private Integer noteId;
 	
 	@Column(columnDefinition = "TEXT")
-	private String lecContent;
+	private String noteContent;
 	
-	@CreatedDate
-	private LocalDateTime lecRegDate;
+	private LocalDateTime noteVideoTime;
 	
-	@ManyToMany
-	Set<SiteUser> lecStdCnt;
+	@ManyToOne
+	@JoinColumn(name = "userId")
+	SiteUser user;
 	
-	@ManyToMany
-	Set<Review> lecReviewCnt;
+	@ManyToOne
+	@JoinColumn(name = "lecId")
+	Lecture lecture;
+	
+	@ManyToOne
+	@JoinColumn(name = "videoId")
+	Video video;
 }

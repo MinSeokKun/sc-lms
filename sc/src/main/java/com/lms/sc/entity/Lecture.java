@@ -1,5 +1,4 @@
 package com.lms.sc.entity;
-
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -37,5 +36,4 @@ public class Lecture {
 	
 	@ManyToMany
 	Set<Review> lecReviewCnt;
-	
 }

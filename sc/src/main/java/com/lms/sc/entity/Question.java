@@ -34,7 +34,7 @@ public class Question {
 	
 	private LocalDateTime modifyDate;
 	
-	private int questResult;
+	private boolean questResult;
 	
 	@ManyToOne
 	private SiteUser author;

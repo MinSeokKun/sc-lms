@@ -21,7 +21,7 @@ public class Lecture {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long Id;
+	private long id;
 	
 	@Column(length = 200)
 	private String title;

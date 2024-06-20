@@ -30,7 +30,7 @@ public class Lecture {
 	private String content;
 	
 	@CreatedDate
-	private LocalDateTime regDate;
+	private LocalDateTime createDate;
 	
 	@OneToMany
 	private Set<SiteUser> student;

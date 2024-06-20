@@ -18,12 +18,12 @@ public class Note {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long noteId;
+	private long id;
 	
 	@Column(columnDefinition = "TEXT")
-	private String noteContent;
+	private String content;
 	
-	private LocalDateTime noteVideoTime;
+	private LocalDateTime videoTime;
 	
 	@ManyToOne
 	private SiteUser author;

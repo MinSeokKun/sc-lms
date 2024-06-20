@@ -19,20 +19,20 @@ import lombok.Setter;
 public class Question {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long questId;
+	private long id;
 	
 	@Column(length = 100)
-	String questTitle;
+	String title;
 	
 	@Column(columnDefinition = "TEXT")
-	private String questContent;
+	private String content;
 	
-	private Integer questLikeCnt;
+	private Integer likeCnt;
 	
 	@CreatedDate
-	private LocalDateTime questCreateDate;
+	private LocalDateTime createDate;
 	
-	private LocalDateTime questModifyDate;
+	private LocalDateTime modifyDate;
 	
 	private int questResult;
 	

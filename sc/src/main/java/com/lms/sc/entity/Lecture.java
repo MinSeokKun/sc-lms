@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,20 +22,17 @@ public class Lecture {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long lecId;
+	private long id;
 	
 	@Column(length = 200)
-	private String lecTit;
+	private String title;
 	
 	@Column(columnDefinition = "TEXT")
-	private String lecContent;
+	private String content;
 	
 	@CreatedDate
-	private LocalDateTime lecRegDate;
+	private LocalDateTime createDate;
 	
-	@ManyToMany
-	Set<SiteUser> lecStdCnt;
-	
-	@ManyToMany
-	Set<Review> lecReviewCnt;
+	@OneToMany
+	Set<SiteUser> student;
 }

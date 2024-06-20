@@ -20,21 +20,21 @@ import lombok.Setter;
 public class Answer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer answerId;
+	private long id;
 	
 	@Column(columnDefinition = "TEXT")
-	private String answerContent;
+	private String content;
 	
-	private int answerLikeCnt;
+	private int likeCnt;
 	
 	@CreatedDate
-	private LocalDateTime answerCreateDate;
+	private LocalDateTime createDate;
 	
-	private LocalDateTime answerModifyDate;
+	private LocalDateTime modifyDate;
 	
 	@ManyToOne
-	private Integer question;
+	private Question question;
 	
-	@ManyToMany
-	private Integer user;
+	@ManyToOne
+	private SiteUser author;
 }

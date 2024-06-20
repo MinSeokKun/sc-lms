@@ -18,17 +18,16 @@ public class LecVideo {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long vidId;
+	private long id;
 	
 	@Column(columnDefinition = "TEXT")
-	private String vidUrl;
+	private String url;
 	
 	@Column(length = 200)
-	private String vidTit;
+	private String title;
 	
 	//지연 로딩(Lazy Loading) 전략을 사용하여 Lecture 엔티티를 필요할 때만 로드
 	@ManyToOne(fetch = FetchType.LAZY)
 	//LecVideo 테이블의 lecId 컬럼이 Lecture 테이블의 기본 키를 참조하는 외래 키라는 것을 의미
-    @JoinColumn(name = "lecId")
-	private long lecId;
+	private Lecture lecture;
 }

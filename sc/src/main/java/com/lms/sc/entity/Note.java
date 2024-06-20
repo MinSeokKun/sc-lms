@@ -19,22 +19,20 @@ public class Note {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer noteId;
+	private long id;
 	
 	@Column(columnDefinition = "TEXT")
-	private String noteContent;
+	private String content;
 	
-	private LocalDateTime noteVideoTime;
-	
-	@ManyToOne
-	@JoinColumn(name = "userId")
-	SiteUser user;
+	private LocalDateTime videoTime;
 	
 	@ManyToOne
-	@JoinColumn(name = "lecId")
+	@JoinColumn(name="author_id")
+	SiteUser author;
+	
+	@ManyToOne
 	Lecture lecture;
 	
 	@ManyToOne
-	@JoinColumn(name = "videoId")
-	Video video;
+	LecVideo video;
 }

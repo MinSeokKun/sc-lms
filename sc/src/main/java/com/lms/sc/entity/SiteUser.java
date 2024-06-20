@@ -19,10 +19,10 @@ import lombok.Setter;
 public class SiteUser {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer userId;
+	private long id;
 	
 	@Column(length = 20)
-	private String userName;
+	private String name;
 	
 	@Column(length = 50)
 	private String email;
@@ -35,13 +35,8 @@ public class SiteUser {
 	
 	@Column(columnDefinition = "TEXT")
 	private String profileImage;
-	
-	@ManyToMany
-	@JoinColumn(name = "lecId")
+
+	@OneToMany
 	List<Lecture> lecList;
 	
-	@OneToMany
-	@JoinColumn(name = "noteId")
-	List<Note> noteList;
-
 }

@@ -21,16 +21,16 @@ public class Lecture {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long lecId;
+	private long id;
 	
 	@Column(length = 200)
-	private String lecTit;
+	private String title;
 	
 	@Column(columnDefinition = "TEXT")
-	private String lecContent;
+	private String content;
 	
 	@CreatedDate
-	private LocalDateTime lecRegDate;
+	private LocalDateTime regDate;
 	
 	@OneToMany
 	private Set<SiteUser> student;

@@ -17,13 +17,13 @@ public class LecVideo {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long vidId;
+	private long id;
 	
 	@Column(columnDefinition = "TEXT")
-	private String vidUrl;
+	private String url;
 	
 	@Column(length = 200)
-	private String vidTit;
+	private String title;
 	
 	//지연 로딩(Lazy Loading) 전략을 사용하여 Lecture 엔티티를 필요할 때만 로드
 	@ManyToOne(fetch = FetchType.LAZY)

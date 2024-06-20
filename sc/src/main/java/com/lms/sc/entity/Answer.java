@@ -35,6 +35,5 @@ public class Answer {
 	private Question question;
 	
 	@ManyToOne
-//	@JoinColumn(name = "userId")
 	private SiteUser author;
 }

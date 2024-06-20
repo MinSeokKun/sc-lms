@@ -33,12 +33,11 @@ public class SiteUser {
 	
 	@Column(columnDefinition = "TEXT")
 	private String profileImage;
-	
+
 	@OneToMany
 	List<Lecture> lecList;
 	
 //	@OneToMany
 //	@JoinColumn(name = "noteId")
 //	List<Note> noteList;
-
 }

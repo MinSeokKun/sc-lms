@@ -26,11 +26,12 @@ public class Note {
 	private LocalDateTime videoTime;
 	
 	@ManyToOne
+	@JoinColumn(name="author_id")
 	private SiteUser author;
 	
 	@ManyToOne
 	Lecture lecture;
 	
 	@ManyToOne
-	Lecture video;
+	LecVideo video;
 }

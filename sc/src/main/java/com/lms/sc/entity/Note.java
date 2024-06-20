@@ -7,7 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +18,7 @@ public class Note {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer noteId;
+	private long noteId;
 	
 	@Column(columnDefinition = "TEXT")
 	private String noteContent;
@@ -27,14 +26,11 @@ public class Note {
 	private LocalDateTime noteVideoTime;
 	
 	@ManyToOne
-	@JoinColumn(name = "userId")
-	SiteUser user;
+	private SiteUser author;
 	
 	@ManyToOne
-	@JoinColumn(name = "lecId")
 	Lecture lecture;
 	
 	@ManyToOne
-	@JoinColumn(name = "videoId")
 	Lecture video;
 }

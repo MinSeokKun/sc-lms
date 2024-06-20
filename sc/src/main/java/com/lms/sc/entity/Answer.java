@@ -9,7 +9,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +19,7 @@ import lombok.Setter;
 public class Answer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer answerId;
+	private long answerId;
 	
 	@Column(columnDefinition = "TEXT")
 	private String answerContent;
@@ -33,8 +32,8 @@ public class Answer {
 	private LocalDateTime answerModifyDate;
 	
 	@ManyToOne
-	private Integer question;
+	private Question question;
 	
-	@ManyToMany
-	private Integer user;
+	@ManyToOne
+	private SiteUser author;
 }

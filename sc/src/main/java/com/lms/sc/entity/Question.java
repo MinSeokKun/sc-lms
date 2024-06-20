@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
@@ -17,8 +18,8 @@ import lombok.Setter;
 @Setter
 public class Question {
 	@Id
-	@GeneratedValue
-	private Integer questId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long questId;
 	
 	@Column(length = 100)
 	String questTitle;
@@ -36,7 +37,7 @@ public class Question {
 	private int questResult;
 	
 	@ManyToOne
-	private SiteUser user;
+	private SiteUser author;
 	
 	@ManyToOne
 	private LecVideo video;

@@ -10,7 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,9 +32,9 @@ public class Lecture {
 	@CreatedDate
 	private LocalDateTime lecRegDate;
 	
-	@ManyToMany
-	Set<SiteUser> lecStdCnt;
+	@OneToMany
+	private Set<SiteUser> student;
 	
-	@ManyToMany
-	Set<Review> lecReviewCnt;
+//	@ManyToMany
+//	Set<Review> lecReviewCnt;
 }

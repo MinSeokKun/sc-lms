@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.lms.sc.entity.SiteUser;
-import com.lms.sc.repository.NoteRepository;
+import com.lms.sc.entity.Video;
 import com.lms.sc.repository.UserRepository;
+import com.lms.sc.repository.VideoRepository;
+import com.lms.sc.service.NoteService;
 
 @SpringBootTest
 public class MsTest {
@@ -14,9 +16,21 @@ public class MsTest {
 	private UserRepository ur;
 	
 	@Autowired
-	private NoteRepository nr;
+	private VideoRepository vr;
+	
+	@Autowired
+	private NoteService ns;
 	
 	@Test
+	void createNote() {
+		String content = "";
+		long videoTime = 100;
+		SiteUser author = ur.findById(1).get();
+		Video video = vr.findById(1).get();
+		ns.createNote(content, videoTime, author, video);
+	}
+	
+//	@Test
 	void createUser() {
 		SiteUser user = new SiteUser();
 		user.setName("민석");

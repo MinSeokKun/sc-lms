@@ -38,5 +38,5 @@ public class Lecture {
 	
 //	@ManyToMany
 //	Set<Review> lecReviewCnt;
-
+	
 }

@@ -34,8 +34,9 @@ public class SiteUser {
 	@Column(columnDefinition = "TEXT")
 	private String profileImage;
 
-	@OneToMany
-	List<Lecture> lecList;
+// 	Lecture에서 Set<SiteUser>을 받기 때문에 여기서 사용하면 lecture_student와 site_user_lec_list가 두개 생기기 때문에 하나는 지움
+//	@OneToMany
+//	List<Lecture> lecList;
 	
 //	@OneToMany
 //	@JoinColumn(name = "noteId")

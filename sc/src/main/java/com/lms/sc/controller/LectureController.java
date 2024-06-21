@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.lms.sc.service.VideoService;
+import com.lms.sc.entity.Lecture;
+import com.lms.sc.entity.Video;
 import com.lms.sc.service.LectureService;
+import com.lms.sc.service.VideoService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class LectureController {
 	
-	private final VideoService lecVideoService;
+	private final VideoService videoService;
 	private final LectureService lectureService;
 	
 	@GetMapping("/list/{lec_id}")

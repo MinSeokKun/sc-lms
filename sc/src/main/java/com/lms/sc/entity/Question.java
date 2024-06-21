@@ -46,6 +46,6 @@ public class Question {
 	private SiteUser author;
 	
 	@ManyToOne
-	private LecVideo video;
+	private Video video;
 }
 

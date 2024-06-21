@@ -34,5 +34,5 @@ public class Note {
 	Lecture lecture;
 	
 	@ManyToOne
-	LecVideo video;
+	Video video;
 }

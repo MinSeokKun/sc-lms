@@ -1,17 +1,15 @@
 package com.lms.sc.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestParam;
-
-	
-	
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.lms.sc.sevice.LecVideoService;
-import com.lms.sc.sevice.LectureService;
+import com.lms.sc.service.VideoService;
+import com.lms.sc.service.LectureService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class LectureController {
 	
-	private final LecVideoService lecVideoService;
+	private final VideoService lecVideoService;
 	private final LectureService lectureService;
 	
 	@GetMapping("/list/{lec_id}")
@@ -44,7 +42,7 @@ public class LectureController {
 	public String regLecture(@RequestParam(name = "title") String title, 
 			@RequestParam(name = "content") String content){
 		
-		lecSer.regLecture(title, content);
+		lectureService.regLecture(title, content);
 		
 		return "redirect:/lecture/list";
 	}

@@ -22,18 +22,19 @@ class ShTests {
 	@Autowired
 	private VideoRepository lvr;
 	
-	//@Test
+	
+	@Test
 	void lectureTest() {
 		Lecture lec = new Lecture();
-		lec.setTitle("자바 강의");
-		lec.setContent("자바을 잘 배워볼까요~?");
+		lec.setTitle("java 강의");
+		lec.setContent("java을 잘 배워볼까요~?");
 		lec.setCreateDate(LocalDateTime.now());
 		
 		
         System.out.println("@@@@@@@@@@@Saved Lecture: " + lr.save(lec));
 	}
 	
-	@Test
+	//@Test
 	void lecVideoTest() {
 		Lecture lecture = lr.findById(1L).orElse(null);
 		Video lecVideo = new Video();

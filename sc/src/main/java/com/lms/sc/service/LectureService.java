@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class LectureService {
 	private final LectureRepository lecRepo;
 	
+	//강의 아이디 가져오기
 	public Lecture getLecture(long id) throws Exception {
 		Optional<Lecture> op = lecRepo.findById(id);
 		if (op.isPresent())
@@ -24,6 +25,7 @@ public class LectureService {
 			throw new Exception();
 	}
 	
+	//강의 등록
 	public Lecture regLecture(String title, String content) {
 		Lecture lecture = new Lecture();
 		lecture.setTitle(title);
@@ -32,6 +34,7 @@ public class LectureService {
 		return lecRepo.save(lecture);
 	}
 	
+	//강의 리스트
 	public List<Lecture> lecList(){
 		return lecRepo.findAll();
 	}

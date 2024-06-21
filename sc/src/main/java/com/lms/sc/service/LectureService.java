@@ -1,6 +1,7 @@
 package com.lms.sc.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -29,5 +30,9 @@ public class LectureService {
 		lecture.setContent(content);
 		lecture.setCreateDate(LocalDateTime.now());
 		return lecRepo.save(lecture);
+	}
+	
+	public List<Lecture> lecList(){
+		return lecRepo.findAll();
 	}
 }

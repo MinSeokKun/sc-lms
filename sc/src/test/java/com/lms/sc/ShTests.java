@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.lms.sc.entity.LecVideo;
+import com.lms.sc.entity.Video;
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.repository.LectureRepository;
-import com.lms.sc.repository.LecvideoRepository;
+import com.lms.sc.repository.VideoRepository;
 
 @SpringBootTest
 class ShTests {
@@ -20,7 +20,7 @@ class ShTests {
 	private LectureRepository lr;
 	
 	@Autowired
-	private LecvideoRepository lvr;
+	private VideoRepository lvr;
 	
 	//@Test
 	void lectureTest() {
@@ -36,7 +36,7 @@ class ShTests {
 	@Test
 	void lecVideoTest() {
 		Lecture lecture = lr.findById(1L).orElse(null);
-		LecVideo lecVideo = new LecVideo();
+		Video lecVideo = new Video();
 		lecVideo.setTitle("자바");
 		lecVideo.setUrl("123123123");
 		lecVideo.setLecture(lecture);

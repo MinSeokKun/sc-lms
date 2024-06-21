@@ -26,12 +26,25 @@
 	                </thead>
 	                <tbody>
 	                    <!-- 루프 -->
-	                    <tr></tr>
+	                    <tr th:each="lecture, loop : ${lecture}">
+							<td>[[${loop.index + 1}]]</td>
+							<td>
+								<a th:href="@{|/lecture/detail/${lecture.id}|}">
+									[[${lecture.title}]]
+								</a>
+							</td>
+							<td>[[${lecture.content}]]</td>
+							<td>[[${lecture.createDate}]]</td>
+<!--							<td><button type="button" class="btn register" th:onclick="'location.href=\'' + @{/lecture/addVideo/${lecture.id}} + '\''">영상 등록</button></td>-->
+							<td><a class="btn register" th:href="@{|/video/addVideo/${lecture.id}|}">영상 등록</a></td>
+							<td><button type="button" class="btn modify">수정</button></td>
+							<td><button type="button" class="btn remove">삭제</button></td>
+						</tr>
 	                </tbody>
 	            </table>
 	        </div>
 	        <div>
-	            <button type="button">등록</button>
+	            <button type="button" onclick="location.href='/lecture/regist'">등록</button>
 	        </div>
 	    </section>
 	</th:block>

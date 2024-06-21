@@ -24,7 +24,7 @@ public class Note {
 	@Column(columnDefinition = "TEXT")
 	private String content;
 	
-	private LocalDateTime videoTime;
+	private long videoTime;
 	
 	@ManyToOne
 	@JoinColumn(name="author_id")

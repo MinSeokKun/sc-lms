@@ -1,5 +1,7 @@
 package com.lms.sc.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,8 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.lms.sc.service.VideoService;
+import com.lms.sc.entity.Lecture;
 import com.lms.sc.service.LectureService;
+import com.lms.sc.service.VideoService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +24,7 @@ public class LectureController {
 	private final VideoService lecVideoService;
 	private final LectureService lectureService;
 	
+	//강의 정보 자세히 보기
 	@GetMapping("/list/{lec_id}")
 	public String getLecture(Model model, @PathVariable("lec_id") long lec_id) {
 		
@@ -28,16 +32,21 @@ public class LectureController {
 		return "lecture/lectureDatail";
 	}
 	
+	//강의 리스트 이동
 	@GetMapping("/list")
 	public String lecList(Model model) {
+		List<Lecture> lecture = lectureService.lecList();
+		model.addAttribute("lecture", lecture);
 		return "admin/lec_list";
 	}
 	
-  @GetMapping("/regist")
+	//강의 등록 이동
+	@GetMapping("/regist")
 	public String regLectureForm() {
-		return "admin/common_register";
+		return "admin/lec_register";
 	}
 	
+	//강의 등록
 	@PostMapping("/regist")
 	public String regLecture(@RequestParam(name = "title") String title, 
 			@RequestParam(name = "content") String content){
@@ -46,5 +55,7 @@ public class LectureController {
 		
 		return "redirect:/lecture/list";
 	}
+	
+	
   
 }

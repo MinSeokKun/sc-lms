@@ -38,7 +38,6 @@ public class SiteUser {
 //	@OneToMany
 //	List<Lecture> lecList;
 	
-//	@OneToMany
 //	@JoinColumn(name = "noteId")
 //	List<Note> noteList;
 }

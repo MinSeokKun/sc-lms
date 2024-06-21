@@ -1,7 +1,5 @@
 package com.lms.sc.entity;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +22,7 @@ public class Note {
 	@Column(columnDefinition = "TEXT")
 	private String content;
 	
-	private LocalDateTime videoTime;
+	private long videoTime;
 	
 	@ManyToOne
 	@JoinColumn(name="author_id")

@@ -1,0 +1,24 @@
+<include>헤더</include>
+<div id="content">
+	<section>
+		<div>
+			<div class="tit">
+				<h2>강의 등록</h2>
+			</div>
+		</div>
+        <form method="post" th:action="@{/regist}">
+            <div>
+                <label for="title">강의 제목</label>
+                <input type="text" id="title" name="title">
+            </div>
+            <div>
+                <label for="content">강의 설명</label>
+                <textarea id="content" name="content"></textarea>
+            </div>
+			<div>
+				<button type="submit">등록</button>
+			</div>
+		</form>
+	</section>
+</div>
+<include>풋터</include>

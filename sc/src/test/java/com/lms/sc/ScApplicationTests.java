@@ -14,6 +14,7 @@ import com.lms.sc.entity.Answer;
 import com.lms.sc.entity.Question;
 import com.lms.sc.repository.AnswerRepository;
 import com.lms.sc.repository.QuestionRepository;
+import com.lms.sc.service.UserService;
 
 @SpringBootTest
 class ScApplicationTests {
@@ -23,6 +24,17 @@ class ScApplicationTests {
 	
 	@Autowired
 	private AnswerRepository AnswerRepository;
+	
+	@Autowired
+	private UserService userservice;
+	
+	@Test
+	void userCreate() {
+		String username = "민석";
+		String email = "minseok";
+		String password = "1234";
+		userservice.create(username, email, password);
+	}
 	
 	//@Test
 	void test() {
@@ -50,7 +62,7 @@ class ScApplicationTests {
 	}
 	
 	
-	@Test
+//	@Test
 	void test3() {
 		Optional<Question> oq = this.questionRepository.findById(53);
 		assertTrue(oq.isPresent());

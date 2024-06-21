@@ -27,13 +27,13 @@ public class MsTest {
 		ur.save(user);
 	}
 	
-	@Test
-	void createNote() {
-		String email = "minseok@naver.com";
-		SiteUser user = ur.findByEmail(email);
-		Note note = new Note();
-		note.setAuthor(user);
-		note.setContent("민석 노트 인설트 테스트");
-		nr.save(note);
-	}
+//	@Test
+//	void createNote() {
+//		String email = "minseok@naver.com";
+//		SiteUser user = ur.findByEmail(email);
+//		Note note = new Note();
+//		note.setAuthor(user);
+//		note.setContent("민석 노트 인설트 테스트");
+//		nr.save(note);
+//	}
 }

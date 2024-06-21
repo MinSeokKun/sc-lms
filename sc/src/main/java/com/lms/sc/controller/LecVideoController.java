@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.lms.sc.entity.LecVideo;
 import com.lms.sc.entity.Lecture;
+
 import com.lms.sc.sevice.LecVideoService;
 import com.lms.sc.sevice.LectureService;
 

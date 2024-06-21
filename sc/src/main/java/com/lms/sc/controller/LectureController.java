@@ -1,6 +1,10 @@
 package com.lms.sc.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
+
+	
+	
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +35,18 @@ public class LectureController {
 		return "admin/lec_list";
 	}
 	
+  @GetMapping("/regist")
+	public String regLectureForm() {
+		return "admin/common_register";
+	}
 	
-	
+	@PostMapping("/regist")
+	public String regLecture(@RequestParam(name = "title") String title, 
+			@RequestParam(name = "content") String content){
+		
+		lecSer.regLecture(title, content);
+		
+		return "redirect:/lecture/list";
+	}
+  
 }

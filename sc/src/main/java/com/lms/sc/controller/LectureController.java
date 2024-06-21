@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lms.sc.entity.Lecture;
+import com.lms.sc.entity.Video;
+
 import com.lms.sc.service.LectureService;
 import com.lms.sc.service.VideoService;
 
@@ -21,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class LectureController {
 	
-	private final VideoService lecVideoService;
+	private final VideoService videoService;
 	private final LectureService lectureService;
 	
 	//강의 정보 자세히 보기

@@ -9,4 +9,5 @@ import com.lms.sc.entity.SiteUser;
 
 public interface UserRepository extends JpaRepository<SiteUser, Long> {
 	Optional<SiteUser> findByEmail(String email);
+	Optional<SiteUser> findById(long id);
 }

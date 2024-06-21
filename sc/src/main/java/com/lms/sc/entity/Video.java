@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-public class LecVideo {
+public class Video {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -12,8 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.lms.sc.entity.Answer;
 import com.lms.sc.entity.Question;
+import com.lms.sc.entity.SiteUser;
 import com.lms.sc.repository.AnswerRepository;
 import com.lms.sc.repository.QuestionRepository;
+import com.lms.sc.repository.UserRepository;
 import com.lms.sc.service.UserService;
 
 @SpringBootTest
@@ -26,14 +28,17 @@ class ScApplicationTests {
 	private AnswerRepository AnswerRepository;
 	
 	@Autowired
+	private UserRepository UserRepository;
+	
+	@Autowired
 	private UserService userservice;
 	
-	@Test
+	//@Test
 	void userCreate() {
 		String username = "민석";
 		String email = "minseok";
 		String password = "1234";
-		userservice.create(username, email, password);
+//		userservice.create(username, email, password);
 	}
 	
 	//@Test
@@ -79,5 +84,15 @@ class ScApplicationTests {
 		a2.setQuestion(q);
 		a2.setCreateDate(LocalDateTime.now());
 		this.AnswerRepository.save(a2);
+	}
+	@Test
+	void test4() {
+		SiteUser u = new SiteUser();
+		String name="청력";
+		String email="ttt123@naver.com";
+		String password="1234";
+		String tellNumber="01012345678";
+		String profileImage=null;
+		userservice.create(name, email, password, tellNumber, profileImage);
 	}
 }

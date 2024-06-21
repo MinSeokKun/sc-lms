@@ -22,18 +22,18 @@ public class SiteUser {
 	@Column(length = 20)
 	private String name;
 	
-	@Column(length = 50)
+	@Column(length = 50, unique=true)
 	private String email;
 	
 	@Column(length = 100)
 	private String password;
 	
-	@Column(length = 20)
+	@Column(length = 20, unique=true)
 	private String tellNumber;
 	
 	@Column(columnDefinition = "TEXT")
 	private String profileImage;
-
+  
 // 	Lecture에서 Set<SiteUser>을 받기 때문에 여기서 사용하면 lecture_student와 site_user_lec_list가 두개 생기기 때문에 하나는 지움
 //	@OneToMany
 //	List<Lecture> lecList;

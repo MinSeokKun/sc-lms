@@ -3,22 +3,22 @@
     <section id="sign">
         <h2>회원가입</h2>
         <p>전체 필수 항목</p>
-        <form action="">
+        <form th:action="@{/user/signup}" method="post">
             <div id="email">
-                <input type="text" value="이메일">
+                <input type="email" name="email">
                 <button>중복확인</button>
             </div>
             <div id="pwd">
-                <input type="text" value="비밀번호">
+                <input type="text" name="password1">
             </div>
             <div id="pwd_check">
-                <input type="text" value="비번확인">
+                <input type="text" name="password2">
             </div>
             <div id="name">
-                <input type="text" value="이름">
+                <input type="text" name="name">
             </div>
             <div id="phone">
-                <input type="text" value="전화번호">
+                <input type="text" name="tellNumber">
             </div>
             <div>
 

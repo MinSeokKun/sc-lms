@@ -1,4 +1,4 @@
-package CreateForm;
+package com.lms.sc.createForm;
 
 
 import jakarta.validation.constraints.Email;

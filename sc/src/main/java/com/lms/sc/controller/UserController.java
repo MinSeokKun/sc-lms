@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.lms.sc.createForm.UserCreateForm;
 import com.lms.sc.service.UserService;
 
-import CreateForm.UserCreateForm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 

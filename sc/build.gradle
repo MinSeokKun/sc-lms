@@ -44,3 +44,8 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+//인코딩 관련 그레이들
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}

@@ -1,6 +1,25 @@
-<include>헤더</include>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout}">
+<th:block layout:fragment="content">
+
+<table>
+	<thead>
+	    <tr>
+	        <th>강의 제목</th>
+	        <th>노트 수</th>
+	    </tr>
+	</thead>
+	<tbody>
+	    <tr th:each="entry : ${noteList.entrySet()}">
+	        <td>
+	        	<a th:href="@{|/note/list/${userId}/${entry.key.id}|}">[[${entry.key.content}]]</a>
+	        </td>
+	        <td th:text="${entry.value}"></td>
+	    </tr>
+	</tbody>
+</table>
 
 
-
-
-<include>풋터</include>
+</th:block>
+</html>

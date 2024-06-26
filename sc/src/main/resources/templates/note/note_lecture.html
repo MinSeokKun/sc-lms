@@ -1,0 +1,22 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout}">
+<th:block layout:fragment="content">
+
+	<h2>강의 노트</h2>
+	
+	<table th:each="entry : ${noteList.entrySet()}">
+		<caption th:text="${entry.key.title}"></caption>
+		<tr>
+			<td>노트 내용</td>
+			<td>노트 시간</td>
+		</tr>
+		
+		<tr th:each="note : ${entry.value}">    
+		    <td th:text="${note.content}"></td>
+		    <td th:text="${note.videoTime}"></td>
+	   </tr>
+	</table>
+
+</th:block>
+</html>

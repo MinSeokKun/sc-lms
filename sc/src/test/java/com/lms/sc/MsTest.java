@@ -1,9 +1,11 @@
 package com.lms.sc;
 
-import org.junit.jupiter.api.Test;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.lms.sc.entity.Note;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.Video;
 import com.lms.sc.repository.UserRepository;
@@ -21,7 +23,20 @@ public class MsTest {
 	@Autowired
 	private NoteService ns;
 	
-	@Test
+	
+//	@Test
+	void noteList() {
+		List<Note> list = ns.getByLecture(1, 1);
+		list.forEach(note -> System.out.println(note.getContent()));
+	}
+	
+//	@Test
+	void noteOfVideo() {
+		List<Note> list = ns.getByVideo(1, 1);
+		list.forEach(note -> System.out.println(note.getContent()));
+	}
+	
+//	@Test
 	void createNote() {
 		String content = "";
 		long videoTime = 100;

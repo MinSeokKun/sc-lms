@@ -1,0 +1,40 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout}">
+<th:block layout:fragment="content">
+	    <section id="sign">
+	        <h2>회원가입</h2>
+	        <p>전체 필수 항목</p>
+	        <form th:action="@{/user/signup}" method="post">
+	            <div id="email">
+	                <input type="email" name="email">
+	                <button>중복확인</button>
+	            </div>
+	            <div id="pwd">
+	                <input type="text" name="password1">
+	            </div>
+	            <div id="pwd_check">
+	                <input type="text" name="password2">
+	            </div>
+	            <div id="name">
+	                <input type="text" name="name">
+	            </div>
+	            <div id="phone">
+	                <input type="text" name="tellNumber">
+	            </div>
+	            <div>
+	
+	                <label for="roll">
+	                    수강생
+	                    <input type="radio" name="roll">
+	                </label>
+	                <label for="roll">
+	                    강사
+	                    <input type="radio" name="roll">
+	                </label>
+	            </div>
+	            <button type="submit">회원가입</button>
+	        </form>
+	    </section>
+	</th:block>
+</html>

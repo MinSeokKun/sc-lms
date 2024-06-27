@@ -85,7 +85,7 @@ class ScApplicationTests {
 		a2.setCreateDate(LocalDateTime.now());
 		this.AnswerRepository.save(a2);
 	}
-	@Test
+	//@Test
 	void test4() {
 		SiteUser u = new SiteUser();
 		String name="청력";
@@ -94,5 +94,13 @@ class ScApplicationTests {
 		String tellNumber="01012345678";
 		String profileImage=null;
 		userservice.create(name, email, password, tellNumber, profileImage);
+	}
+	@Test
+		void test5() {
+			Question q1 = new Question();
+			q1.setTitle("아아아");
+			q1.setContent("이이dfdfdfdf이이이이");
+			q1.setCreateDate(LocalDateTime.now());
+			this.questionRepository.save(q1);
 	}
 }

@@ -1,5 +1,8 @@
 package com.lms.sc.controller;
 
+import java.security.Principal;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lms.sc.entity.Lecture;
+import com.lms.sc.entity.Note;
+import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.Video;
 import com.lms.sc.service.LectureService;
+import com.lms.sc.service.NoteService;
+import com.lms.sc.service.UserService;
 import com.lms.sc.service.VideoService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,14 +30,24 @@ import lombok.RequiredArgsConstructor;
 public class VideoController {
 	private final VideoService VideoService;
 	private final LectureService lectureService;
+	private final NoteService noteService;
+	private final UserService userService;
 	
-	@GetMapping("/viewer/{vid_id}")
-	public String getVideo(Model model, @PathVariable("vid_id") long vid_id) throws Exception {
-		Video video = VideoService.getVideo(vid_id);
+	@GetMapping("/viewer/{vidId}")
+	public String getVideo(Model model, @PathVariable("vidId") long vidId, 
+			@RequestParam(value = "tab", defaultValue = "none") String tab, Principal principal) throws Exception {
+		
+		Video video = VideoService.getVideo(vidId);
 		Lecture lecture = lectureService.getLecture(video.getLecture().getId());
 		
 		model.addAttribute("video", video);
 		model.addAttribute("lecture", lecture);
+		
+		SiteUser user = userService.getUserByEmail(principal.getName());
+		List<Note> noteList = noteService.getByVideo(vidId, user.getId());
+		model.addAttribute("noteList", noteList);
+		if (tab.equals("note")) {
+		}
 		
 		return "video/viewer";
 	}

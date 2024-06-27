@@ -26,9 +26,11 @@ input[type=submit]{
   margin-bottom: 5px;
 }
 
-.input_box input[type="text"],
+.input_box { margin-bottom: 12px; }
+.input_box:last-child{ margin-bottom: 0; }
+.input_box input,
 .input_box textarea {
-  width: 100%;
+  width: 400px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;

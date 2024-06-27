@@ -5,6 +5,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lms.sc.createForm.UserCreateForm;
 import com.lms.sc.service.UserService;
@@ -19,11 +21,13 @@ public class UserController {
 	
 	private final UserService userService;
 	
+	// 회원가입 이동
 	@GetMapping("/signup")
 	public String signup(UserCreateForm userCreateForm) {
 		return "user/sign_up";
 	}
 	
+	// 회원가입
 	@PostMapping("/signup")
 	public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()) {
@@ -38,8 +42,18 @@ public class UserController {
 		return "redirect:/user/login";
 	}
 	
+	// 로그인 이동
 	@GetMapping("/login")
 	public String login() {
 		return "user/login";
 	}
+	
+	//이메일 중복 체크
+	@PostMapping("/emailCheck")
+	@ResponseBody
+	public String CheckEamil(@RequestParam("email") String eamil) {
+		return userService.checkEmail(eamil);
+	}
+	
+	
 }

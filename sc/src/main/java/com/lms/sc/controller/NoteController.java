@@ -79,43 +79,56 @@ public class NoteController {
 	}
 	
 	// 노트 등록
+//	@PreAuthorize("isAuthenticated()")
+//	@PostMapping("/create/{videoId}")
+//	@ResponseBody
+//	public ResponseEntity<?> createNote(@PathVariable("videoId") long videoId, @RequestBody Map<String, Object> payload, Principal principal) throws Exception {
+//		asyncService.executeAsyncTask();
+//		SiteUser author = userService.getUserByEmail(principal.getName());
+//		Video video = videoService.getVideo(videoId);
+//		
+//		String content = (String) payload.get("content");
+//		long videoTime = 0;
+//		
+//		noteService.createNote(content, videoTime, author, video);
+//		return ResponseEntity.ok("노트가 생성 되었습니다.");
+//	}
+	
+	// 노트 등록
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create/{videoId}")
 	@ResponseBody
-	public Note createNote(@PathVariable("videoId") long videoId, @RequestBody Map<String, Object> payload, Principal principal) throws Exception {
-		asyncService.executeAsyncTask();
-		SiteUser author = userService.getUserByEmail(principal.getName());
-		Video video = videoService.getVideo(videoId);
-		
-		String content = (String) payload.get("content");
-		long videoTime = 0;
-		
-		return noteService.createNote(content, videoTime, author, video);
+	public ResponseEntity<?> createNote(@PathVariable("videoId") long videoId, @RequestBody Map<String, Object> payload, Principal principal) throws Exception {
+	    asyncService.executeAsyncTask();
+	    SiteUser author = userService.getUserByEmail(principal.getName());
+	    Video video = videoService.getVideo(videoId);
+	    
+	    String content = (String) payload.get("content");
+	    Integer videoTimeInt = (Integer) payload.get("videoTime");
+	    System.out.println(videoTimeInt);
+	    long videoTime = videoTimeInt != null ? videoTimeInt.longValue() : 0L;
+	    Note newNote = noteService.createNote(content, videoTime, author, video);
+
+	    // 새로운 노트 정보를 JSON으로 반환
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("content", newNote.getContent());
+	    response.put("id", newNote.getId());
+	    response.put("videoTime", newNote.getVideoTime());
+	    // 필요에 따라 다른 필드도 추가할 수 있습니다.
+
+	    return ResponseEntity.ok(response);
 	}
-	
-//	@PreAuthorize("isAuthenticated()")
-//	@PostMapping("/create/{videoId}")
-	public ResponseEntity<?> createNoteInViewer(@PathVariable("videoId") long videoId, @RequestBody Map<String, Object> payload, Principal principal) throws Exception {
-		SiteUser author = userService.getUserByEmail(principal.getName());
-		Video video = videoService.getVideo(videoId);
-		
-		String content = (String) payload.get("content");
-		long videoTime = (Long) payload.get("videoTime");
-		
-		noteService.createNote(content, videoTime, author, video);
-		return ResponseEntity.ok("노트가 생성 되었습니다.");
-	}
-	
 	
 	// 노트 삭제
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/delete/{noteId}")
-	public String delNote(@PathVariable("noteId") long noteId, Principal principal) {
+	public ResponseEntity<Void> delNote(@PathVariable("noteId") long noteId, Principal principal) {
 		Note note = noteService.getNote(noteId);
-		if (note.getAuthor().getEmail().equals(principal.getName())) {
+		if (!note.getAuthor().getEmail().equals(principal.getName())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
 		}
-		return new String();
+		noteService.delNote(noteId);
+		return ResponseEntity.ok().build();
 	}
 	
 	

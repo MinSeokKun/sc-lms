@@ -33,7 +33,7 @@ public class MsTest {
 	@Autowired
 	private LectureService ls;
 	
-	@Test
+//	@Test
 	void startLearn(){
 		SiteUser user = us.getUserByEmail("minseok@test.com");
 		try {
@@ -44,7 +44,7 @@ public class MsTest {
 		}
 	}
 	
-//	@Test
+	@Test
 	void getUser() {
 		SiteUser user = us.getUserByEmail("minseok@test.com");
 		System.out.println(user.getEmail());

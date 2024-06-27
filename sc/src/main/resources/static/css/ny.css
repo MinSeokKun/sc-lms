@@ -1,7 +1,51 @@
 textarea {
 	width:100%;
+	resize: none;
 }
 
 input[type=submit]{
 	margin-top:10px;
+}
+
+/* 질문 등록 */
+.quset_form{
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input_box input[type="text"],
+.input_box textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.btn_box { display: flex; gap: 16px; }
+.btn {
+  display: block;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #45a049;
 }

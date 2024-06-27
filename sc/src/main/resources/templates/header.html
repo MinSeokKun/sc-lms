@@ -5,7 +5,7 @@
 		</a>
 	    <nav class="gnb">
 	        <a th:href="@{||}">강의</a>
-	        <a th:href="@{||}">질문 게시판</a>
+	        <a th:href="@{|/question/list|}">질문 게시판</a>
 	        <a th:href="@{||}">공지사항</a>
 	    </nav>
 		<ul class="util">
@@ -19,7 +19,7 @@
 				<div class="dropMenu" style="display: none;">
 					<ul>
 						<li><i class="fa-solid fa-book"></i><a th:href="@{|/my/list|}">내 학습</a></li>
-						<li><i class="fa-solid fa-clipboard"></i><a th:href="@{||}">강의노트</a></li>
+						<li><i class="fa-solid fa-clipboard"></i><a th:href="@{|/note/list|}">강의노트</a></li>
 						<li><i class="fa-solid fa-chart-pie"></i><a th:href="@{||}">대시보드</a></li>
 						<li><i class="fa-solid fa-user"></i><a th:href="@{||}">마이페이지</a></li>
 					</ul>

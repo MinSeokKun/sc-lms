@@ -30,7 +30,7 @@ public class VideoService {
 		Video video = new Video();
 		video.setLecture(lecRepo.findById(lecId).get());
 		video.setTitle(title);
-		video.setUrl("https://www.youtube.com/embed/" + url);
+		video.setUrl(url);
 		return videoRepo.save(video);
 	}
 }

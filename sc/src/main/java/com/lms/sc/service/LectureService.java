@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.lms.sc.entity.Lecture;
+import com.lms.sc.entity.SiteUser;
 import com.lms.sc.repository.LectureRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -37,5 +38,11 @@ public class LectureService {
 	//강의 리스트
 	public List<Lecture> lecList(){
 		return lecRepo.findAll();
+	}
+	
+	// 수강 시작?
+	public void learnStart(Lecture lecture, SiteUser student) {
+		lecture.getStudent().add(student);
+		lecRepo.save(lecture);
 	}
 }

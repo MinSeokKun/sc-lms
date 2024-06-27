@@ -29,4 +29,7 @@ public class Video {
 	@ManyToOne(fetch = FetchType.LAZY)
 	//LecVideo 테이블의 lecId 컬럼이 Lecture 테이블의 기본 키를 참조하는 외래 키라는 것을 의미
 	private Lecture lecture;
+	
+//	@ManyToOne
+//	private UserLecture userlecture;
 }

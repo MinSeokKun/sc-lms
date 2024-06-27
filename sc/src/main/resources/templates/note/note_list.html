@@ -13,7 +13,7 @@
 	<tbody>
 	    <tr th:each="entry : ${noteList.entrySet()}">
 	        <td>
-	        	<a th:href="@{|/note/list/${userId}/${entry.key.id}|}">[[${entry.key.content}]]</a>
+	        	<a th:href="@{|/note/list/${entry.key.id}|}">[[${entry.key.content}]]</a>
 	        </td>
 	        <td th:text="${entry.value}"></td>
 	    </tr>

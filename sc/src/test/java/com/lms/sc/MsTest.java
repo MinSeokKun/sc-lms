@@ -2,6 +2,7 @@ package com.lms.sc;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -11,6 +12,7 @@ import com.lms.sc.entity.Video;
 import com.lms.sc.repository.UserRepository;
 import com.lms.sc.repository.VideoRepository;
 import com.lms.sc.service.NoteService;
+import com.lms.sc.service.UserService;
 
 @SpringBootTest
 public class MsTest {
@@ -22,6 +24,17 @@ public class MsTest {
 	
 	@Autowired
 	private NoteService ns;
+	
+	@Autowired
+	private UserService us;
+	
+	@Test
+	void getUser() {
+		SiteUser user = us.getUserByEmail("minseok@test.com");
+		System.out.println(user.getEmail());
+		System.out.println(user.getId());
+		System.out.println(user.getName());
+	}
 	
 	
 //	@Test

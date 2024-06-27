@@ -47,10 +47,13 @@ public class VideoController {
 	
 	@PostMapping("/addVideo/{lec_id}")
 	public String regVideo(@PathVariable("lec_id") long lec_id,
-							@RequestParam(name = "title") String title, @RequestParam(name = "url") String url) throws Exception {
-//		Lecture lecture = lectureService.getLecture(lec_id);
-//		model.addAttribute("lecture", lecture);
-		VideoService.regVideo(title, url, lec_id);
+							@RequestParam(name = "title[]") String[] title, @RequestParam(name = "url[]") String[] url) throws Exception {
+
+		//VideoService.regVideo(title, url, lec_id);
+		for (int i = 0; i < title.length; i++) {
+	        VideoService.regVideo(title[i], url[i], lec_id);
+	    }
+		
 		return "redirect:/lecture/list";
 	}
 	

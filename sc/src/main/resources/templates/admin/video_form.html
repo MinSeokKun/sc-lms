@@ -2,30 +2,30 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
       layout:decorate="~{layout}">
 	<th:block layout:fragment="content">
-		<div id="content">
+		<header>
+			강의 뷰어 헤더
+		</header>					
+		<div id="content" class="video">
 			<section>
 				<div>
 					<div class="tit">
 						<h2>영상 등록</h2>
+						<button type="button" id="add-button">추가</button>
 					</div>
 				</div>
 		        <form method="post" th:action="@{|/video/addVideo/${lecture.id}|}">
-		            <div>
-		                <label for="title">영상 제목</label>
-		                <input type="text" id="title" name="title">
-		            </div>
-		            <div>
-		                <label for="content">영상 소스코드</label>
-		                <input type="text" id="url" name="url">
-		            </div>
-					<div>
-		                <label for="title">영상 제목</label>
-		                <input type="text" id="title" name="title">
-		            </div>
-		            <div>
-		                <label for="content">영상 소스코드</label>
-		                <input type="text" id="url" name="url">
-		            </div>
+		            <div id="video_container">
+						<div id="input_box">
+							<div>
+				                <label for="title">영상 제목</label>
+				                <input type="text" id="title" name="title[]">
+				            </div>
+				            <div>
+				                <label for="content">영상 소스코드</label>
+				                <input type="text" id="url" name="url[]">
+				            </div>
+						</div>
+					</div>
 					<div>
 						<button type="submit">등록</button>
 					</div>
@@ -34,3 +34,40 @@
 		</div>
 	</th:block>
 </html>
+
+<script layout:fragment="script" type="text/javascript">
+	$(document).ready(function() {
+	  let inputBoxTemplate = `
+	    <div id="input_box">
+	      <div>
+	        <label for="title">영상 제목</label>
+	        <input type="text" id="title" name="title[]">
+	      </div>
+	      <div>
+	        <label for="content">영상 소스코드</label>
+	        <input type="text" id="url" name="url[]">
+	      </div>
+	      <button type="button" class="remove-button">삭제</button>
+	    </div>
+	  `;
+
+	  $('#add-button').click(function() {
+	    $('#video_container').append(inputBoxTemplate);
+
+	    // 새로 추가된 "삭제" 버튼에 이벤트 리스너 등록
+	    $('.remove-button').off('click').click(function() {
+	      $(this).closest('#input_box').remove();
+	    });
+	  });
+
+	  // 초기 "삭제" 버튼에 이벤트 리스너 등록
+	  $('.remove-button').click(function() {
+	    $(this).closest('#input_box').remove();
+	  });
+	  
+	  
+	  //헤더 체인지
+	  $('.normal_header').hide();
+	  
+	});
+</script>

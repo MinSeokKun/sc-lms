@@ -35,11 +35,10 @@ public class UserController {
 		}
 		
 		userService.create(userCreateForm.getName(), userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getTellNumber(), userCreateForm.getProfileImg());		
-		return "redirect:main/main";
+		return "redirect:/user/login";
 	}
 	
 	@GetMapping("/login")
-  
 	public String login() {
 		return "user/login";
 	}

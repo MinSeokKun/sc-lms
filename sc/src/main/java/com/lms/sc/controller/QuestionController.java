@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.lms.sc.createForm.AnswerCreateForm;
 import com.lms.sc.createForm.QuestionCreateForm;
 import com.lms.sc.entity.Answer;
-import com.lms.sc.entity.DataNotFoundException;
 import com.lms.sc.entity.Question;
+import com.lms.sc.exception.DataNotFoundException;
 import com.lms.sc.service.AnswerService;
 import com.lms.sc.service.QuestionService;
 

@@ -7,11 +7,16 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.lms.sc.entity.Video;
 import com.lms.sc.entity.Lecture;
+import com.lms.sc.entity.SiteUser;
+import com.lms.sc.entity.Video;
 import com.lms.sc.repository.LectureRepository;
+import com.lms.sc.repository.UserRepository;
 import com.lms.sc.repository.VideoRepository;
+import com.lms.sc.service.LectureService;
+
 
 @SpringBootTest
 class ShTests {
@@ -22,19 +27,33 @@ class ShTests {
 	@Autowired
 	private VideoRepository lvr;
 	
+	@Autowired
+	private UserRepository ur;
+	
+	@Autowired
+	private LectureService ls;
+	
+	
+//	@Test
+//	@Transactional
+	void startLearn() {
+		Lecture lec = lr.findById(1L).get();
+		SiteUser stu = ur.findById(1).get();
+		ls.learnStart(lec, stu);
+	}
 	
 	@Test
 	void lectureTest() {
 		Lecture lec = new Lecture();
-		lec.setTitle("java 강의");
-		lec.setContent("java을 잘 배워볼까요~?");
+		lec.setTitle("python 강의");
+		lec.setContent("python을 잘 배워볼까요~?");
 		lec.setCreateDate(LocalDateTime.now());
 		
 		
         System.out.println("@@@@@@@@@@@Saved Lecture: " + lr.save(lec));
 	}
 	
-	//@Test
+//	@Test
 	void lecVideoTest() {
 		Lecture lecture = lr.findById(1L).orElse(null);
 		Video lecVideo = new Video();

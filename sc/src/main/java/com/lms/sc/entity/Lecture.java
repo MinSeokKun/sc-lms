@@ -10,8 +10,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,8 +34,13 @@ public class Lecture {
 	@CreatedDate
 	private LocalDateTime createDate;
 	
-	@OneToMany
-	private Set<SiteUser> student;
+	@ManyToMany
+    @JoinTable(
+        name = "lecture_student",
+        joinColumns = @JoinColumn(name = "lecture_id"),
+        inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
+    private Set<SiteUser> students;
 	
 //	@ManyToMany
 //	Set<Review> lecReviewCnt;

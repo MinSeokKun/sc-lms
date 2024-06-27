@@ -49,7 +49,7 @@ public class VideoController {
 		if (tab.equals("note")) {
 		}
 		
-		return "video/viewer";
+		return "video/viewer2";
 	}
 	
 	//강의 마다 영상 등록 페이지로 이동

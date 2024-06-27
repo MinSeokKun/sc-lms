@@ -1,5 +1,6 @@
 package com.lms.sc.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lms.sc.entity.Lecture;
+import com.lms.sc.entity.SiteUser;
 import com.lms.sc.service.LectureService;
+import com.lms.sc.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class LectureController {
 	
 	private final LectureService lectureService;
+	private final UserService userService;
 	
 	//강의 정보 자세히 보기
 	@GetMapping("/list/{lec_id}")
@@ -52,6 +56,15 @@ public class LectureController {
 		lectureService.regLecture(title, content);
 		
 		return "redirect:/lecture/list";
+	}
+	
+	// 강의 시작
+	@GetMapping("/startlearn/{lecId}")
+	public String getMethodName(@PathVariable("lecId") long lecId, Principal principal) throws Exception {
+		SiteUser user = userService.getUserByEmail(principal.getName());
+		Lecture lecture = lectureService.getLectureWithStu(lecId);
+		lectureService.studentAdd(lecture, user);
+		return "redirect:/";
 	}
 	
 	

@@ -1,0 +1,61 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout}">
+	<th:block layout:fragment="content">
+		<div>	
+			<!-- <div>
+				<div class="issue">
+					<h3>전체</h3>
+					<p class="issue-status">전체</p>
+					<p>Issue description goes here...</p>
+				  </div>
+				  <div class="issue">
+					<h3>미해결</h3>
+					<p class="issue-status">미해결</p>
+					<p>Issue description goes here...</p>
+				  </div>
+				  <div class="issue">
+					<h3>해결됨</h3>
+					<p class="issue-status">해결됨</p>
+					<p>Issue description goes here...</p>
+				  </div>
+	  		</div> 
+			<script>
+			  // 전체 미해결 해결됨 처리 함수
+			  function toggleIssueStatus(issueElement) {
+				const issueStatus = issueElement.querySelector('.issue-status');
+				if (issueStatus.textContent === '전체 미해결') {
+				  issueStatus.textContent = '해결됨';
+				  issueElement.classList.add('resolved');
+				} else {
+				  issueStatus.textContent = '전체 미해결';
+				  issueElement.classList.remove('resolved');
+				}
+			  }
+			  // 이슈 목록 요소에 대한 클릭 이벤트 리스너 등록
+			  const issueElements = document.querySelectorAll('.issue');
+			  issueElements.forEach(issueElement => {
+				issueElement.addEventListener('click', () => {
+				  toggleIssueStatus(issueElement);
+				});
+			  });
+			  </script>-->
+				
+			  
+	  		<div>
+			<input type="text" placeholder="궁금한 질문 검색" name="ResearchQuestion" id="ResearchQuestion">
+			<button type="submit">검색</button>	
+	  		</div>
+	  		
+	  		<div>
+				
+	  		</div>
+	  		<div>
+				<div th:each="question : ${questionList}">
+				<a th:href="@{|/question/detail/${question.id}|}" th:text="${question.title}">제목</a>
+				<p th:text="${question.content}">내용</p>
+				<p th:text="${question.createDate}">생성일</p>
+				</div>
+	  	</div>
+	</th:block>
+</html>

@@ -35,10 +35,21 @@ public class NoteService {
 		return noteRepository.save(note);
 	}
 	
+	// 노트하나 가져오기
+	public Note getNote(long noteId) {
+		return noteRepository.findById(noteId).get();
+	}
+	
 	// 노트삭제
-	public void delNote(int id) {
+	public void delNote(long id) {
 		Note note = noteRepository.findById(id).get();
 		noteRepository.delete(note);
+	}
+	
+	// 노트 수정
+	public void updateNote(Note note, String content) {
+		note.setContent(content);
+		noteRepository.save(note);
 	}
 	
 	// 노트 리스트

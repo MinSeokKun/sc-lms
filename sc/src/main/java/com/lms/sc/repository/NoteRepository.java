@@ -12,7 +12,7 @@ import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.Video;
 
 
-public interface NoteRepository extends JpaRepository<Note, Integer> {
+public interface NoteRepository extends JpaRepository<Note, Long> {
 	List<Note> findByAuthor(SiteUser author);
 	
     @Query("SELECT DISTINCT v "

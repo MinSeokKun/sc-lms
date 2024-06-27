@@ -28,4 +28,11 @@ public class UserService {
 		return user;
 	}
 	
+	public SiteUser getUser(String username) {
+		return userRepository.findByName(username).get();
+	}
+	
+	public SiteUser getUserByEmail(String email) {
+		return userRepository.findByEmail(email).get();
+	}
 }

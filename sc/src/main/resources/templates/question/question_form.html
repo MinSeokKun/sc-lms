@@ -3,26 +3,31 @@
       layout:decorate="~{layout}">
     
 	<th:block layout:fragment="content">
-	<h5 class="my-3 border-bottom pb-2">코드가 포함된 질문은 이미지보다 'code', 'codeblock'을 이용하시면 더 정확하게 답변 받을 수 있어요.</h5>
-		
-		<form th:action="@{/question/create}" th:object="${questionCreateForm}" method="post">
-			<div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
-				<div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
-			</div>
-			
-			<div class="mb-3">
-				<label for="title" class="form-label">제목</label>
-				<input type="text" th:field="*{title}" class="form-control">
-			</div>
-			<div class="mb-3">
-				<label for="content" class="form-label">내용</label>
-				<textarea th:field="*{content}" class="form-control" rows="10"></textarea>
-			</div>
-			<div>
-				<button type="button" value="취소" class="btn btn-primary my-2" onclick="goToPreviousPage()">취소</button>
-				<button type="submit" value="등록" class="btn btn-primary my-2">등록</button>
-			</div>
-		</form>
+		<div class="wrapper">
+			<section class="quest_form">
+				<h5 class="my-3 border-bottom pb-2">코드가 포함된 질문은 이미지보다 'code', 'codeblock'을 이용하시면 더 정확하게 답변 받을 수 있어요.</h5>
+				
+				<form th:action="@{/question/create}" th:object="${questionCreateForm}" method="post">
+					<!--//오류 메세지 표시-->
+					<div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+						<div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+					</div>
+					
+					<div class="input_box">
+						<label for="title" class="form-label">제목</label>
+						<input type="text" th:field="*{title}" class="form-control">
+					</div>
+					<div class="input_box">
+						<label for="content" class="form-label">내용</label>
+						<textarea th:field="*{content}" class="form-control" rows="10"></textarea>
+					</div>
+					<div class="btn_box">
+						<button type="submit" value="등록" class="btn">등록</button>
+						<button type="button" value="취소" class="btn" onclick="goToPreviousPage()">취소</button>
+					</div>
+				</form>
+			</section>
+		</div>
 		<script>
 			function goToPreviousPage() {
 			  // 브라우저의 이전 페이지로 이동

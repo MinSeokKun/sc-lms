@@ -16,6 +16,7 @@ import com.lms.sc.entity.SiteUser;
 import com.lms.sc.repository.AnswerRepository;
 import com.lms.sc.repository.QuestionRepository;
 import com.lms.sc.repository.UserRepository;
+import com.lms.sc.service.QuestionService;
 import com.lms.sc.service.UserService;
 
 @SpringBootTest
@@ -32,6 +33,10 @@ class ScApplicationTests {
 	
 	@Autowired
 	private UserService userservice;
+	
+	@Autowired
+	private QuestionService questionService;
+	
 	
 	//@Test
 	void userCreate() {

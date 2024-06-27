@@ -1,29 +1,47 @@
-<header id="header" style="display: flex; align-items: center; justify-content: space-between;">
-    <img src="lms_logo.png" style="width: 100px;">
-    <div>
-        <a style="background-color: grey;">강의</a>
-        <a style="background-color: grey;">강의</a>
-        <a style="background-color: grey;">강의</a>
-    </div>
-    <div>
-        <a style="background-color: grey;">강의</a>
-        <img src="profile.png" alt="프로필">
-    </div>
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-		<li class="nav-item">
-		   <a class="nav-link" sec:authorize="isAnonymous" th:href="@{/user/login}">로그인</a>
-		   <a class="nav-link" sec:authorize="isAuthenticated" th:href="@{/user/logout}">로그아웃</a>
-		</li>
-		<li class="nav-item" sec:authorize="isAnonymous">
-		   <a class="nav-link" th:href="@{/user/signup}">회원가입</a>
-		</li>
-		<li class="nav-item" sec:authorize="isAuthenticated()">
-		        <div>
-		           <span>[[${#authentication.principal.username}]]</span><span>님</span>
-		        </div>
-		    </li>
-<!-- 		<li sec:authorize="isAuthenticated()"> -->
-<!-- 		   <a th:href="@{/user/changePassword}">비밀번호 변경하기</a> -->
-<!-- 		</li> -->
-	</ul>
+<header id="header" class="normal_header">
+	<div class="wrapper">
+	    <a th:href="@{|/|}" class="logo">
+			<img src="/images/logo.png">
+		</a>
+	    <nav class="gnb">
+	        <a th:href="@{||}">강의</a>
+	        <a th:href="@{||}">질문 게시판</a>
+	        <a th:href="@{||}">공지사항</a>
+	    </nav>
+		<ul class="util">
+			<li sec:authorize="isAuthenticated">
+	        	<a th:href="@{||}" class="dashBtn">대시보드</a>
+			</li>
+			<li sec:authorize="isAuthenticated()">
+                <a href="javascript:void(0)" class="my">
+                	<span>[[${#authentication.principal.username}]]</span><span>님</span>
+                </a>
+				<div class="dropMenu" style="display: none;">
+					<ul>
+						<li><i class="fa-solid fa-book"></i><a th:href="@{||}">내 학습</a></li>
+						<li><i class="fa-solid fa-clipboard"></i><a th:href="@{||}">강의노트</a></li>
+						<li><i class="fa-solid fa-chart-pie"></i><a th:href="@{||}">대시보드</a></li>
+						<li><i class="fa-solid fa-user"></i><a th:href="@{||}">마이페이지</a></li>
+					</ul>
+				</div>
+            </li>
+			<li>
+				<a class="nav-link" sec:authorize="isAnonymous" th:href="@{/user/login}">로그인</a>
+				<a class="nav-link" sec:authorize="isAuthenticated" th:href="@{/user/logout}">로그아웃</a>
+			</li>
+			<li sec:authorize="isAnonymous">
+				<a class="nav-link" th:href="@{/user/signup}">회원가입</a>
+			</li>
+		</ul>
+	</div>
+	<script layout:fragment="script" type="text/javascript">
+		$(document).ready(function() {
+			let dropMenu = $('.dropMenu');
+			let my = $('.my');
+			
+			my.click(function(){
+				dropMenu.fadeToggle();
+			});
+		});
+	</script>
 </header>

@@ -4,12 +4,17 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>학습관리시스템</title>
+		<!-- 폰트어썸 -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 		<!-- css -->
 		<link rel="stylesheet" type="text/css" th:href="@{/css/normalize.css}">
 		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/sh.css}">
 		<th:block layout:fragment="script"></th:block>
 		<!-- jQuery CDN -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<!-- js -->
+		<script th:src="@{/js/script.js}"></script>
 		
 		<!-- 마크다운 에디터 사용 TOAST UI Editor CDN(JS) -->
 		<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
@@ -22,7 +27,7 @@
 	<body>
 		<div id="wrap">
 			<div id="container">
-				<!--<nav th:replace="~{navbar :: navbar}"></nav>-->		
+				<!--<nav th:replace="~{navbar :: navbar}"></nav>-->	
 				<header th:replace="~{header :: header}"></header>
 				<th:block layout:fragment="content"></th:block>
 				<footer th:replace="~{footer :: footer}"></footer>

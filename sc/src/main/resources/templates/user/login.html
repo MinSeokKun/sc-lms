@@ -5,13 +5,13 @@
 		<div class="login-container">
 			<h1>LMS 학습관리시스템</h1>
 			<p>로그인 또는 회원가입을 해주세요.</p>
-			<form th:action="@{/member/login}" method="post">
+			<form th:action="@{/user/login}" method="post">
 			  	<input type="text" placeholder="이메일" name="username" id="username" required>
 			  	<input type="password" placeholder="비밀번호" name="password" id="password" required>
 			  	<button type="submit" class="login-btn">로그인</button>
 			</form>
 	    	<div class="signup-options">
-	      		<button class="signup-btn">회원가입</button>
+	      		<a class="signup-btn" th:href="@{|/user/signup|}">회원가입</a>
 	     		<div class="oauth-buttons">
 		       		 <button class="oauth-btn" id="kakao-login">
 		         		 <img src="kakao-icon.png" alt="Kakao Login">

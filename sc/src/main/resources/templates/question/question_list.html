@@ -42,20 +42,20 @@
 			  </script>-->
 				
 			  
-	  		<div>
+  		<div>
 			<input type="text" placeholder="궁금한 질문 검색" name="ResearchQuestion" id="ResearchQuestion">
 			<button type="submit">검색</button>	
-	  		</div>
-	  		
-	  		<div>
-				
-	  		</div>
-	  		<div>
-				<div th:each="question : ${questionList}">
+  		</div>
+  		
+  		<div>
+			<a th:href="@{/question/create}" class="btn btn-primary">글쓰기</a>
+  		</div>
+  		<div>
+			<div th:each="question : ${questionList}">
 				<a th:href="@{|/question/detail/${question.id}|}" th:text="${question.title}">제목</a>
 				<p th:text="${question.content}">내용</p>
 				<p th:text="${question.createDate}">생성일</p>
-				</div>
+			</div>
 	  	</div>
 	</th:block>
 </html>

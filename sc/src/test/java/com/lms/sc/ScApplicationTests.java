@@ -85,17 +85,17 @@ class ScApplicationTests {
 		a2.setCreateDate(LocalDateTime.now());
 		this.AnswerRepository.save(a2);
 	}
-	//@Test
+	@Test
 	void test4() {
 		SiteUser u = new SiteUser();
 		String name="청력";
-		String email="ttt123@naver.com";
+		String email="user@naver.com";
 		String password="1234";
 		String tellNumber="01012345678";
 		String profileImage=null;
 		userservice.create(name, email, password, tellNumber, profileImage);
 	}
-	@Test
+//	@Test
 		void test5() {
 			Question q1 = new Question();
 			q1.setTitle("아아아");

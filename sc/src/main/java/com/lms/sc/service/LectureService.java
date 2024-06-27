@@ -55,5 +55,4 @@ public class LectureService {
 		lecture.getStudents().add(student);
 		lecRepo.save(lecture);
 	}
-	
 }

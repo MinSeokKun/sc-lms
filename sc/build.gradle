@@ -30,13 +30,13 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	// 등록폼 사용시 빈값 또는 길이가 넘어가는 경우 @NotEmpty등의 에노테이션을 사용하기 위함
-	// implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	//공용 레이아웃 사용하는 디펜던시
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	//Hibernate Validator - @Email, @NotEmpty, @Size 애노테이션
-	implementation 'org.hibernate.validator:hibernate-validator:6.2.0.Final'
+	// implementation 'org.hibernate.validator:hibernate-validator:6.2.0.Final'
 	
 
 }

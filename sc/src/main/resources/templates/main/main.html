@@ -14,21 +14,30 @@
 		    <!-- 검색섹션 === E -->
 		    <!-- 강의 리스트 === S -->
 		    <section class="wrapper">
-		        <div class="tit"><h2>강의 리스트</h2></div>
-		        <ul class="lecture_list">
-		            <li th:each="lecture : ${lecture}">
-						<div style="background: #000;">
-							<!--<img th:src="@{||}">-->
-						</div>
-						<div>
-							<h4>[[${lecture.title}]]</h4>
-							<span>starPoint</span>
-							<span class="price">무료</span>
-							<a th:href="@{|/lecture/startlearn/${lecture.id}|}">시작하기</a>
-						</div>
-					</li>
-		        </ul>
-		        <div class="paging" style="width: 100%; height: 30px; background: purple;"></div>
+          
+		        <div class="tit" style="margin-bottom: 20px;"><h2>강의 리스트</h2></div>
+		        
+		        
+		        <table class="tbl">
+		        	<caption></caption>
+		        	<thead>
+		        		<tr>
+		        			<th style="width: 10%">No</th>
+		        			<th style="width: 70%">강의명</th>
+		        			<th style="width: 20%">수강신청</th>
+		        		</tr>
+		        	</thead>
+		        	<tbody>
+		        		<tr th:each="lecture, loop : ${lecture}">
+		        			<td>[[${loop.index + 1}]]</td>
+		        			<td>[[${lecture.title}]]</td>
+		        			<td><button type="button">수강신청</button></td>
+                  <a th:href="@{|/lecture/startlearn/${lecture.id}|}">시작하기</a>
+		        		</tr>
+		        	</tbody>
+		        </table>
+		        <div class="paging" style="width: 100%; height: 30px; margin-top: 40px; background: purple;"></div>
+
 		    </section>
 		    <!-- 강의 리스트 === E -->
 		</div>

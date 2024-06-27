@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.repository.LectureRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -40,9 +42,17 @@ public class LectureService {
 		return lecRepo.findAll();
 	}
 	
-	// 수강 시작?
-	public void learnStart(Lecture lecture, SiteUser student) {
-		lecture.getStudent().add(student);
+	// 강의를 유저도 함께 가져오기
+	@Transactional(readOnly = true)
+	public Lecture getLectureWithStu(long id) {
+		return lecRepo.findByIdWithStudents(id).orElseThrow(() -> new EntityNotFoundException("강의가 없습니다."));
+		
+	}
+	
+	// 강의 시작
+	@Transactional
+	public void studentAdd(Lecture lecture, SiteUser student) {
+		lecture.getStudents().add(student);
 		lecRepo.save(lecture);
 	}
 }

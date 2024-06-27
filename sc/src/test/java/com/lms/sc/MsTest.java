@@ -6,11 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.Note;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.Video;
 import com.lms.sc.repository.UserRepository;
 import com.lms.sc.repository.VideoRepository;
+import com.lms.sc.service.LectureService;
 import com.lms.sc.service.NoteService;
 import com.lms.sc.service.UserService;
 
@@ -28,7 +30,21 @@ public class MsTest {
 	@Autowired
 	private UserService us;
 	
+	@Autowired
+	private LectureService ls;
+	
 	@Test
+	void startLearn(){
+		SiteUser user = us.getUserByEmail("minseok@test.com");
+		try {
+			Lecture lec = ls.getLecture(1L);
+			ls.studentAdd(lec, user);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+//	@Test
 	void getUser() {
 		SiteUser user = us.getUserByEmail("minseok@test.com");
 		System.out.println(user.getEmail());

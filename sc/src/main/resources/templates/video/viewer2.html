@@ -16,7 +16,7 @@
 	<div id="wrap">
 	    <div id="content" style="display: flex;">
 			<div>
-				<iframe width="1280" height="720" 
+				<iframe id="videoIframe" width="1280" height="720" 
 					th:src="@{|https://www.youtube.com/embed/${video.url}|}" 
 					th:title="${video.title}" 
 					frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -40,7 +40,7 @@
 			    <div style="display: none;" class="tab">
 			        <div>
 			            <!-- 노트 리스트 창 열기 -->
-			            <ul>
+			            <ul id="notesContainer">
 			                <li th:each="note : ${noteList}">
 			                    <div>
 			                        <p th:text="${note.content}"></p>
@@ -100,8 +100,8 @@
             });
 
             document.getElementById('saveButton').addEventListener('click', async function() {
-                const content = editor.getMarkdown(); // 수정된 부분
-//                 const videoId = [[${video.id}]]; 
+                const content = editor.getMarkdown(); 
+                const videoId = [[${video.id}]]; // Thymeleaf 표현식 사용
 
                 try {
                     const response = await fetch(`/note/create/${videoId}`, {
@@ -118,7 +118,7 @@
 
                     const newNote = await response.json();
                     addNoteToDOM(newNote);
-                    document.getElementById('noteContent').value = ''; // 입력 필드 초기화
+                    editor.setMarkdown(''); // 입력 필드 초기화
 
                 } catch (error) {
                     console.error('노트 작성 실패:', error);
@@ -128,7 +128,7 @@
             function addNoteToDOM(note) {
                 const notesContainer = document.getElementById('notesContainer');
                 const noteElement = document.createElement('div');
-                noteElement.textContent = note.content; // 노트 내용을 표시
+                noteElement.textContent = note.content; 
                 notesContainer.appendChild(noteElement);
             }
         });

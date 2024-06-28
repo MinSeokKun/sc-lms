@@ -1,7 +1,10 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
-      layout:decorate="~{layout}">
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+    layout:decorate="~{layout}">
+    
+    
 <th:block layout:fragment="content">
+
 	<div id="header2" style="display: flex;">
 	    <div>
 	        <button>강의 대시보드</button>
@@ -15,8 +18,15 @@
 	</div>
 	<div id="wrap">
 	    <div id="content" style="display: flex;">
-			<div >
-				<div id="player"></div>
+			<div>
+<!-- 				<iframe id="videoIframe" width="1280" height="720"  -->
+<!-- 					th:src="@{|https://www.youtube.com/embed/${video.url}|}"  -->
+<!-- 					th:title="${video.title}"  -->
+<!-- 					frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" -->
+<!-- 					referrerpolicy="strict-origin-when-cross-origin"  -->
+<!-- 					allowfullscreen> -->
+<!-- 				</iframe> -->
+				<div id="player" class="url-link" th:data-url="${video.url}"></div>
 			</div>
 			<div id="nav2">
 			    <div>
@@ -33,14 +43,13 @@
 			
 			    <div style="display: none;" class="tab">
 			        <div>
+			        	<button>전체 노트 보기</button>
 			            <!-- 노트 리스트 창 열기 -->
 			            <ul id="notesContainer">
 			                <li th:each="note : ${noteList}">
 			                    <div>
 			                        <p th:text="${note.content}"></p>
 			                        <span th:text="${note.videoTime}"></span>
-			                        <a class="edit-link">수정</a>
-									<a class="delete-link" th:data-note-id="${note.id}">삭제</a>
 			                    </div>
 			                </li>
 			            </ul>
@@ -56,30 +65,35 @@
 	    </div>
 	</div>
 	
-	<script src="https://www.youtube.com/iframe_api"></script>
-	
 	<script layout:fragment="script" type="text/javascript">
+
 		let player;
 	
-	
+		const playerElement = document.getElementById('player');
+		const videoUrl = playerElement.dataset.url;
         // YouTube IFrame API 준비 완료 시 호출되는 함수
         function onYouTubeIframeAPIReady() {
+			
             player = new YT.Player('player', {
                 height: '390',
                 width: '640',
-                videoId: 'UMfCZMuZoRk', // 예제 비디오 ID
+                videoId: videoUrl, // 예제 비디오 ID
+                playerVars: {
+                    'autoplay': 1, // 자동재생 설정
+                    'start': 60 // 영상 10초부터 시작
+                },
                 events: {
                     'onReady': onPlayerReady
                 }
             });
         }
-
+        
 		// 플레이어 준비 완료 시 호출되는 함수
 		function onPlayerReady(event) {
 			console.log("Player is ready");
 		// 플레이어가 준비되었을 때 할 작업을 여기에 추가
         }		
-
+	        
 
 		$(document).ready(function() {
 		    const noteLink = $('#noteLink');
@@ -87,6 +101,7 @@
 	
 		    // 노트 클릭 시 노트 리스트와 등록 폼 열기        
 		    noteLink.click(function(e) {
+				console.log(videoUrl);
 		        e.preventDefault();
 		        tab.toggle();
 		    });
@@ -127,8 +142,6 @@
 		        <div>
 		            <p>${content}</p>
 		            <span>${videoTime}</span>
-		            <a class="edit-link">수정</a>
-		            <a class="delete-link">삭제</a>
 		        </div>
 		    `);
 		}
@@ -159,23 +172,6 @@
 		    noteElement.find('.delete-link').attr('data-note-id', note.id);
 		}
 	
-		// 노트 삭제 처리 함수
-		function handleNoteDelete(e) {
-		    e.preventDefault();
-		    const noteId = $(this).data('note-id');
-		    const noteElement = $(this).closest('li');
-	
-		    $.ajax({
-		        url: `/note/delete/${noteId}`,
-		        method: 'DELETE',
-		        success: function() {
-		            noteElement.remove();
-		        },
-		        error: function(xhr, status, error) {
-		            console.error('노트 삭제 실패:', error);
-		        }
-		    });
-		}
 	
 		// 기존 노트를 DOM에 추가하는 함수
 		function addNoteToDOM(note) {
@@ -186,7 +182,6 @@
 		}
 
 	</script>
-
 
 </th:block>
 </html>

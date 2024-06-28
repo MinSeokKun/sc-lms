@@ -3,6 +3,7 @@ package com.lms.sc.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.lms.sc.entity.Lecture;
@@ -41,4 +42,14 @@ public class VideoService {
 		//Lecture lecture = lecRepo.findById(lecId).get();
 		return videoRepo.findAllByLecture(lecture);
 	}
+	
 }
+
+
+
+
+
+
+
+
+

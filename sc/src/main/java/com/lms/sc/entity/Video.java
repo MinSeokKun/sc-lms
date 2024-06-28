@@ -32,4 +32,6 @@ public class Video {
 	
 //	@ManyToOne
 //	private UserLecture userlecture;
+	
+	
 }

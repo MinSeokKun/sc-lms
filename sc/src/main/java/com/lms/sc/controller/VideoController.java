@@ -29,16 +29,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 public class VideoController {
-	private final VideoService VideoService;
+	private final VideoService videoService;
 	private final LectureService lectureService;
 	private final NoteService noteService;
 	private final UserService userService;
 	
+	//비디오 하나
 	@GetMapping("/viewer/{vidId}")
-	public String getVideo(Model model, @PathVariable("vidId") long vidId, 
-			@RequestParam(value = "tab", defaultValue = "none") String tab, Principal principal) throws Exception {
+	public String getVideo(Model model, @PathVariable("vidId") long vidId, Principal principal) throws Exception {
+		if(principal == null) {
+			return "redirect:/user/login";
+		}
 		
-		Video video = VideoService.getVideo(vidId);
+		Video video = videoService.getVideo(vidId);
 		Lecture lecture = lectureService.getLecture(video.getLecture().getId());
 		
 		model.addAttribute("video", video);
@@ -47,8 +50,9 @@ public class VideoController {
 		SiteUser user = userService.getUserByEmail(principal.getName());
 		List<Note> noteList = noteService.getByVideo(vidId, user.getId());
 		model.addAttribute("noteList", noteList);
-		if (tab.equals("note")) {
-		}
+		
+		List<Video> videoList = videoService.VideoList(lecture);
+		model.addAttribute("videoList", videoList);
 		
 		return "video/viewer";
 	}
@@ -63,13 +67,14 @@ public class VideoController {
 		return "admin/video_form";
 	}
 	
+	//비디오 등록
 	@PostMapping("/addVideo/{lec_id}")
 	public String regVideo(@PathVariable("lec_id") long lec_id,
 							@RequestParam(name = "title[]") String[] title, @RequestParam(name = "url[]") String[] url) throws Exception {
 
 		//VideoService.regVideo(title, url, lec_id);
 		for (int i = 0; i < title.length; i++) {
-	        VideoService.regVideo(title[i], url[i], lec_id);
+	        videoService.regVideo(title[i], url[i], lec_id);
 	    }
 		
 		return String.format("redirect:/video/list/%s", lec_id);
@@ -80,7 +85,7 @@ public class VideoController {
 	@GetMapping("/list/{lec_id}")
 	public String videoList(Model model, @PathVariable("lec_id") long lec_id) throws Exception {
 		Lecture lecture = lectureService.getLecture(lec_id);		
-		List<Video> video = VideoService.VideoList(lecture);
+		List<Video> video = videoService.VideoList(lecture);
 		
 		model.addAttribute("video", video);
 		return "admin/video_list";

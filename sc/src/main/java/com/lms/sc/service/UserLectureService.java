@@ -1,6 +1,7 @@
 package com.lms.sc.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -8,6 +9,7 @@ import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.UserLecture;
 import com.lms.sc.repository.UserLectureRepository;
+import com.lms.sc.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class UserLectureService {
 //	private final LectureRepository lectureRepository;
 //	private final VideoRepository videoRepository;
-//	private final UserRepository userRepository;
+	private final UserRepository userRepository;
 	
 	private final UserLectureRepository userLectureRepository;
 	
@@ -34,5 +36,12 @@ public class UserLectureService {
 		userLec.setLecture(lecture);
 		userLec.setProgress(0);
 		return userLectureRepository.save(userLec);
+	}
+	
+	// 강의 중복 확인
+	public String checkLec(String userEmail, long lecId) {
+		Optional<UserLecture> userLecture = userLectureRepository.findByUserAndLecture(userEmail, lecId);
+		
+		return userLecture.isPresent() ? "false" : "true";
 	}
 }

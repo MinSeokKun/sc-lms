@@ -31,7 +31,10 @@
 		        		<tr th:each="lecture, loop : ${lecture}">
 		        			<td>[[${loop.index + 1}]]</td>
 		        			<td><a th:href="@{|/lecture/detail/${lecture.id}|}">[[${lecture.title}]]</a></td>
-		        			<td><a th:href="@{|/lecture/startlearn/${lecture.id}|}">수강신청</a></td>
+		        			<td>
+								<a th:href="@{|/lecture/startlearn/${lecture.id}|}" id="reglec" th:data-lecture-id="${lecture.id}">수강신청</a>
+								<input type="hidden" id="lecId" th:value="${lecture.id}">
+							</td>
 		        		</tr>
 		        	</tbody>
 		        </table>
@@ -40,6 +43,38 @@
 		    </section>
 		    <!-- 강의 리스트 === E -->
 		</div>
+		<script>
+			$('#reglec').click(function(e) {
+				const lecId = $('#lecId').val();
+	
+				$.ajax({
+					url: '/my/lecCheck',
+					type: 'GET',
+					data: {lecId: lecId},
+					success: function(result){
+						if(result === "false"){
+							e.preventDefault();
+							alert('이미 수강 신청한 강의입니다.');
+						}else{
+							$.ajax({
+			                    url: '/lecture/startlearn/' + lecId,
+			                    type: 'GET',
+			                    success: function() {
+			                        alert('수강 신청 되었습니다.');
+			                        // 필요하다면 페이지 새로고침 또는 UI 업데이트
+			                    },
+			                    error: function() {
+			                        alert('수강신청 중 오류가 발생했습니다.');
+			                    }
+			                });
+						}
+					}, error: function(){
+						e.preventDefault();
+						alert('수강신청 중 오류가 발생했습니다.');
+					}
+				});
+			});
+		</script>
 	</th:block>
 </html>
 

@@ -73,12 +73,12 @@ public class LectureController {
 	// 강의 시작
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/startlearn/{lecId}")
-	public String getMethodName(@PathVariable("lecId") long lecId, Principal principal) throws Exception {
+	public String startLearn(@PathVariable("lecId") long lecId, Principal principal) throws Exception {
 		SiteUser user = userService.getUserByEmail(principal.getName());
 		Lecture lecture = lectureService.getLectureWithStu(lecId);
 		lectureService.studentAdd(lecture, user);
 		userLecService.createUserLecture(user, lecture);
-		return "mypage/my_list";
+		return "redirect:/my/list";
 	}
 	
 	//강의 수정페이지 이동

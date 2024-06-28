@@ -8,9 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.UserLecture;
+import com.lms.sc.service.LectureService;
 import com.lms.sc.service.UserLectureService;
 import com.lms.sc.service.UserService;
 
@@ -22,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class UserLectureController {
 	private final UserLectureService userLectureService;
 	private final UserService userService;
+	private final LectureService lectureService;
 	
 	
 	@PreAuthorize("isAuthenticated()")
@@ -36,5 +41,14 @@ public class UserLectureController {
 		model.addAttribute("userLectureList", userLectureList);
 		
 		return "mypage/my_list";
+	}
+	
+	//강의 중복 확인
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("lecCheck")
+	@ResponseBody
+	public String lecChk(Principal principal, @RequestParam("lecId") Long lecId) throws Exception {
+		String user = principal.getName();
+		return userLectureService.checkLec(user, lecId);
 	}
 }

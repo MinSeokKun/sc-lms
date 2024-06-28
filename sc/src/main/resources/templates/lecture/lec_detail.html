@@ -8,7 +8,7 @@
 	    <!-- 강의 간략 설명 -->
 	    <div>
 	        <div id="title">
-	            <h5><span>BEST</span>카테고리 > 상세분류</h5>
+<!-- 	            <h5><span>BEST</span>카테고리 > 상세분류</h5> -->
 	            <h4 th:text="${lecture.title}"></h4>
 	        </div>
 	        <!-- 평점, 수강인원, 강사 -->
@@ -32,14 +32,13 @@
 	
 	        <div>
 	            <h3>커리큘럼</h3>
-	            <span>총 n개, m시간의 수업</span>
-	            <button>모두펼치기</button>
+	            <span th:text="|총 ${#lists.size(videoList)} 개의 수업|">총 n개, m시간의 수업</span>
+<!-- 	            <button>모두펼치기</button> -->
 	
 	            <ul>
-	                <li>
-	                    <span>n강</span>
-	                    <span>제목</span>
-	                    <span>2개의 영상 - 20분</span>
+	                <li th:each="video : ${videoList}">
+	                    <span th:text="${video.title}">제목</span>
+<!-- 	                    <span>2개의 영상 - 20분</span> -->
 	                </li>
 	            </ul>
 	        </div>
@@ -52,26 +51,26 @@
 	    </section>
 	
 	    <!-- 리뷰 -->
-	    <section>
+<!-- 	    <section> -->
 	
-	        <div>
-	            <span>VIEW</span>
-	            <input type="radio" name="recent" id="review"><span>최신순</span>
-	            <input type="radio" name="recent" id="review"><span>높은평점순</span>
-	            <input type="radio" name="recent" id="review"><span>낮은평점순</span>
-	            <div>
-	                <ul>
-	                    <li>
-	                        <span>수강생이름</span>
-	                        <span>점수</span>
-	                        <p>좋은 강의 감사요</p>
-	                        <span>등록 날짜</span>
-	                    </li>
-	                </ul>
-	            </div>
-	        </div>
+<!-- 	        <div> -->
+<!-- 	            <span>VIEW</span> -->
+<!-- 	            <input type="radio" name="recent" id="review"><span>최신순</span> -->
+<!-- 	            <input type="radio" name="recent" id="review"><span>높은평점순</span> -->
+<!-- 	            <input type="radio" name="recent" id="review"><span>낮은평점순</span> -->
+<!-- 	            <div> -->
+<!-- 	                <ul> -->
+<!-- 	                    <li> -->
+<!-- 	                        <span>수강생이름</span> -->
+<!-- 	                        <span>점수</span> -->
+<!-- 	                        <p>좋은 강의 감사요</p> -->
+<!-- 	                        <span>등록 날짜</span> -->
+<!-- 	                    </li> -->
+<!-- 	                </ul> -->
+<!-- 	            </div> -->
+<!-- 	        </div> -->
 	
-	    </section>
+<!-- 	    </section> -->
 	
 	</div>
 </th:block>

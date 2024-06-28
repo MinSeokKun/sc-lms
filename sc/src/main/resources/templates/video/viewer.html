@@ -9,7 +9,7 @@
 	    	<!-- 비디오 영상 -->
 			<div class="video">
 				<div id="player" class="url-link" th:data-url="${video.url}"></div>
-				
+				<div id="playerTime" th:data-time="${videoTime ?: 0}"></div>
 			</div>
 			<!-- 사이드바 -->
 			<div id="nav2">
@@ -41,18 +41,15 @@
 				        			<h2>노트</h2>
 				        			<button type="button">X</button>
 		        				</div>
-					        	<button>전체 노트 보기</button>
 					            <!-- 노트 리스트 창 열기 -->
 					            <ul id="notesContainer">
 					                <li th:each="note : ${noteList}">
-					                    <div>
-					                        <p th:text="${note.content}"></p>
-					                        <span th:text="${note.videoTime}"></span>
-					                    </div>
+				                        <span th:text="${note.content}"></span>
+				                        <span class="noteVideoTime" th:text="${note.videoTime}" data-time="${note.videoTime}"></span>
 					                </li>
 					            </ul>
 					        </div>
-					        <div>
+					        <div class="editor_wrap">
 				        		<div id="editor"></div>
 		                        <input id="videoId" hidden="hidden" th:value="${video.id}">
 		    					<button id="saveButton">저장</button>
@@ -87,6 +84,8 @@
 			const playerElement = document.getElementById('player');
 			const videoUrl = playerElement.dataset.url;
 			
+			const playerTimeElement = document.getElementById('playerTime');
+			const videoTime = playerElement.dataset.time;
 	        // YouTube IFrame API 준비 완료 시 호출되는 함수
 	        function onYouTubeIframeAPIReady() {
 				
@@ -96,16 +95,40 @@
 	                videoId: videoUrl, // 예제 비디오 ID
 	                playerVars: {
 	                    'autoplay': 1, // 자동재생 설정
-	                    'start': 60 // 영상 10초부터 시작
+	                    'start': videoTime // 영상 10초부터 시작
 	                }
 	            });
 	        }
 	        
 	        onYouTubeIframeAPIReady();
+	        
+     		// 전역 스코프에 player 변수를 저장
+			window.player = player;
 		};
 	</script>
 	<script layout:fragment="script" type="text/javascript">
+		// 초를 "분:초" 형식으로 변환하는 함수
+		function formatTime(seconds) {
+			const minutes = Math.floor(seconds / 60);
+			const remainingSeconds = seconds % 60;
+			return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+		}
 		$(document).ready(function() {
+
+		
+			// 노트의 시간을 변환하여 표시
+			$('#notesContainer .noteVideoTime').each(function() {
+				const videoTime = parseInt($(this).text(), 10);
+				$(this).text(formatTime(videoTime));
+				$(this).attr('data-time', videoTime);
+			});
+			
+			// 노트 클릭시 비디오 영상 시간으로 이동
+			$('#notesContainer li').click(function(e){
+				const videoTime = parseInt($(this).find('.noteVideoTime').attr('data-time'), 10);
+				window.player.seekTo(videoTime, true);
+			});
+			
 			// 강의 영상 사이드 메뉴
 			let tab_area = $('.tab_area > li');
 			let tabAbtn = $('.side_menu > div > button');
@@ -143,17 +166,19 @@
 	
 		        // 노트를 서버에 저장
 		        saveNoteToServer(videoId, content, videoTime, noteElement, editor);
+
+				editor.reset();
 		    });
 	
 		    // 노트 삭제 버튼 클릭 시
-		    $(document).on('click', '.delete-link', handleNoteDelete);
+// 		    $(document).on('click', '.delete-link', handleNoteDelete);
 		});
 	
 		// 새로운 노트 DOM 요소 생성 함수
 		function createNoteElement(content, videoTime) {
 		    return $('<li>').html(`
 		        <div>
-		            <p>${content}</p>
+		            <span>${content}</span>
 		            <span>${videoTime}</span>
 		        </div>
 		    `);
@@ -179,8 +204,10 @@
 	
 		// 노트 DOM 요소 업데이트 함수
 		function updateNoteElement(noteElement, note) {
-		    noteElement.find('p').text(note.content);
-		    noteElement.find('span').text(note.videoTime || ''); // 비디오 시간이 없을 경우 빈 문자열로 처리
+		    noteElement.find('span:first-child').text(note.content);
+		    noteElement.find('.noteVideoTime')
+				.text(formatTime(note.videoTime) || '')
+				.attr('data-time', note.videoTime); // 비디오 시간이 없을 경우 빈 문자열로 처리
 		    noteElement.attr('data-note-id', note.id);
 		    noteElement.find('.delete-link').attr('data-note-id', note.id);
 		}

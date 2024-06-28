@@ -61,7 +61,7 @@ public class LectureController {
 		SiteUser user = userService.getUserByEmail(principal.getName());
 		Lecture lecture = lectureService.getLectureWithStu(lecId);
 		lectureService.studentAdd(lecture, user);
-		return "redirect:/";
+		return "mypage/my_list";
 	}
 	
 	//강의 수정페이지 이동

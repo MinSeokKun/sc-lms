@@ -31,8 +31,7 @@
 		        		<tr th:each="lecture, loop : ${lecture}">
 		        			<td>[[${loop.index + 1}]]</td>
 		        			<td>[[${lecture.title}]]</td>
-		        			<td><button type="button">수강신청</button></td>
-                  <a th:href="@{|/lecture/startlearn/${lecture.id}|}">시작하기</a>
+		        			<td><a th:href="@{|/lecture/startlearn/${lecture.id}|}">수강신청</a></td>
 		        		</tr>
 		        	</tbody>
 		        </table>

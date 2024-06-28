@@ -30,7 +30,7 @@
 		        	<tbody>
 		        		<tr th:each="lecture, loop : ${lecture}">
 		        			<td>[[${loop.index + 1}]]</td>
-		        			<td>[[${lecture.title}]]</td>
+		        			<td><a th:href="@{|/lecture/detail/${lecture.id}|}">[[${lecture.title}]]</a></td>
 		        			<td><a th:href="@{|/lecture/startlearn/${lecture.id}|}">수강신청</a></td>
 		        		</tr>
 		        	</tbody>

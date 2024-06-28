@@ -13,8 +13,8 @@
 		</tr>
 		
 		<tr th:each="note : ${entry.value}">    
-		    <td th:text="${note.content}"></td>
-		    <td th:text="${note.videoTime}"></td>
+		    <td><a th:text="${note.content}" th:href="@{|/video/viewer/${note.video.id}#n=${note.id}|}"></a></td>
+		    <td><a th:text="${note.videoTime}"></a></td>
 	   </tr>
 	</table>
 

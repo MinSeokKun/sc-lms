@@ -36,7 +36,7 @@ public class VideoController {
 	
 	//비디오 하나
 	@GetMapping("/viewer/{vidId}")
-	public String getVideo(Model model, @PathVariable("vidId") long vidId, Principal principal) throws Exception {
+	public String getVideo(Model model, @PathVariable("vidId") long vidId, @RequestParam(value = "n", required = false) Long noteId, Principal principal) throws Exception {
 		if(principal == null) {
 			return "redirect:/user/login";
 		}
@@ -51,6 +51,10 @@ public class VideoController {
 		List<Note> noteList = noteService.getByVideo(vidId, user.getId());
 		model.addAttribute("noteList", noteList);
 		
+		if (noteId != null) {
+			Note note = noteService.getNote(vidId);
+			model.addAttribute("videoTime", note.getVideoTime());
+		}
 		List<Video> videoList = videoService.VideoList(lecture);
 		model.addAttribute("videoList", videoList);
 		

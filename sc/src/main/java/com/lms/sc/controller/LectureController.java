@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
+import com.lms.sc.entity.Video;
 import com.lms.sc.service.LectureService;
+import com.lms.sc.service.UserLectureService;
 import com.lms.sc.service.UserService;
+import com.lms.sc.service.VideoService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +28,9 @@ import lombok.RequiredArgsConstructor;
 public class LectureController {
 	
 	private final LectureService lectureService;
+	private final VideoService videoService;
 	private final UserService userService;
+	private final UserLectureService userLecService;
 	
 	//강의 리스트 이동
 	@PreAuthorize("isAuthenticated()")
@@ -35,6 +40,17 @@ public class LectureController {
 		model.addAttribute("lecture", lecture);
 		return "admin/lec_list";
 	}
+	
+	// 강의 상세페이지 이동
+	@GetMapping("/detail/{lecId}")
+	public String lecDetail(Model model, @PathVariable("lecId") long lecId) throws Exception {
+		Lecture lecture = lectureService.getLecture(lecId);
+		model.addAttribute("lecture", lecture);
+		List<Video> videoList = videoService.VideoList(lecture);
+		model.addAttribute("videoList", videoList);
+		return "lecture/lec_detail";
+	}
+	
 	
 	//강의 등록 이동
 	@PreAuthorize("isAuthenticated()")
@@ -61,6 +77,7 @@ public class LectureController {
 		SiteUser user = userService.getUserByEmail(principal.getName());
 		Lecture lecture = lectureService.getLectureWithStu(lecId);
 		lectureService.studentAdd(lecture, user);
+		userLecService.createUserLecture(user, lecture);
 		return "mypage/my_list";
 	}
 	

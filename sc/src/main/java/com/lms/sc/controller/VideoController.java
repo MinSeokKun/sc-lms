@@ -29,16 +29,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 public class VideoController {
-	private final VideoService VideoService;
+	private final VideoService videoService;
 	private final LectureService lectureService;
 	private final NoteService noteService;
 	private final UserService userService;
 	
 	@GetMapping("/viewer/{vidId}")
 	public String getVideo(Model model, @PathVariable("vidId") long vidId, 
-			@RequestParam(value = "tab", defaultValue = "none") String tab, Principal principal) throws Exception {
+			@RequestParam(value = "n", required = false) Long noteId, Principal principal) throws Exception {
 		
-		Video video = VideoService.getVideo(vidId);
+		Video video = videoService.getVideo(vidId);
 		Lecture lecture = lectureService.getLecture(video.getLecture().getId());
 		
 		model.addAttribute("video", video);
@@ -47,10 +47,13 @@ public class VideoController {
 		SiteUser user = userService.getUserByEmail(principal.getName());
 		List<Note> noteList = noteService.getByVideo(vidId, user.getId());
 		model.addAttribute("noteList", noteList);
-		if (tab.equals("note")) {
+		
+		if (noteId != null) {
+			Note note = noteService.getNote(vidId);
+			model.addAttribute("videoTime", note.getVideoTime());
 		}
 		
-		return "video/viewer";
+		return "video/viewer2";
 	}
 	
 	//강의 마다 영상 등록 페이지로 이동
@@ -69,7 +72,7 @@ public class VideoController {
 
 		//VideoService.regVideo(title, url, lec_id);
 		for (int i = 0; i < title.length; i++) {
-	        VideoService.regVideo(title[i], url[i], lec_id);
+	        videoService.regVideo(title[i], url[i], lec_id);
 	    }
 		
 		return String.format("redirect:/video/list/%s", lec_id);
@@ -80,7 +83,7 @@ public class VideoController {
 	@GetMapping("/list/{lec_id}")
 	public String videoList(Model model, @PathVariable("lec_id") long lec_id) throws Exception {
 		Lecture lecture = lectureService.getLecture(lec_id);		
-		List<Video> video = VideoService.VideoList(lecture);
+		List<Video> video = videoService.VideoList(lecture);
 		
 		model.addAttribute("video", video);
 		return "admin/video_list";

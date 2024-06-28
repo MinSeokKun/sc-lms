@@ -41,4 +41,5 @@ public class VideoService {
 		//Lecture lecture = lecRepo.findById(lecId).get();
 		return videoRepo.findAllByLecture(lecture);
 	}
+	
 }

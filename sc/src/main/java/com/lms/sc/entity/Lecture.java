@@ -37,7 +37,7 @@ public class Lecture {
 	private LocalDateTime createDate;
 	
 	@ManyToMany
-  @JoinTable(
+	@JoinTable(
         name = "lecture_student",
         joinColumns = @JoinColumn(name = "lecture_id"),
         inverseJoinColumns = @JoinColumn(name = "student_id")

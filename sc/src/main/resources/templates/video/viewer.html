@@ -4,112 +4,125 @@
     
     
 <th:block layout:fragment="content">
-
-	<div id="header2" style="display: flex;">
-	    <div>
-	        <button>강의 대시보드</button>
-	    </div>
-	    <div>
-	        <p>[[${video.title}]]</p>
-	    </div>
-	    <div>
-	        <button>학습알림</button>
-	    </div>
-	</div>
 	<div id="wrap">
-	    <div id="content" style="display: flex;">
-			<div>
-<!-- 				<iframe id="videoIframe" width="1280" height="720"  -->
-<!-- 					th:src="@{|https://www.youtube.com/embed/${video.url}|}"  -->
-<!-- 					th:title="${video.title}"  -->
-<!-- 					frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" -->
-<!-- 					referrerpolicy="strict-origin-when-cross-origin"  -->
-<!-- 					allowfullscreen> -->
-<!-- 				</iframe> -->
+	    <div id="content" class="videoViewer">
+	    	<!-- 비디오 영상 -->
+			<div class="video">
 				<div id="player" class="url-link" th:data-url="${video.url}"></div>
+				
 			</div>
+			<!-- 사이드바 -->
 			<div id="nav2">
-			    <div>
+				<ul class="tab_area" >
+					<li class="curriculum">
+		        		<div class="view_tit">
+		        			<h2>커리큘럼</h2>
+		        			<button type="button">X</button>
+        				</div>
+			        	<div class="lec_info">
+			        		<h4>[[${lecture.title}]]</h4>
+							<p>
+								진도율 : 
+							</p>			        		
+			        	</div>
+			        	<ul class="lec_list">
+			        		<li th:each="videoList : ${videoList}">
+			        			<a th:href="@{|/video/viewer/${videoList.id}|}">
+				        			<strong class="lec_tit">[[${videoList.title}]]</strong>
+				        			<span>강의 시간</span>
+			        			</a>
+			        		</li>
+			        	</ul>
+			        </li>
+			        <li style="display: none;">
+			        	<div class="note_area">
+							<div>
+								<div class="view_tit">
+				        			<h2>노트</h2>
+				        			<button type="button">X</button>
+		        				</div>
+					        	<button>전체 노트 보기</button>
+					            <!-- 노트 리스트 창 열기 -->
+					            <ul id="notesContainer">
+					                <li th:each="note : ${noteList}">
+					                    <div>
+					                        <p th:text="${note.content}"></p>
+					                        <span th:text="${note.videoTime}"></span>
+					                    </div>
+					                </li>
+					            </ul>
+					        </div>
+					        <div>
+				        		<div id="editor"></div>
+		                        <input id="videoId" hidden="hidden" th:value="${video.id}">
+		    					<button id="saveButton">저장</button>
+					        </div>
+						</div>
+			        </li>
+			        <li style="display: none">
+			        	<div class="view_tit">
+		        			<h2>커뮤니티</h2>
+		        			<button type="button">X</button>
+        				</div>
+			        </li>
+			    </ul>
+			    <div class="side_menu">
 			        <div>
 			        	<button>커리큘럼</button>
 			        </div>
 			        <div>
-			        	<button>커뮤니티</button>
-		        	</div>
-			        <div>
 			            <button id="noteLink">강의노트</button>
 			        </div>
-			    </div>
-			
-			    <div style="display: none;" class="tab">
 			        <div>
-			        	<button>전체 노트 보기</button>
-			            <!-- 노트 리스트 창 열기 -->
-			            <ul id="notesContainer">
-			                <li th:each="note : ${noteList}">
-			                    <div>
-			                        <p th:text="${note.content}"></p>
-			                        <span th:text="${note.videoTime}"></span>
-			                    </div>
-			                </li>
-			            </ul>
-			        </div>
-			        <div>
-		        		<div id="editor"></div>
-                        <input id="videoId" hidden="hidden" th:value="${video.id}">
-    					<button id="saveButton">저장</button>
-			        </div>
+			        	<button>커뮤니티</button>
+		        	</div>
 			    </div>
 			</div>
-
 	    </div>
 	</div>
+	<script>
+		window.onload = function(){
+			let player;
 	
-	<script layout:fragment="script" type="text/javascript">
-
-		let player;
-	
-		const playerElement = document.getElementById('player');
-		const videoUrl = playerElement.dataset.url;
-        // YouTube IFrame API 준비 완료 시 호출되는 함수
-        function onYouTubeIframeAPIReady() {
+			const playerElement = document.getElementById('player');
+			const videoUrl = playerElement.dataset.url;
 			
-            player = new YT.Player('player', {
-                height: '390',
-                width: '640',
-                videoId: videoUrl, // 예제 비디오 ID
-                playerVars: {
-                    'autoplay': 1, // 자동재생 설정
-                    'start': 60 // 영상 10초부터 시작
-                },
-                events: {
-                    'onReady': onPlayerReady
-                }
-            });
-        }
-        
-		// 플레이어 준비 완료 시 호출되는 함수
-		function onPlayerReady(event) {
-			console.log("Player is ready");
-		// 플레이어가 준비되었을 때 할 작업을 여기에 추가
-        }		
+	        // YouTube IFrame API 준비 완료 시 호출되는 함수
+	        function onYouTubeIframeAPIReady() {
+				
+	            player = new YT.Player('player', {
+	                height: '100%',
+	                width: '100%',
+	                videoId: videoUrl, // 예제 비디오 ID
+	                playerVars: {
+	                    'autoplay': 1, // 자동재생 설정
+	                    'start': 60 // 영상 10초부터 시작
+	                }
+	            });
+	        }
 	        
-
+	        onYouTubeIframeAPIReady();
+		};
+	</script>
+	<script layout:fragment="script" type="text/javascript">
 		$(document).ready(function() {
-		    const noteLink = $('#noteLink');
-		    const tab = $('.tab');
-	
-		    // 노트 클릭 시 노트 리스트와 등록 폼 열기        
-		    noteLink.click(function(e) {
-				console.log(videoUrl);
-		        e.preventDefault();
-		        tab.toggle();
-		    });
+			// 강의 영상 사이드 메뉴
+			let tab_area = $('.tab_area > li');
+			let tabAbtn = $('.side_menu > div > button');
+			
+			//tab_area.eq(0).show();
+			
+			tabAbtn.each(function (index, item) {
+				$(this).click(function () {					
+					tab_area.hide();
+					tab_area.eq(index).show();
+				});
+			});
 	
 		    // Toast UI Editor 초기화
 		    const editor = new toastui.Editor({
 		        el: document.querySelector('#editor'),
-		        height: '500px',
+		        height: 'calc(100% - 30px)',
 		        initialEditType: 'markdown',
 		        previewStyle: 'tab'
 		    });

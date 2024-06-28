@@ -34,9 +34,12 @@ public class VideoController {
 	private final NoteService noteService;
 	private final UserService userService;
 	
+	//비디오 하나
 	@GetMapping("/viewer/{vidId}")
-	public String getVideo(Model model, @PathVariable("vidId") long vidId, 
-			@RequestParam(value = "n", required = false) Long noteId, Principal principal) throws Exception {
+	public String getVideo(Model model, @PathVariable("vidId") long vidId, @RequestParam(value = "n", required = false) Long noteId, Principal principal) throws Exception {
+		if(principal == null) {
+			return "redirect:/user/login";
+		}
 		
 		Video video = videoService.getVideo(vidId);
 		Lecture lecture = lectureService.getLecture(video.getLecture().getId());
@@ -52,8 +55,10 @@ public class VideoController {
 			Note note = noteService.getNote(vidId);
 			model.addAttribute("videoTime", note.getVideoTime());
 		}
+		List<Video> videoList = videoService.VideoList(lecture);
+		model.addAttribute("videoList", videoList);
 		
-		return "video/viewer2";
+		return "video/viewer";
 	}
 	
 	//강의 마다 영상 등록 페이지로 이동
@@ -66,6 +71,7 @@ public class VideoController {
 		return "admin/video_form";
 	}
 	
+	//비디오 등록
 	@PostMapping("/addVideo/{lec_id}")
 	public String regVideo(@PathVariable("lec_id") long lec_id,
 							@RequestParam(name = "title[]") String[] title, @RequestParam(name = "url[]") String[] url) throws Exception {

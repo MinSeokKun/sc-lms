@@ -55,4 +55,12 @@ public class LectureService {
 		lecture.getStudents().add(student);
 		lecRepo.save(lecture);
 	}
+	
+	//강의 수정
+	public void modify(Lecture lecture, String title, String content) {
+		lecture.setTitle(title);
+		lecture.setContent(content);
+		
+		lecRepo.save(lecture);
+	}
 }

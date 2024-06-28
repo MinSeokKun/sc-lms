@@ -3,6 +3,7 @@ package com.lms.sc.controller;
 import java.security.Principal;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,8 +72,18 @@ public class VideoController {
 	        VideoService.regVideo(title[i], url[i], lec_id);
 	    }
 		
-		return "redirect:/lecture/list";
+		return String.format("redirect:/video/list/%s", lec_id);
 	}
 	
+	//등록된 영상 리스트
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/list/{lec_id}")
+	public String videoList(Model model, @PathVariable("lec_id") long lec_id) throws Exception {
+		Lecture lecture = lectureService.getLecture(lec_id);		
+		List<Video> video = VideoService.VideoList(lecture);
+		
+		model.addAttribute("video", video);
+		return "admin/video_list";
+	}
 	
 }

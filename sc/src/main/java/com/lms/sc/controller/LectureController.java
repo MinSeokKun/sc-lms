@@ -3,6 +3,7 @@ package com.lms.sc.controller;
 import java.security.Principal;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,15 +27,8 @@ public class LectureController {
 	private final LectureService lectureService;
 	private final UserService userService;
 	
-	//강의 정보 자세히 보기
-	@GetMapping("/list/{lec_id}")
-	public String getLecture(Model model, @PathVariable("lec_id") long lec_id) {
-		
-		
-		return "lecture/lectureDatail";
-	}
-	
 	//강의 리스트 이동
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
 	public String lecList(Model model) {
 		List<Lecture> lecture = lectureService.lecList();
@@ -43,12 +37,14 @@ public class LectureController {
 	}
 	
 	//강의 등록 이동
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/regist")
 	public String regLectureForm() {
 		return "admin/lec_register";
 	}
 	
 	//강의 등록
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/regist")
 	public String regLecture(@RequestParam(name = "title") String title, 
 			@RequestParam(name = "content") String content){
@@ -59,6 +55,7 @@ public class LectureController {
 	}
 	
 	// 강의 시작
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/startlearn/{lecId}")
 	public String getMethodName(@PathVariable("lecId") long lecId, Principal principal) throws Exception {
 		SiteUser user = userService.getUserByEmail(principal.getName());
@@ -67,6 +64,24 @@ public class LectureController {
 		return "mypage/my_list";
 	}
 	
+	//강의 수정페이지 이동
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/modify/{id}")
+	public String modify(Model model, @PathVariable("id") long id) throws Exception {
+		Lecture lecture = lectureService.getLecture(id);
+		
+		model.addAttribute("lecture", lecture);
+		return "admin/lec_modify";
+	}
 	
+	//강의 수정
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/modify/{id}")
+	public String modify(@PathVariable("id") long id, @RequestParam("title") String title, @RequestParam("content") String content) throws Exception {
+		Lecture lecture = lectureService.getLecture(id);
+		
+		lectureService.modify(lecture, title, content);
+		return "redirect:/lecture/list";
+	}
   
 }

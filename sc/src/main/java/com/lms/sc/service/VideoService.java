@@ -1,9 +1,11 @@
 package com.lms.sc.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.Video;
 import com.lms.sc.repository.LectureRepository;
 import com.lms.sc.repository.VideoRepository;
@@ -32,5 +34,11 @@ public class VideoService {
 		video.setTitle(title);
 		video.setUrl(url);
 		return videoRepo.save(video);
+	}
+	
+	//비디오 리스트
+	public List<Video> VideoList(Lecture lecture) {
+		//Lecture lecture = lecRepo.findById(lecId).get();
+		return videoRepo.findAllByLecture(lecture);
 	}
 }

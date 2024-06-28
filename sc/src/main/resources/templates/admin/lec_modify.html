@@ -1,0 +1,28 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout}">
+	<th:block layout:fragment="content">
+		<div id="content">
+			<section>
+				<div>
+					<div class="tit">
+						<h2>강의 수정</h2>
+					</div>
+				</div>
+		        <form method="post" th:action="@{|/lecture/modify/${lecture.id}|}">
+		            <div>
+		                <label for="title">강의 제목</label>
+		                <input type="text" id="title" name="title" th:value="${lecture.title}">
+		            </div>
+		            <div>
+		                <label for="content">강의 설명</label>
+		                <textarea id="content" name="content">[[${lecture.content}]]</textarea>
+		            </div>
+					<div>
+						<button type="submit">등록</button>
+					</div>
+				</form>
+			</section>
+		</div>
+	</th:block>
+</html>

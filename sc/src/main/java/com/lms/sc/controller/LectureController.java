@@ -47,6 +47,7 @@ public class LectureController {
 		Lecture lecture = lectureService.getLecture(lecId);
 		model.addAttribute("lecture", lecture);
 		List<Video> videoList = videoService.VideoList(lecture);
+		
 		model.addAttribute("videoList", videoList);
 		return "lecture/lec_detail";
 	}

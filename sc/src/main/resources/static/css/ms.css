@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+#notesContainer li {
+	cursor: pointer;
+	padding: 8px 12px;
+	display: flex;
+	justify-content: space-between;
+}
+
+#notesContainer {
+	height: 300px;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+
+.note_area .editor_wrap {
+	height: 350px;
+}

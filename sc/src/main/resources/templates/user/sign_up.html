@@ -1,41 +1,46 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
       layout:decorate="~{layout}">
-<th:block layout:fragment="content">
-	    <section id="sign">
-	        <h2>회원가입</h2>
-	        <form th:action="@{/user/signup}" method="post" id="joinForm">
-	            <div class="input_box">
-	                <input type="email" id="email" name="email" placeholder="이메일을 입력하세요.">
-	                <button type="button" onclick="idChk()">중복확인</button>
-	            </div>
-	            <div class="input_box">
-	                <input type="password" oninput="pwChk();" id="pwd" name="password1" placeholder="비밀번호를 입력하세요.">
-	            </div>
-	            <div class="input_box">
-	                <input type="password" oninput="pwChk();" id="pwd_check" name="password2" placeholder="비밀번호를 확인하세요.">
-					<p id="pwConfirm" style="display: none;"></p>
-	            </div>
-	            <div class="input_box" >
-	                <input type="text" name="name"id="name" placeholder="이름을 입력하세요.">
-	            </div>
-	            <div class="input_box">
-	                <input type="text" name="tellNumber" id="phone" placeholder="전화번호를 입력하세요.">
-	            </div>
-	           <!-- <div>
-	
-	                <label for="roll">
-	                    수강생
-	                    <input type="radio" name="roll">
-	                </label>
-	                <label for="roll">
-	                    강사
-	                    <input type="radio" name="roll">
-	                </label>
-	            </div>-->
-	            <button type="submit" id="joinBtn">회원가입</button>
-	        </form>
-	    </section>
+	<th:block layout:fragment="content">
+		<div class="wrapper">
+		    <section id="sign" class="container">
+		        <h2 class="title">회원가입</h2>
+		        <h4>전체 필수 입력 값입니다.</h4>
+		        <form th:action="@{/user/signup}" method="post" id="joinForm">
+		            <div class="input_box">
+		                <input type="email" id="email" name="email" placeholder="이메일">
+		                <button type="button" onclick="idChk()">중복확인</button>
+		            </div>
+		            <div class="input_box">
+		                <input type="password" oninput="pwChk();" id="pwd" name="password1" placeholder="비밀번호">
+		            </div>
+		            <div class="input_box">
+		                <input type="password" oninput="pwChk();" id="pwd_check" name="password2" placeholder="비밀번호 확인">
+						<p id="pwConfirm" style="display: none;"></p>
+						<p>비밀번호는 영문, 숫자, 특수기호를 포함되게 입력하세요.</p>
+		            </div>
+		            <div class="input_box" >
+		                <input type="text" name="name"id="name" placeholder="이름">
+		            </div>
+		            <div class="input_box">
+		                <input type="text" name="tellNumber" id="phone" placeholder="전화번호">
+		                <p>-를 빼고 입력해주세요.</p>
+		            </div>
+		           <!-- <div>
+		
+		                <label for="roll">
+		                    수강생
+		                    <input type="radio" name="roll">
+		                </label>
+		                <label for="roll">
+		                    강사
+		                    <input type="radio" name="roll">
+		                </label>
+		            </div>-->
+		            <button type="submit" id="joinBtn" class="button">회원가입</button>
+		        </form>
+		    </section>
+	    </div>
 		<script>
 			//아이디 중복 체크 ajax
 			function idChk(){

@@ -1,8 +1,11 @@
 package com.lms.sc.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
@@ -13,7 +16,11 @@ public interface UserLectureRepository extends JpaRepository<UserLecture, Long> 
 	
 	List<UserLecture> findByUserAndLecture(SiteUser user, Lecture lecture);
 	
+	List<UserLecture> findAllByUser(SiteUser user);
 //	@Query("SELECT ul.video FROM UserLecture ul WHERE ul.user = :user")
 //	List<Video> findVideosByUser(@Param("user") SiteUser user);
 	
+	@Query("SELECT ul FROM UserLecture ul WHERE ul.user.email = :userEmail AND ul.lecture.id = :lecId")
+    Optional<UserLecture> findByUserAndLecture(@Param("userEmail") String userEmail, @Param("lecId") long lecId);
+//	Optional<UserLecture> findByUserLecture(String userEmail, long lecId);
 }

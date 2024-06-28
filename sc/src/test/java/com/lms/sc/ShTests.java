@@ -33,6 +33,14 @@ class ShTests {
 	@Autowired
 	private LectureService ls;
 	
+//	@Test
+//	@Transactional
+	void startLearn() {
+		Lecture lec = lr.findById(1L).get();
+		SiteUser stu = ur.findById(1).get();
+//		ls.learnStart(lec, stu);
+	}
+	
 	@Test
 	void lectureTest() {
 		Lecture lec = new Lecture();

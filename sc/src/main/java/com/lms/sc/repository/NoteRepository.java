@@ -14,6 +14,10 @@ import com.lms.sc.entity.Video;
 
 public interface NoteRepository extends JpaRepository<Note, Long> {
 	List<Note> findByAuthor(SiteUser author);
+	List<Note> findByVideo(Video video);
+	
+	// 비디오로 노트를 삭제하는 것
+	void deleteAllByVideo(Video video);
 	
     @Query("SELECT DISTINCT v "
             + "FROM Note n "

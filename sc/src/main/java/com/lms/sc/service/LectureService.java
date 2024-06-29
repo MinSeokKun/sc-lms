@@ -9,7 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
+import com.lms.sc.entity.Video;
 import com.lms.sc.repository.LectureRepository;
+import com.lms.sc.repository.NoteRepository;
+import com.lms.sc.repository.UserLectureRepository;
+import com.lms.sc.repository.VideoRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +22,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LectureService {
 	private final LectureRepository lecRepo;
+	private final VideoRepository videoRepo;
+	private final NoteRepository noteRepo;
+	private final UserLectureRepository userLecRepo;
 	
 	//강의 아이디 가져오기
 	public Lecture getLecture(long id) throws Exception {
@@ -65,7 +72,13 @@ public class LectureService {
 	}
 	
 	// 강의 삭제
+	@Transactional
 	public void remove(Lecture lecture) {
+		List<Video> videoList = videoRepo.findAllByLecture(lecture);
+		videoList.forEach(video -> noteRepo.deleteAllByVideo(video));;
+		videoRepo.deleteAllByLecture(lecture);
+		userLecRepo.deleteAllByLecture(lecture);
+		// video 삭제와 마찬가지로 lecture도 lectureId를 외래키로 사용하는 video를 모두 삭제후 강의 삭제
 		lecRepo.delete(lecture);
 	}
 }

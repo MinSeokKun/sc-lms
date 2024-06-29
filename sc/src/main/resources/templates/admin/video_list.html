@@ -31,8 +31,12 @@
 							<td>[[${video.url}]]</td>
 							<td><a th:href="@{|/video/delete/${video.id}|}" class="btn remove">삭제</a></td>
 						</tr>
+						<tr>
+							<td><a class="btn register" th:href="@{|/video/addVideo/${lecture.id}|}">영상 등록</a></td>
+						</tr>
 	                </tbody>
 	            </table>
+	            
 	        </div>
 	    </section>
 	</th:block>

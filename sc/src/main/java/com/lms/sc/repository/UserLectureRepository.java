@@ -16,6 +16,8 @@ public interface UserLectureRepository extends JpaRepository<UserLecture, Long> 
 	
 	List<UserLecture> findByUserAndLecture(SiteUser user, Lecture lecture);
 	
+	void deleteAllByLecture(Lecture lecture);
+	
 	List<UserLecture> findAllByUser(SiteUser user);
 //	@Query("SELECT ul.video FROM UserLecture ul WHERE ul.user = :user")
 //	List<Video> findVideosByUser(@Param("user") SiteUser user);

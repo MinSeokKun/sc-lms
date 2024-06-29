@@ -9,7 +9,6 @@ import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.UserLecture;
 import com.lms.sc.repository.UserLectureRepository;
-import com.lms.sc.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class UserLectureService {
 //	private final LectureRepository lectureRepository;
 //	private final VideoRepository videoRepository;
-	private final UserRepository userRepository;
+//	private final UserRepository userRepository;
 	
 	private final UserLectureRepository userLectureRepository;
 	

@@ -26,13 +26,10 @@
 			                        <th style="width: 10%">삭제</th>
 			                    </tr>
 			                </thead>
-			                <tr th:each="userLecture, loop : ${userLectureList}">
+			                <tr th:each="video, loop : ${videoList}">
 			                	<td>[[${loop.index + 1}]]</td>
-						        <td>
-						        	<a th:href="@{|/video/study/list/${userLecture.lecture.id}|}" th:text="${userLecture.lecture.title}"></a>
-						        </td>
-						        <td th:text="${userLecture.progress} + '%'"></td>
-						        <td></td>
+						        <td><a th:href="@{|/video/viewer/${video.id}|}" th:text="${video.title}"></a></td>
+						        <td>진행률 그래프</td>
 						    </tr>
 			            </table>
 			        </div>

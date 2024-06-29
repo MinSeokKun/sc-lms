@@ -61,6 +61,21 @@ public class VideoController {
 		return "video/viewer";
 	}
 	
+	// 학습 목록에서 강의 클릭시 강의 영상 리스트화면 이동
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/study/list/{lecId}")
+	public String studyVideos(Principal principal, Model model, @PathVariable("lecId") long lecId) throws Exception {
+		if(principal == null) {
+			return "redirect:/user/login";
+		}
+		// SiteUser user = userService.getUserByEmail(principal.getName());
+		Lecture lecture = lectureService.getLecture(lecId);
+		List<Video> videoList = videoService.VideoList(lecture);
+		model.addAttribute("videoList", videoList);
+		return "mypage/my_lec_videos";
+	}
+	
+	
 	//강의 마다 영상 등록 페이지로 이동
 	@GetMapping("/addVideo/{id}")
 	public String addVideo(Model model, @PathVariable("id") long id) throws Exception {
@@ -90,9 +105,19 @@ public class VideoController {
 	public String videoList(Model model, @PathVariable("lec_id") long lec_id) throws Exception {
 		Lecture lecture = lectureService.getLecture(lec_id);		
 		List<Video> video = videoService.VideoList(lecture);
-		
+		model.addAttribute("lecture", lecture);
 		model.addAttribute("video", video);
 		return "admin/video_list";
 	}
+	
+	// 등록된 비디오 삭제
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/delete/{vid_id}")
+	public String deleteVideo(@PathVariable("vid_id") long vidId) throws Exception {
+		Video video = videoService.getVideo(vidId);
+		videoService.delVideo(video);
+		return "redirect:/video/list/" + video.getLecture().getId();
+	}
+	
 	
 }

@@ -1,6 +1,9 @@
-<include>헤더</include>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout}">
+<th:block layout:fragment="content">
 <div id="content">
-    <include><aside>사이드메뉴</aside></include>
+<!--     <include><aside>사이드메뉴</aside></include> -->
     <section>
         <!-- 타이틀 -->
         <div><h2>board</h2></div>
@@ -24,7 +27,7 @@
         <!-- 정렬 -->
         <div>
             <select name="" id="">
-                <option name="" value="최신순">최신순</option>
+                <option value="최신순">최신순</option>
                 <option value="정확도순">정확도순</option>
                 <option value="답변많은순">답변많은순</option>
                 <option value="좋아요순">좋아요순</option>
@@ -48,4 +51,5 @@
          </ul>
     </section>
 </div>
-<include>풋터</include>
+</th:block>
+</html>

@@ -16,3 +16,35 @@
 .note_area .editor_wrap {
 	height: 350px;
 }
+
+.dash_wrap {
+	display: flex;
+}
+
+.dash_wrap .dash_nav {
+	width: 450px;
+}
+
+.dash_wrap .dash_nav ul {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.dash_wrap .dash_nav ul li {
+	padding: 1rem;
+}
+
+.dash_wrap .dash {
+	width: calc(100% - 450px);
+}
+
+.dash_info_wrap {
+	display: flex;
+}
+
+.dash_info_wrap > div {
+	width: 50%;
+	border: 1px solid black;
+	margin: 10px;
+}

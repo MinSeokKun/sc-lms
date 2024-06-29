@@ -1,4 +1,7 @@
-<include>헤더</include>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout}">
+<th:block layout:fragment="content">
 <div id="content">
     <section>
         <div>
@@ -33,4 +36,5 @@
         </div>
     </section>
 </div>
-<include>풋터</include>
+</th:block>
+</html>

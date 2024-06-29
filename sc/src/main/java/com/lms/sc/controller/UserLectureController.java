@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.UserLecture;
-import com.lms.sc.service.LectureService;
 import com.lms.sc.service.UserLectureService;
 import com.lms.sc.service.UserService;
 
@@ -26,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class UserLectureController {
 	private final UserLectureService userLectureService;
 	private final UserService userService;
-	private final LectureService lectureService;
+//	private final LectureService lectureService;
 	
 	
 	@PreAuthorize("isAuthenticated()")
@@ -51,4 +49,18 @@ public class UserLectureController {
 		String user = principal.getName();
 		return userLectureService.checkLec(user, lecId);
 	}
+	
+	
+	// 대시보드
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("dashboard")
+	public String dashboard(Principal principal, Model model) {
+		if (principal == null) {
+			return "user/login";
+		}
+		
+		SiteUser user = userService.getUserByEmail(principal.getName());
+		return "mypage/dashboard";
+	}
+	
 }

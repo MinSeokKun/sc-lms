@@ -101,5 +101,15 @@ public class LectureController {
 		lectureService.modify(lecture, title, content);
 		return "redirect:/lecture/list";
 	}
+	
+	// 강의 삭제
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/remove/{id}")
+	public String removeLec(@PathVariable("id") long id) throws Exception {
+		Lecture lecture = lectureService.getLecture(id);
+		lectureService.remove(lecture);
+		return "redirect:/lecture/list";
+	}
+	
   
 }

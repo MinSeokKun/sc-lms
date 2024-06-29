@@ -38,13 +38,13 @@
 							<td>[[${lecture.createDate}]]</td>
 							<td><a class="btn register" th:href="@{|/video/addVideo/${lecture.id}|}">영상 등록</a></td>
 							<td><a th:href="@{|/lecture/modify/${lecture.id}|}" class="btn modify">수정</a></td>
-							<td><button type="button" class="btn remove">삭제</button></td>
+							<td><a th:href="@{|/lecture/remove/${lecture.id}|}" class="btn remove">삭제</a></td>
 						</tr>
 	                </tbody>
 	            </table>
 	        </div>
 	        <div>
-	            <button type="button" onclick="location.href='/lecture/regist'">등록</button>
+	            <button type="button" class="btn register" onclick="location.href='/lecture/regist'">등록</button>
 	        </div>
 	    </section>
 	</th:block>

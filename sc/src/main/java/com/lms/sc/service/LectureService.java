@@ -63,4 +63,9 @@ public class LectureService {
 		
 		lecRepo.save(lecture);
 	}
+	
+	// 강의 삭제
+	public void remove(Lecture lecture) {
+		lecRepo.delete(lecture);
+	}
 }

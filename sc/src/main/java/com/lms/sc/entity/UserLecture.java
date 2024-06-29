@@ -22,5 +22,5 @@ public class UserLecture {
 	@ManyToOne
 	private Lecture lecture;
 	
-	private int progress;
+	private double progress;
 }

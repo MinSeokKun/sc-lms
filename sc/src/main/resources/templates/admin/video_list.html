@@ -29,7 +29,7 @@
 								[[${video.title}]]
 							</td>
 							<td>[[${video.url}]]</td>
-							<td><button type="button" class="btn remove">삭제</button></td>
+							<td><a th:href="@{|/video/delete/${video.id}|}" class="btn remove">삭제</a></td>
 						</tr>
 	                </tbody>
 	            </table>

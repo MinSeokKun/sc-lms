@@ -48,3 +48,46 @@
 	border: 1px solid black;
 	margin: 10px;
 }
+
+
+/* 비디오 영상 부분 이전 다음 버튼 */
+.pre-next-btn {
+	display:flex;
+	justify-content: center;
+}
+
+.pre-btn,
+.next-btn {
+	margin: 0 10px;
+	padding: 10px 30px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

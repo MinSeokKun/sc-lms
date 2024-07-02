@@ -29,6 +29,32 @@ public class VideoService {
 			throw new Exception();
 	}
 	
+	// 다음 비디오 하나 가져오기
+	public Video getNextVideo(long videoId) {
+		Video video = videoRepo.findById(videoId).get();
+		Lecture lecture = video.getLecture();
+		List<Video> videos = videoRepo.findAllByLecture(lecture);
+		for (int i = 0; i < videos.size(); i++) {
+			if (videos.get(i).getId() == videoId) {
+				return i < videos.size() - 1 ? videos.get(i + 1) : null;
+			}
+		}
+		return null;
+	}
+	
+	// 이전 비디오 하나 가져오기
+	public Video getPreVideo(long videoId) {
+		Video video = videoRepo.findById(videoId).get();
+		Lecture lecture = video.getLecture();
+		List<Video> videos = videoRepo.findAllByLecture(lecture);
+		for (int i = 0; i < videos.size(); i++) {
+			if (videos.get(i).getId() == videoId) {
+				return i > 0 ? videos.get(i - 1) : null;
+			}
+		}
+		return null;
+	}
+	
 	//비디오 등록
 	public Video regVideo(String title, String url, long lecId) {
 		Video video = new Video();
@@ -46,7 +72,7 @@ public class VideoService {
 	
 	// 비디오 삭제
 	public void delVideo(Video video) {
-		noteRepo.deleteByVideo(video);
+		noteRepo.deleteAllByVideo(video);
 		// 그냥 삭제하면 videoId를 외래키로 사용하는 Note때문에 삭제가 안됨
 		// 따라서 List<Note>를 불러와 videoId를 사용하는 note를 전부 삭제후 video삭제
 		videoRepo.delete(video);

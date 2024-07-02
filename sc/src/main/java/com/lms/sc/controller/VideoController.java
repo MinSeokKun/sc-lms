@@ -36,7 +36,10 @@ public class VideoController {
 	
 	//비디오 하나
 	@GetMapping("/viewer/{vidId}")
-	public String getVideo(Model model, @PathVariable("vidId") long vidId, @RequestParam(value = "n", required = false) Long noteId, Principal principal) throws Exception {
+	public String getVideo(Model model, @PathVariable("vidId") long vidId,
+			@RequestParam(value = "n", required = false) Long noteId,
+			Principal principal) throws Exception {
+		
 		if(principal == null) {
 			return "redirect:/user/login";
 		}
@@ -51,14 +54,38 @@ public class VideoController {
 		List<Note> noteList = noteService.getByVideo(vidId, user.getId());
 		model.addAttribute("noteList", noteList);
 		
+		
 		if (noteId != null) {
-			Note note = noteService.getNote(vidId);
+			Note note = noteService.getNote(noteId);
 			model.addAttribute("videoTime", note.getVideoTime());
 		}
 		List<Video> videoList = videoService.VideoList(lecture);
 		model.addAttribute("videoList", videoList);
 		
 		return "video/viewer";
+	}
+	
+	// 다음 비디오
+	@GetMapping("viewer/{vidId}/next")
+	public String viewNextVideo(@PathVariable("vidId") long vidId) {
+		Video nextVideo = videoService.getNextVideo(vidId);
+		if (nextVideo != null) {
+			return "redirect:/video/viewer/" + nextVideo.getId();
+		}
+		// 다음 영상이 없을 경우 갈 페이지 수정해야함
+		// 지금은 현재 영상으로 다시 로드하게 되어있음
+		return "redirect:/video/viewer/" + vidId;
+	}
+	
+	// 이전 비디오
+	@GetMapping("viewer/{vidId}/pre")
+	public String viewPreVideo(@PathVariable("vidId") long vidId) {
+		Video preVideo = videoService.getPreVideo(vidId);
+		if (preVideo != null) {
+			return "redirect:/video/viewer/" + preVideo.getId();
+		}
+		// 이전 영상이 없을 경우 갈 페이지 수정해야함
+		return "redirect:/video/viewer/" + vidId;
 	}
 	
 	// 학습 목록에서 강의 클릭시 강의 영상 리스트화면 이동

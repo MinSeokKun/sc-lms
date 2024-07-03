@@ -3,6 +3,7 @@ package com.lms.sc.service;
 import java.time.Duration;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -14,7 +15,8 @@ import com.google.api.services.youtube.model.VideoListResponse;
 @Service
 public class YouTubeService {
 	
-	private final String apiKey = "AIzaSyBSYkKc0m6w3U8NKuSWlY-kiAERwzoUNOc";
+	@Value("${youtube.api.key}")
+	private String apiKey;
 	private final String APPLICATION_NAME = "SpringBoot-LMS-youtubeAPI";
 	
 	public int getVideoDuration(String videoId) {

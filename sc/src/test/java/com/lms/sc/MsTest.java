@@ -15,6 +15,7 @@ import com.lms.sc.repository.VideoRepository;
 import com.lms.sc.service.LectureService;
 import com.lms.sc.service.NoteService;
 import com.lms.sc.service.UserService;
+import com.lms.sc.service.VideoService;
 
 @SpringBootTest
 public class MsTest {
@@ -33,6 +34,14 @@ public class MsTest {
 	@Autowired
 	private LectureService ls;
 	
+	@Autowired
+	private VideoService vs;
+	
+	@Test
+	void youtubeApi() {
+		vs.regVideo("테스트 영상", "orIvkEDx-3Q", 9);
+	}
+	
 //	@Test
 	void startLearn(){
 		SiteUser user = us.getUserByEmail("minseok@test.com");
@@ -44,7 +53,7 @@ public class MsTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	void getUser() {
 		SiteUser user = us.getUserByEmail("minseok@test.com");
 		System.out.println(user.getEmail());

@@ -30,6 +30,10 @@ public class Video {
 	//LecVideo 테이블의 lecId 컬럼이 Lecture 테이블의 기본 키를 참조하는 외래 키라는 것을 의미
 	private Lecture lecture;
 	
+	// 영상길이 초단위
+	@Column
+	private Integer duration;
+	
 //	@ManyToOne
 //	private UserLecture userlecture;
 	

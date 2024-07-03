@@ -35,9 +35,14 @@ public class UserService {
 		return userRepository.findByName(username).get();
 	}
 	
-	// 유저 이메일 가져오기
+	// 유저 이메일로 가져오기
 	public SiteUser getUserByEmail(String email) {
 		return userRepository.findByEmail(email).get();
+	}
+	
+	// 유저 아이디로 가져오기
+	public SiteUser getUserById(long id) {
+		return userRepository.findById(id).get();
 	}
 	
 	// 유저 이메일 중복 확인

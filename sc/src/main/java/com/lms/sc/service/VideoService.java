@@ -9,6 +9,7 @@ import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.Video;
 import com.lms.sc.repository.LectureRepository;
 import com.lms.sc.repository.NoteRepository;
+import com.lms.sc.repository.UserVideoRepository;
 import com.lms.sc.repository.VideoRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class VideoService {
 	private final VideoRepository videoRepo;
 	private final NoteRepository noteRepo;
 	private final YouTubeService youtubeService;
+	private final UserVideoRepository userVidRepo;
 	
 	//비디오 하나 가져오기
 	public Video getVideo(long id) throws Exception {
@@ -28,6 +30,12 @@ public class VideoService {
 			return op.get();
 		else
 			throw new Exception();
+	}
+	
+	// 비디오 url로 비디오 하나 가져오기
+	public Video getVideoByUrl(String url) {
+		Optional<Video> op = videoRepo.findByUrl(url);
+		return op.get();
 	}
 	
 	// 다음 비디오 하나 가져오기
@@ -76,6 +84,7 @@ public class VideoService {
 	// 비디오 삭제
 	public void delVideo(Video video) {
 		noteRepo.deleteAllByVideo(video);
+		userVidRepo.deleteAllByVideo(video);
 		// 그냥 삭제하면 videoId를 외래키로 사용하는 Note때문에 삭제가 안됨
 		// 따라서 List<Note>를 불러와 videoId를 사용하는 note를 전부 삭제후 video삭제
 		videoRepo.delete(video);

@@ -53,7 +53,7 @@ public class VideoController {
 		SiteUser user = userService.getUserByEmail(principal.getName());
 		List<Note> noteList = noteService.getByVideo(vidId, user.getId());
 		model.addAttribute("noteList", noteList);
-		
+		model.addAttribute("user", user);
 		
 		if (noteId != null) {
 			Note note = noteService.getNote(noteId);
@@ -62,7 +62,7 @@ public class VideoController {
 		List<Video> videoList = videoService.VideoList(lecture);
 		model.addAttribute("videoList", videoList);
 		
-		return "video/viewer";
+		return "video/viewer3";
 	}
 	
 	// 다음 비디오

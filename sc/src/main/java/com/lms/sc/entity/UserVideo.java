@@ -31,4 +31,7 @@ public class UserVideo {
 
     @Column(nullable = false)
     private Instant watchedAt;
+    
+    @Column
+    private Integer watchingTime;
 }

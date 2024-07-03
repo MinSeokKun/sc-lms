@@ -19,6 +19,7 @@ public class VideoService {
 	private final LectureRepository lecRepo;
 	private final VideoRepository videoRepo;
 	private final NoteRepository noteRepo;
+	private final YouTubeService youtubeService;
 	
 	//비디오 하나 가져오기
 	public Video getVideo(long id) throws Exception {
@@ -58,9 +59,11 @@ public class VideoService {
 	//비디오 등록
 	public Video regVideo(String title, String url, long lecId) {
 		Video video = new Video();
+		int duration = youtubeService.getVideoDuration(url);
 		video.setLecture(lecRepo.findById(lecId).get());
 		video.setTitle(title);
 		video.setUrl(url);
+		video.setDuration(duration);
 		return videoRepo.save(video);
 	}
 	

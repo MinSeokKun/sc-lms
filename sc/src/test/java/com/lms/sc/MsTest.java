@@ -39,7 +39,7 @@ public class MsTest {
 	
 	@Test
 	void youtubeApi() {
-		vs.regVideo("테스트 영상", "orIvkEDx-3Q", 9);
+		vs.regVideo("비오는날 듣기좋은 노래 모음", "MEpoa_afo0U", 9);
 	}
 	
 //	@Test

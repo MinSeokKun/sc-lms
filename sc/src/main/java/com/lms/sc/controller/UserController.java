@@ -1,5 +1,10 @@
 package com.lms.sc.controller;
 
+import java.security.Principal;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lms.sc.createForm.UserCreateForm;
+import com.lms.sc.entity.SiteUser;
 import com.lms.sc.service.UserService;
 
 import jakarta.validation.Valid;
@@ -51,9 +57,21 @@ public class UserController {
 	//이메일 중복 체크
 	@PostMapping("/emailCheck")
 	@ResponseBody
-	public String CheckEamil(@RequestParam("email") String eamil) {
-		return userService.checkEmail(eamil);
+	public String CheckEamil(@RequestParam("email") String email) {
+		return userService.checkEmail(email);
 	}
+	
+//	@GetMapping("/getUser")
+//	public SiteUser getUser(Principal principal) {
+//		SiteUser user = userService.getUser(principal.getName());
+//		return user;
+//	}
+	
+	@GetMapping("/getUser")
+    public ResponseEntity<SiteUser> getCurrentUser(Principal principal) {
+        SiteUser user = userService.getUserByEmail(principal.getName());
+        return ResponseEntity.ok(user);
+    }
 	
 	
 }

@@ -81,4 +81,10 @@ public class LectureService {
 		// video 삭제와 마찬가지로 lecture도 lectureId를 외래키로 사용하는 video를 모두 삭제후 강의 삭제
 		lecRepo.delete(lecture);
 	}
+	
+	// 강의 중복신청 방지
+	public boolean isAlreadyRegistered(SiteUser user, Lecture lecture) {
+	    // user와 lecture 조합으로 UserLecture 엔티티를 검색하여 존재 여부 확인
+	    return userLecRepo.existsByUserAndLecture(user, lecture);
+	}
 }

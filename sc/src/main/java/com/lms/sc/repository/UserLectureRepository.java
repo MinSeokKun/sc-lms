@@ -25,4 +25,6 @@ public interface UserLectureRepository extends JpaRepository<UserLecture, Long> 
 	@Query("SELECT ul FROM UserLecture ul WHERE ul.user.email = :userEmail AND ul.lecture.id = :lecId")
     Optional<UserLecture> findByUserAndLecture(@Param("userEmail") String userEmail, @Param("lecId") long lecId);
 //	Optional<UserLecture> findByUserLecture(String userEmail, long lecId);
+	
+	boolean existsByUserAndLecture(SiteUser user, Lecture lecture);
 }

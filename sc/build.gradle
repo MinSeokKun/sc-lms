@@ -44,6 +44,9 @@ dependencies {
 	//implementation 'com.google.http-client:google-http-client-jackson2:1.39.2'
 	implementation 'com.google.apis:google-api-services-youtubeAnalytics:v2-rev16-1.23.0'
 	implementation 'com.google.apis:google-api-services-youtube:v3-rev20210915-1.32.1'
+	
+	// jackson datatype에서 instant 타입을 지원하기 위한 디펜던시	
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0'
 }
 
 tasks.named('test') {

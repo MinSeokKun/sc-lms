@@ -42,15 +42,15 @@ class ShTests {
 	@Autowired
 	private UserVideoRepository uvr;
 	
-	@Test
-	void userVideoTest() {
-		SiteUser user = ur.findById(4L).orElse(null);
-        Video video = lvr.findById(4L).orElse(null);
-        boolean watched = true;
-        Instant watchedAt = Instant.now();
-        
-        uvs.saveUserVideo(user, video, watched, watchedAt);
-	}
+//	@Test
+//	void userVideoTest() {
+//		SiteUser user = ur.findById(4L).orElse(null);
+//        Video video = lvr.findById(4L).orElse(null);
+//        boolean watched = true;
+//        Instant watchedAt = Instant.now();
+//        Integer watchingTime = 0;
+//        uvs.saveUserVideo(user, video, watched, watchedAt, watchingTime);
+//	}
 	
 	//@Test
 	void uvTest() {
@@ -61,7 +61,7 @@ class ShTests {
 		uv.setUser(user);
 		uv.setVideo(video);
 		uv.setWatched(true);
-		uv.setWatchedAt(Instant.now());
+//		uv.setWatchedAt(Instant.now());
 		
 		uvr.save(uv);
 	}

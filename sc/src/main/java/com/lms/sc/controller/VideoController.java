@@ -62,7 +62,7 @@ public class VideoController {
 		List<Video> videoList = videoService.VideoList(lecture);
 		model.addAttribute("videoList", videoList);
 		
-		return "video/viewer3";
+		return "video/viewer4";
 	}
 	
 	// 다음 비디오

@@ -13,4 +13,7 @@ public interface UserVideoRepository extends JpaRepository<UserVideo, Long> {
 	Optional<UserVideo> findByUserAndVideo(SiteUser user, Video video);
 	
 	long countByUserAndWatchedTrue(SiteUser user);
+	
+	void deleteAllByVideo(Video video);
+
 }

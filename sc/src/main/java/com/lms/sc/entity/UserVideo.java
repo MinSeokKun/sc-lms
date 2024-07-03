@@ -1,6 +1,6 @@
 package com.lms.sc.entity;
 
-import java.time.Instant;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,11 +26,11 @@ public class UserVideo {
     @ManyToOne(fetch = FetchType.LAZY)
     private Video video;
 
-    @Column(nullable = false)
+    @Column
     private boolean watched;
 
-    @Column(nullable = false)
-    private Instant watchedAt;
+    @Column
+    private Date watchedAt;
     
     @Column
     private Integer watchingTime;

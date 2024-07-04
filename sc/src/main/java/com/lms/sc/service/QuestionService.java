@@ -1,15 +1,20 @@
 package com.lms.sc.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lms.sc.entity.Question;
+import com.lms.sc.entity.SiteUser;
 import com.lms.sc.exception.DataNotFoundException;
 import com.lms.sc.repository.QuestionRepository;
 
@@ -18,19 +23,26 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class QuestionService {
-	private final QuestionRepository questionReqRepository;
+	private final QuestionRepository questionRepository;
 	
-	public Page<Question> getListPaging(int page){
-		Pageable pageable = PageRequest.of(page, 10);
-		return this.questionReqRepository.findAll(pageable);
+	@Transactional(readOnly = true)
+	public Page<Question> getList(int page){
+		List<Sort.Order> sorts = new ArrayList<>();
+		sorts.add(Sort.Order.desc("createDate"));
+		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+		Page<Question> questions = questionRepository.findAll(pageable);
+		   questions.forEach(question -> Hibernate.initialize(question.getAnswerList()));
+	        return questions;
 	}
 	
-	public List<Question> getList() {
-		return this.questionReqRepository.findAll();
-	}
-	
+	 public List<Question> getList() { 
+		 return
+		this.questionRepository.findAll(); 
+	 	}
+
+
 	public Question getQuestion(Integer id) {
-		Optional<Question> question = this.questionReqRepository.findById(id);
+		Optional<Question> question = this.questionRepository.findById(id);
 		if(question.isPresent()) {
 			return question.get();
 		}else {
@@ -38,11 +50,12 @@ public class QuestionService {
 		}
 	}
 	
-	public void create(String title, String content) {
+	public void create(String title, String content, SiteUser author) {
 		Question q = new Question();
 		q.setTitle(title);
 		q.setContent(content);
+		q.setAuthor(author);
 		q.setCreateDate(LocalDateTime.now());
-		this.questionReqRepository.save(q);
+		this.questionRepository.save(q);
 	}
 }

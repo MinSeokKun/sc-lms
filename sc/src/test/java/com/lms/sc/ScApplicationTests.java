@@ -90,7 +90,7 @@ class ScApplicationTests {
 		a2.setCreateDate(LocalDateTime.now());
 		this.AnswerRepository.save(a2);
 	}
-	@Test
+	//@Test
 	void test4() {
 		SiteUser u = new SiteUser();
 		String name="청력";
@@ -107,5 +107,13 @@ class ScApplicationTests {
 			q1.setContent("이이dfdfdfdf이이이이");
 			q1.setCreateDate(LocalDateTime.now());
 			this.questionRepository.save(q1);
+	}
+	@Test
+		void test6() {
+			for (int i = 1; i <= 300; i++) {
+				String subject = String.format("테스트 데이터:[%03d]", i);
+				String content = "내용 없음";
+				this.questionService.create(subject, content);
+			}
 	}
 }

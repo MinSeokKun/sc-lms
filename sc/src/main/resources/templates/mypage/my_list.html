@@ -3,41 +3,49 @@
       layout:decorate="~{layout}">
 	<th:block layout:fragment="content">
 		<div id="content">
-			<div class="wrapper">
-			    <section>
-			        <div>
-			            <div><h2>리스트 제목</h2></div>
-			            <!-- 검색영역 -->
-			            <div>
-			                <input type="text" placeholder="검색">
-			                <button type="button">검색</button>
-			            </div>
-			        </div>
-			        <div>
-			            <table class="tbl">
-			                <caption>리스트 테이블</caption>
-			                <thead>
-			                    <tr>
-			                        <th style="width: 10%">No</th>
-			                        <th style="width: 50%">제목</th>
-			                        <th style="width: 15%">등록일</th>
-			                        <th style="width: 15%">진행도</th>
-			                        <th style="width: 10%">삭제</th>
-			                    </tr>
-			                </thead>
-			                <tr th:each="userLecture, loop : ${userLectureList}">
-			                	<td>[[${loop.index + 1}]]</td>
-						        <td>
-						        	<a th:href="@{|/video/study/list/${userLecture.lecture.id}|}" th:text="${userLecture.lecture.title}"></a>
-						        </td>
-						        <td th:text="${#temporals.format(userLecture.regDate, 'yyyy-MM-dd')}"></td>
-						        <td></td>
-						        <td><a th:href="@{|/user/lec/delete/${userLecture.lecture.id}|}" class="btn">삭제</a></td>
-						    </tr>
-			            </table>
-			        </div>
-			        <div>
-			            <button type="button">등록</button>
+			<div>
+			    <section class="wrapper">
+			        <div class="mypage_wrap">
+	        			<div class="mypage_nav">
+							<ul>
+								<li><a href="/my/dashboard">대시보드</a></li>
+								<li><a href="/note/list">노트</a></li>
+								<li><a href="/my/question">질문</a></li>
+								<li><a class="active" href="/my/list">강의</a></li>
+							</ul>
+						</div>
+						
+						<div class="course-list">
+						
+					        <div>
+					            <div class="course-list-title"><h2>내 강의 목록</h2></div>
+					            <!-- 검색영역 -->
+					            <div>
+					                <input type="text" placeholder="검색">
+					                <button type="button">검색</button>
+					            </div>
+					        </div>
+							
+						    <div class="course-item" th:each="entry, loop : ${list.entrySet()}">
+						        <div class="course-title">
+						            <span class="course-number" th:text="${loop.index} + 1"></span>
+						            <a th:href="@{|/video/study/list/${entry.key.lecture.id}|}" th:text="${entry.key.lecture.title}"></a>
+						        </div>
+						        <div class="course-details">
+						            <div class="course-date" th:text="${#temporals.format(entry.key.regDate, 'yyyy-MM-dd')}"></div>
+						            <div class="course-videos" th:each="progress : ${entry.value.entrySet()}">
+						                <span th:text="${progress.key} + '강'"></span>
+						            </div>
+						            <div class="course-progress" th:each="progress : ${entry.value.entrySet()}">
+						                <div class="progress-bar">
+						                    <div class="progress-fill" th:style="'width:' + ${progress.value != null ? (progress.value * 100.0 / progress.key == 0 ? '0' : #numbers.formatDecimal((progress.value * 100.0 / progress.key), 0, 1)) : '0'} + '%'"></div>
+						                </div>
+						                <span class="progress-text" th:text="${progress.value != null ? (progress.value * 100.0 / progress.key == 0 ? '0' : #numbers.formatDecimal((progress.value * 100.0 / progress.key), 0, 1)) : '0'} + '%'"></span>
+						            </div>
+						            <a th:href="@{|/user/lec/delete/${entry.key.lecture.id}|}" class="delete-btn">삭제</a>
+						        </div>
+						    </div>
+						</div>
 			        </div>
 			    </section>
 		    </div>

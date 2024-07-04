@@ -3,23 +3,36 @@
       layout:decorate="~{layout}">
 <th:block layout:fragment="content">
 
-<table>
-	<thead>
-	    <tr>
-	        <th>강의 제목</th>
-	        <th>노트 수</th>
-	    </tr>
-	</thead>
-	<tbody>
-	    <tr th:each="entry : ${noteList.entrySet()}">
-	        <td>
-	        	<a th:href="@{|/note/list/${entry.key.id}|}">[[${entry.key.content}]]</a>
-	        </td>
-	        <td th:text="${entry.value}"></td>
-	    </tr>
-	</tbody>
-</table>
+<section class="wrapper">
+	<div class="mypage_wrap">
+		
+		<div class="mypage_nav">
+			<ul>
+				<li><a href="/my/dashboard">대시보드</a></li>
+				<li><a class="active" href="/note/list">노트</a></li>
+				<li><a href="/my/question">질문</a></li>
+				<li><a href="/my/list">강의</a></li>
+			</ul>
+		</div>
 
+		<table>
+			<thead>
+			    <tr>
+			        <th>강의 제목</th>
+			        <th>노트 수</th>
+			    </tr>
+			</thead>
+			<tbody>
+			    <tr th:each="entry : ${noteList.entrySet()}">
+			        <td>
+			        	<a th:href="@{|/note/list/${entry.key.id}|}">[[${entry.key.title}]]</a>
+			        </td>
+			        <td th:text="${entry.value}"></td>
+			    </tr>
+			</tbody>
+		</table>
+	</div>
+</section>
 
 </th:block>
 </html>

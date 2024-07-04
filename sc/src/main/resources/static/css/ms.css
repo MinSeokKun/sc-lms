@@ -17,25 +17,27 @@
 	height: 350px;
 }
 
-.dash_wrap {
+.mypage_wrap {
 	display: flex;
+    margin: 40px;
+
 }
 
-.dash_wrap .dash_nav {
+.mypage_wrap .mypage_nav {
 	width: 450px;
 }
 
-.dash_wrap .dash_nav ul {
+.mypage_wrap .mypage_nav ul {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-.dash_wrap .dash_nav ul li {
+.mypage_wrap .mypage_nav ul li {
 	padding: 1rem;
 }
 
-.dash_wrap .dash {
+.mypage_wrap .dash {
 	width: calc(100% - 450px);
 }
 
@@ -47,6 +49,16 @@
 	width: 50%;
 	border: 1px solid black;
 	margin: 10px;
+}
+
+.mypage_nav ul li a {
+    color: black;
+    text-decoration: none;
+}
+
+.mypage_nav ul li a.active {
+    color: #4CAF50;
+    font-weight: bold;
 }
 
 
@@ -63,29 +75,88 @@
 }
 
 
+/* 강의 리스트 css */
+.course-list {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.course-item {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.course-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.course-number {
+    background-color: #4CAF50;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.course-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.course-date, .course-videos, .course-progress {
+    margin-right: 15px;
+}
+
+.progress-bar {
+    width: 100px;
+    height: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #28a745;
+}
+
+.progress-text {
+    margin-left: 5px;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+@media (max-width: 600px) {
+    .course-details {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .course-date, .course-videos, .course-progress, .delete-btn {
+        margin-top: 5px;
+    }
+}
+
+.course-list-title {
+	margin: 10px;
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* 대시보드 */
 
 
 

@@ -10,6 +10,7 @@
 	    	<div style="display: none">
 	    		<input id="videoId" hidden="hidden" th:value="${video.id}">
 	    		<input id="userId" hidden="hidden" th:value="${user.id}">
+				<input id="watchingTime" hidden="hidden" th:value="${userVideo.watchingTime}">
 	    	</div>
 	    	<!-- 비디오 영상 -->
 			<div class="video">
@@ -36,10 +37,19 @@
 			        	</div>
 			        	<ul class="lec_list">
 			        		<li th:each="entry : ${list.entrySet()}">
-			        			<a th:href="@{|/video/viewer/${entry.key.id}|}">
+			        			<a th:href="@{|/video/viewer/${entry.key.id}|}" th:data-watching-time="${entry.value.watchingTime ?: 0}">
 				        			<strong class="lec_tit">[[${entry.key.title}]]</strong>
-				        			<span class="VideoTime" data-time="${entry.key.duration}">[[${entry.key.duration}]]</span>
-				        			<span>[[${entry.value.watchingTime}]]</span>
+				        			<span style="display: flex">
+					        			<span class="VideoTime" data-time="${entry.value.watchingTime}">[[${entry.value.watchingTime ?: 0}]]</span>
+					        			<span>/</span>
+					        			<span class="VideoTime" data-time="${entry.key.duration}">[[${entry.key.duration}]]</span>
+				        			</span>
+<!-- 				        			<span> -->
+<!-- 				        				진행율 : [[${entry.value.watchingTime != null ? #numbers.formatDecimal((entry.value.watchingTime * 100.0 / entry.key.duration), 0, 1) : '0'}]]% -->
+<!-- 				        			</span> -->
+				        			<span>
+									    진행율 : [[${entry.value.watchingTime != null ? (entry.value.watchingTime * 100.0 / entry.key.duration == 0 ? '0' : #numbers.formatDecimal((entry.value.watchingTime * 100.0 / entry.key.duration), 0, 1)) : '0'}]]%
+									</span>
 			        			</a>
 			        		</li>
 			        	</ul>
@@ -59,10 +69,10 @@
 					                </li>
 					            </ul>
 					        </div>
-					        <form class="editor_wrap" method="post" th:action="@{|/create/${video.Id}|}">
+					        <div class="editor_wrap">
 				        		<div id="editor"></div>
 		    					<button id="saveButton">저장</button>
-					        </form>
+					        </div>
 						</div>
 			        </li>
 			        <li style="display: none">
@@ -90,19 +100,24 @@
 		// 사용자 및 비디오 데이터를 전역 변수로 저장
         let userId = $('#userId').val();
         let videoId = $('#videoId').val();
-        
-        async function getUserData() {
-			try{
-				const response = await fetch('/user/getUser');
-				if(!response.ok){
-					throw new Error('Failed to fetch user data');
-				}
-				return await response.json();
-			} catch(error){
-				console.error('Error fetching user data:', error);
-				return null;
-			}        	
-        }
+        let savedWatchingTime = $('#watchingTime').val();
+
+		// let userId = [[${user.id}]];
+    	// let videoId = [[${video.id}]];
+    	// let savedWatchingTime = [[${savedWatchingTime}]];
+
+        // async function getUserData() {
+		// 	try{
+		// 		const response = await fetch('/user/getUser');
+		// 		if(!response.ok){
+		// 			throw new Error('Failed to fetch user data');
+		// 		}
+		// 		return await response.json();
+		// 	} catch(error){
+		// 		console.error('Error fetching user data:', error);
+		// 		return null;
+		// 	}        	
+        // }
         
 //         function getVideoDataFromHTML(){
 //         	const playerElement = document.getElementById('player');
@@ -114,65 +129,37 @@
 //             return { videoUrl, videoTime };
 //         }
         
-        async function initializeData() {
-            user = await getUserData();
-            video = getVideoDataFromHTML();
+        // async function initializeData() {
+        //     user = await getUserData();
+        //     video = getVideoDataFromHTML();
 
-            if (user) {
-                console.log('User data:', user);
-            } else {
-                console.error('Failed to fetch user data');
-            }
+        //     if (user) {
+        //         console.log('User data:', user);
+        //     } else {
+        //         console.error('Failed to fetch user data');
+        //     }
 
-            console.log('Video data:', video);
-        }
+        //     console.log('Video data:', video);
+        // }
         
-        function saveUserVideo() {
-     		const videoLength = player ? player.getDuration() : 0;
-			const watchingTime = player ? player.getCurrentTime() : 0;
-			const watchedPercentage = (watchingTime / videoLength) * 100;
-			
-			const videoData = {
-	      	    userId: userId,
-	      	    videoId: videoId,
-	      	    watched: watchedPercentage >= 70,
-	      	    watchedAt: new Date().toISOString(),
-	      	    watchingTime: watchingTime
-      	  	};
-			
-			
-			$.ajax({
-				type: "POST",
-				url: "/userVideo/save",
-				data: JSON.stringify(videoData),
-				contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                 success: function () {
-                     alert("User video saved successfully");
-                 },
-                 error: function () {
-                    alert("Error saving user video");
-                }
-			});
-		}
+        
         
         
 		window.onload = function(){
-			initializeData();
+			// initializeData();
 			
 			let player;
-			// 전역변수에서 중복되는 코드 --- S
-			const playerElement = document.getElementById('player');
-			const videoUrl = playerElement.dataset.url;
-			
-			const playerTimeElement = document.getElementById('playerTime');
-			const videoTime = playerTimeElement.dataset.time;
-			// 전역변수에서 중복되는 코드 --- E
+			let lastUpdateTime = 0;
 			
 	        // YouTube IFrame API 준비 완료 시 호출되는 함수
-	        function onYouTubeIframeAPIReady() {
+	        window.onYouTubeIframeAPIReady = function() {
+				const playerElement = document.getElementById('player');
+				const videoUrl = playerElement.dataset.url;
 				
-	            player = new YT.Player('player', {
+				const playerTimeElement = document.getElementById('playerTime');
+				const videoTime = parseInt(playerTimeElement.dataset.time, 10);
+				
+				player = new YT.Player('player', {
 	                height: '100%',
 	                width: '100%',
 	                videoId: videoUrl, // 예제 비디오 ID
@@ -186,26 +173,69 @@
 	            });
 	        }
 	        
-	        //끝나는 영상 받기
+	        //영상 데이터 저장하기
 			function onPlayerStateChange(event) {
 				if(event.data == YT.PlayerState.ENDED){
 					saveUserVideo();
+				}else if (event.data == YT.PlayerState.PLAYING) {
+					setInterval(updateWatchingTime, 5000); // 5초마다 시청 시간 업데이트
 				}
 			}
 			
-			initializeData().then(() => {
-                onYouTubeIframeAPIReady();
-            });
+			function updateWatchingTime() {
+				const currentTime = player.getCurrentTime();
+				if (currentTime - lastUpdateTime >= 5) { // 5초 이상 차이가 나면 업데이트
+					saveUserVideo();
+					lastUpdateTime = currentTime;
+				}
+			}
 
-            window.addEventListener('beforeunload', function(event) {
-                saveUserVideo();
-                event.returnValue = ''; // 일부 브라우저에서 확인 대화 상자를 트리거하려면 이 줄이 필요합니다
-            });
+			function saveUserVideo() {
+				const videoLength = player ? player.getDuration() : 0;
+				const watchingTime = player ? player.getCurrentTime() : 0;
+				const watchedPercentage = (watchingTime / videoLength) * 100;
+				
+				const videoData = {
+					userId: userId,
+					videoId: videoId,
+					watched: watchedPercentage >= 80,
+					watchedAt: new Date().toISOString(),
+					watchingTime: watchingTime
+				};
+				
+				
+				$.ajax({
+					type: "POST",
+					url: "/userVideo/save",
+					data: JSON.stringify(videoData),
+					contentType: "application/json; charset=utf-8",
+					dataType: "json",
+					success: function () {
+						// alert("User video saved successfully");
+					},
+					error: function () {
+						// alert("Error saving user video");
+					}
+				});
+			}
+
+			window.addEventListener('beforeunload', function(event) {
+				saveUserVideo();
+			});
+
+			// initializeData().then(() => {
+            //     onYouTubeIframeAPIReady();
+            // });
+
+            // window.addEventListener('beforeunload', function(event) {
+            //     saveUserVideo();
+            //     event.returnValue = ''; // 일부 브라우저에서 확인 대화 상자를 트리거하려면 이 줄이 필요합니다
+            // });
 			
 	        onYouTubeIframeAPIReady();
 	        
      		// 전역 스코프에 player 변수를 저장
-			window.player = player;
+			// window.player = player;
 		};
 	</script>
 	<script layout:fragment="script" type="text/javascript">
@@ -216,8 +246,20 @@
 			return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
 		}
 		$(document).ready(function() {
-
-		
+			
+			
+			// 커리큘럼 클릭 시 저장된 영상 시간으로 이동
+			$('.lec_list > li > a').click(function(e) {
+		        e.preventDefault(); // 기본 링크 동작 방지
+		        
+		        const videoId = $(this).attr('href').split('/').pop(); // URL에서 video ID 추출
+		        const savedWatchingTime = $(this).data('watching-time'); // 저장된 시청 시간 가져오기
+		        
+		        // 새로운 URL로 이동하면서 저장된 시청 시간 전달
+		        window.location.href = `/video/viewer/${videoId}?time=${savedWatchingTime}`;
+		    });
+			
+			
 			// 노트의 시간을 변환하여 표시
 			$('.VideoTime').each(function() {
 				const videoTime = parseInt($(this).text(), 10);
@@ -254,20 +296,20 @@
 	
 		    // 노트 저장 버튼 클릭 시
 		    $('#saveButton').on('click', function() {
-		        // const content = editor.getMarkdown();
-		        // const videoId = $('#videoId').val();
+		        const content = editor.getMarkdown();
+		        const videoId = $('#videoId').val();
 		        
-		        // const videoTime = player ? player.getCurrentTime() : 0;
-				// console.log(player);
-				// console.log(videoTime);
-				// console.log('1234');
+		        const videoTime = player ? player.getCurrentTime() : 0;
+				console.log(player);
+				console.log(videoTime);
+				console.log('1234');
 				
-		        // // 노트가 생성될 DOM 요소를 미리 준비
-		        // const noteElement = createNoteElement('저장 중...', '');
-		        // $('#notesContainer').append(noteElement);
+		        // 노트가 생성될 DOM 요소를 미리 준비
+		        const noteElement = createNoteElement('저장 중...', '');
+		        $('#notesContainer').append(noteElement);
 	
-		        // // 노트를 서버에 저장
-		        // saveNoteToServer(videoId, content, videoTime, noteElement, editor);
+		        // 노트를 서버에 저장
+		        saveNoteToServer(videoId, content, videoTime, noteElement, editor);
 
 				editor.reset();
 		    });

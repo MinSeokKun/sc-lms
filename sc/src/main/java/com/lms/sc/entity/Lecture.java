@@ -35,16 +35,16 @@ public class Lecture {
 	@CreatedDate
 	private LocalDateTime createDate;
 	
-	@ManyToMany
-	@JoinTable(
-	    name = "lecture_student",
-	    joinColumns = @JoinColumn(name = "lecture_id"),
-	    inverseJoinColumns = @JoinColumn(name = "student_id"),
-	    uniqueConstraints = @UniqueConstraint(columnNames = {"lecture_id", "student_id"})
-	)
-	private Set<SiteUser> students;
+//	@ManyToMany
+//	@JoinTable(
+//	    name = "lecture_student",
+//	    joinColumns = @JoinColumn(name = "lecture_id"),
+//	    inverseJoinColumns = @JoinColumn(name = "student_id"),
+//	    uniqueConstraints = @UniqueConstraint(columnNames = {"lecture_id", "student_id"})
+//	)
+//	private Set<SiteUser> students;
 	
 //	@ManyToMany
 //	Set<Review> lecReviewCnt;
-	
+	 
 }

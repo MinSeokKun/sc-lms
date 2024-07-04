@@ -3,18 +3,21 @@ package com.lms.sc.controller;
 import java.security.Principal;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lms.sc.createForm.UserCreateForm;
+import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
+import com.lms.sc.service.LectureService;
+import com.lms.sc.service.UserLectureService;
 import com.lms.sc.service.UserService;
 
 import jakarta.validation.Valid;
@@ -26,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	
 	private final UserService userService;
+	private final UserLectureService userLecService;
+	private final LectureService lecService;
 	
 	// 회원가입 이동
 	@GetMapping("/signup")
@@ -72,6 +77,17 @@ public class UserController {
         SiteUser user = userService.getUserByEmail(principal.getName());
         return ResponseEntity.ok(user);
     }
+	
+	// 강의 목록 삭제
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/lec/delete/{lecId}")
+	public String delLecture(Principal principal, @PathVariable("lecId") long lecId) throws Exception {
+		SiteUser user = userService.getUserByEmail(principal.getName());
+		Lecture lecture = lecService.getLecture(lecId);
+		lecService.lectureSave(lecture);
+		userLecService.deleteLec(user, lecture);
+		return "redirect:/my/list";
+	}
 	
 	
 }

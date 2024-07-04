@@ -5,7 +5,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.lms.sc.entity.Question;
+import com.lms.sc.entity.Video;
+
 
 public interface QuestionRepository extends JpaRepository<Question, Integer>{
 	Page<Question> findAll(Pageable pageable);
+	
+	void deleteAllByVideo(Video video);
 }

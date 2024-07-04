@@ -14,7 +14,7 @@ import com.lms.sc.entity.UserLecture;
 public interface UserLectureRepository extends JpaRepository<UserLecture, Long> {
 	List<UserLecture> findByUser(SiteUser user);
 	
-	List<UserLecture> findByUserAndLecture(SiteUser user, Lecture lecture);
+	Optional<UserLecture> findByUserAndLecture(SiteUser user, Lecture lecture);
 	
 	void deleteAllByLecture(Lecture lecture);
 	

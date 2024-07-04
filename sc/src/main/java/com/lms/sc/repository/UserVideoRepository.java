@@ -1,5 +1,6 @@
 package com.lms.sc.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,4 +17,7 @@ public interface UserVideoRepository extends JpaRepository<UserVideo, Long> {
 	
 	void deleteAllByVideo(Video video);
 
+	List<UserVideo> findByUserVideo(UserVideo userVideo);
+	
+//	UserVideo getUserVidoe(long userId, long vidId);
 }

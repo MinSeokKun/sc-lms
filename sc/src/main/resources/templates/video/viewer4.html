@@ -35,10 +35,11 @@
 							</p>			        		
 			        	</div>
 			        	<ul class="lec_list">
-			        		<li th:each="videoList : ${videoList}">
-			        			<a th:href="@{|/video/viewer/${videoList.id}|}">
-				        			<strong class="lec_tit">[[${videoList.title}]]</strong>
-				        			<span>강의 시간</span>
+			        		<li th:each="entry : ${list.entrySet()}">
+			        			<a th:href="@{|/video/viewer/${entry.key.id}|}">
+				        			<strong class="lec_tit">[[${entry.key.title}]]</strong>
+				        			<span class="VideoTime" data-time="${entry.key.duration}">[[${entry.key.duration}]]</span>
+				        			<span>[[${entry.value.watchingTime}]]</span>
 			        			</a>
 			        		</li>
 			        	</ul>
@@ -54,14 +55,14 @@
 					            <ul id="notesContainer">
 					                <li th:each="note : ${noteList}">
 				                        <span th:text="${note.content}"></span>
-				                        <span class="noteVideoTime" th:text="${note.videoTime}" data-time="${note.videoTime}"></span>
+				                        <span class="VideoTime" th:text="${note.videoTime}" data-time="${note.videoTime}"></span>
 					                </li>
 					            </ul>
 					        </div>
-					        <div class="editor_wrap">
+					        <form class="editor_wrap" method="post" th:action="@{|/create/${video.Id}|}">
 				        		<div id="editor"></div>
 		    					<button id="saveButton">저장</button>
-					        </div>
+					        </form>
 						</div>
 			        </li>
 			        <li style="display: none">
@@ -89,7 +90,7 @@
 		// 사용자 및 비디오 데이터를 전역 변수로 저장
         let userId = $('#userId').val();
         let videoId = $('#videoId').val();
-		
+        
         async function getUserData() {
 			try{
 				const response = await fetch('/user/getUser');
@@ -145,13 +146,13 @@
 				url: "/userVideo/save",
 				data: JSON.stringify(videoData),
 				contentType: "application/json; charset=utf-8",
-                dataType: "json"
-//                 success: function () {
-//                     alert("User video saved successfully");
-//                 },
-//                 error: function () {
-//                     alert("Error saving user video");
-//                 }
+                dataType: "json",
+                 success: function () {
+                     alert("User video saved successfully");
+                 },
+                 error: function () {
+                    alert("Error saving user video");
+                }
 			});
 		}
         
@@ -218,7 +219,7 @@
 
 		
 			// 노트의 시간을 변환하여 표시
-			$('#notesContainer .noteVideoTime').each(function() {
+			$('.VideoTime').each(function() {
 				const videoTime = parseInt($(this).text(), 10);
 				$(this).text(formatTime(videoTime));
 				$(this).attr('data-time', videoTime);
@@ -226,7 +227,7 @@
 			
 			// 노트 클릭시 비디오 영상 시간으로 이동
 			$('#notesContainer li').click(function(e){
-				const videoTime = parseInt($(this).find('.noteVideoTime').attr('data-time'), 10);
+				const videoTime = parseInt($(this).find('.VideoTime').attr('data-time'), 10);
 				window.player.seekTo(videoTime, true);
 			});
 			
@@ -253,20 +254,20 @@
 	
 		    // 노트 저장 버튼 클릭 시
 		    $('#saveButton').on('click', function() {
-		        const content = editor.getMarkdown();
-		        const videoId = $('#videoId').val();
+		        // const content = editor.getMarkdown();
+		        // const videoId = $('#videoId').val();
 		        
-		        const videoTime = player ? player.getCurrentTime() : 0;
-				console.log(player);
-				console.log(videoTime);
-				console.log('1234');
+		        // const videoTime = player ? player.getCurrentTime() : 0;
+				// console.log(player);
+				// console.log(videoTime);
+				// console.log('1234');
 				
-		        // 노트가 생성될 DOM 요소를 미리 준비
-		        const noteElement = createNoteElement('저장 중...', '');
-		        $('#notesContainer').append(noteElement);
+		        // // 노트가 생성될 DOM 요소를 미리 준비
+		        // const noteElement = createNoteElement('저장 중...', '');
+		        // $('#notesContainer').append(noteElement);
 	
-		        // 노트를 서버에 저장
-		        saveNoteToServer(videoId, content, videoTime, noteElement, editor);
+		        // // 노트를 서버에 저장
+		        // saveNoteToServer(videoId, content, videoTime, noteElement, editor);
 
 				editor.reset();
 		    });
@@ -306,7 +307,7 @@
 		// 노트 DOM 요소 업데이트 함수
 		function updateNoteElement(noteElement, note) {
 		    noteElement.find('span:first-child').text(note.content);
-		    noteElement.find('.noteVideoTime')
+		    noteElement.find('.VideoTime')
 				.text(formatTime(note.videoTime) || '')
 				.attr('data-time', note.videoTime); // 비디오 시간이 없을 경우 빈 문자열로 처리
 		    noteElement.attr('data-note-id', note.id);

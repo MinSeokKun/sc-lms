@@ -13,6 +13,7 @@ import com.lms.sc.entity.Video;
 import com.lms.sc.repository.LectureRepository;
 import com.lms.sc.repository.NoteRepository;
 import com.lms.sc.repository.UserLectureRepository;
+import com.lms.sc.repository.UserVideoRepository;
 import com.lms.sc.repository.VideoRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -25,6 +26,7 @@ public class LectureService {
 	private final VideoRepository videoRepo;
 	private final NoteRepository noteRepo;
 	private final UserLectureRepository userLecRepo;
+	private final UserVideoRepository userVidRepo;
 	
 	//강의 아이디 가져오기
 	public Lecture getLecture(long id) throws Exception {
@@ -75,9 +77,10 @@ public class LectureService {
 	@Transactional
 	public void remove(Lecture lecture) {
 		List<Video> videoList = videoRepo.findAllByLecture(lecture);
-		videoList.forEach(video -> noteRepo.deleteAllByVideo(video));;
-		videoRepo.deleteAllByLecture(lecture);
+		videoList.forEach(video -> noteRepo.deleteAllByVideo(video));
 		userLecRepo.deleteAllByLecture(lecture);
+//		videoList.forEach(video -> userVidRepo.deleteAllByVideo(video));
+		
 		// video 삭제와 마찬가지로 lecture도 lectureId를 외래키로 사용하는 video를 모두 삭제후 강의 삭제
 		lecRepo.delete(lecture);
 	}

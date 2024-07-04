@@ -1,5 +1,6 @@
 package com.lms.sc.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,7 @@ public class UserLectureService {
 		userLec.setUser(user);
 		userLec.setLecture(lecture);
 		userLec.setProgress(0);
+		userLec.setRegDate(LocalDateTime.now());
 		return userLectureRepository.save(userLec);
 	}
 	
@@ -42,5 +44,11 @@ public class UserLectureService {
 		Optional<UserLecture> userLecture = userLectureRepository.findByUserAndLecture(userEmail, lecId);
 		
 		return userLecture.isPresent() ? "false" : "true";
+	}
+	
+	// 강의 목록에서 듣고 있는 강의 삭제
+	public void deleteLec(SiteUser user, Lecture lecture) {
+		UserLecture userLec = userLectureRepository.findByUserAndLecture(user, lecture).get();
+		userLectureRepository.delete(userLec);
 	}
 }

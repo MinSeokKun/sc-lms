@@ -1,5 +1,7 @@
 package com.lms.sc.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +23,8 @@ public class UserLecture {
 	
 	@ManyToOne
 	private Lecture lecture;
+	
+	private LocalDateTime regDate;
 	
 	private double progress;
 }

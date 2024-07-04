@@ -76,14 +76,14 @@ public class LectureController {
 	@GetMapping("/startlearn/{lecId}")
 	public String startLearn(@PathVariable("lecId") long lecId, Principal principal) throws Exception {
 		SiteUser user = userService.getUserByEmail(principal.getName());
-		Lecture lecture = lectureService.getLectureWithStu(lecId);
+		Lecture lecture = lectureService.getLecture(lecId);
 		// 중복 신청 체크
 	    if (lectureService.isAlreadyRegistered(user, lecture)) {
 	        // 이미 신청한 경우 에러 메시지 반환 등의 처리
 	        return "redirect:/video/study/list/" + lecture.getId();
 	    }
 		
-		lectureService.studentAdd(lecture, user);
+//		lectureService.studentAdd(lecture, user);
 		userLecService.createUserLecture(user, lecture);
 		return "redirect:/my/list";
 	}

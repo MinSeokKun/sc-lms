@@ -2,8 +2,10 @@ package com.lms.sc.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,7 @@ import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.Video;
 import com.lms.sc.repository.LectureRepository;
 import com.lms.sc.repository.NoteRepository;
+import com.lms.sc.repository.QuestionRepository;
 import com.lms.sc.repository.UserLectureRepository;
 import com.lms.sc.repository.UserVideoRepository;
 import com.lms.sc.repository.VideoRepository;
@@ -27,14 +30,18 @@ public class LectureService {
 	private final NoteRepository noteRepo;
 	private final UserLectureRepository userLecRepo;
 	private final UserVideoRepository userVidRepo;
+	private final QuestionRepository questRepo;
 	
 	//강의 아이디 가져오기
+	@Transactional
 	public Lecture getLecture(long id) throws Exception {
 		Optional<Lecture> op = lecRepo.findById(id);
-		if (op.isPresent())
-			return op.get();
-		else
-			throw new Exception();
+	    if (op.isPresent()) {
+	        Lecture lecture = op.get();
+	        return lecture;
+	    } else {
+	        throw new NoSuchElementException("해당 ID의 강의를 찾을 수 없습니다.");
+	    }
 	}
 	
 	//강의 등록
@@ -52,18 +59,24 @@ public class LectureService {
 	}
 	
 	// 강의를 유저도 함께 가져오기
-	@Transactional(readOnly = true)
-	public Lecture getLectureWithStu(long id) {
-		return lecRepo.findByIdWithStudents(id).orElseThrow(() -> new EntityNotFoundException("강의가 없습니다."));
-		
-	}
+//	@Transactional(readOnly = true)
+//	public Lecture getLectureWithStu(long id) {
+//		return lecRepo.findByIdWithStudents(id).orElseThrow(() -> new EntityNotFoundException("강의가 없습니다."));
+//		
+//	}
 	
 	// 강의 시작
 	@Transactional
 	public void studentAdd(Lecture lecture, SiteUser student) {
-		lecture.getStudents().add(student);
+//		lecture.getStudents().add(student);
 		lecRepo.save(lecture);
 	}
+	
+	// 강의 유저 수정사항 저장
+	public void lectureSave(Lecture lecture) {
+		lecRepo.save(lecture);
+	}
+	
 	
 	//강의 수정
 	public void modify(Lecture lecture, String title, String content) {
@@ -77,10 +90,13 @@ public class LectureService {
 	@Transactional
 	public void remove(Lecture lecture) {
 		List<Video> videoList = videoRepo.findAllByLecture(lecture);
-		videoList.forEach(video -> noteRepo.deleteAllByVideo(video));
+		for (Video video : videoList) {
+			noteRepo.deleteAllByVideo(video);
+			userVidRepo.deleteAllByVideo(video);
+			questRepo.deleteAllByVideo(video);
+		}
+		videoRepo.deleteAllByLecture(lecture);
 		userLecRepo.deleteAllByLecture(lecture);
-//		videoList.forEach(video -> userVidRepo.deleteAllByVideo(video));
-		
 		// video 삭제와 마찬가지로 lecture도 lectureId를 외래키로 사용하는 video를 모두 삭제후 강의 삭제
 		lecRepo.delete(lecture);
 	}

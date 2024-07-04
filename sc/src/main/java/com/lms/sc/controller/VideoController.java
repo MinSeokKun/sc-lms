@@ -1,7 +1,7 @@
 package com.lms.sc.controller;
 
 import java.security.Principal;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +43,7 @@ public class VideoController {
 	@GetMapping("/viewer/{vidId}")
 	public String getVideo(Model model, @PathVariable("vidId") long vidId,
 			@RequestParam(value = "n", required = false) Long noteId,
+			@RequestParam(value = "time", required = false) Integer savedTime,
 			Principal principal) throws Exception {
 		
 		if(principal == null) {
@@ -60,22 +61,37 @@ public class VideoController {
 		model.addAttribute("noteList", noteList);
 		model.addAttribute("user", user);
 		
-		if (noteId != null) {
-			Note note = noteService.getNote(noteId);
-			model.addAttribute("videoTime", note.getVideoTime());
-		}
-		List<Video> videoList = videoService.VideoList(lecture);
-		model.addAttribute("videoList", videoList);
+		UserVideo userVideo = userVideoService.getUserVideoOrNew(user, video);
+		model.addAttribute("userVideo", userVideo);
 		
-		Map<Video, UserVideo> list = new HashMap<Video, UserVideo>();
+		//저장된 시청 시간을 모델에 추가
+//		model.addAttribute("savaWatchingTime", userVideo.getWatchingTime() != null ? userVideo.getWatchingTime() : 0);
+		
+//		if (noteId != null) {
+//			Note note = noteService.getNote(noteId);
+//			model.addAttribute("videoTime", note.getVideoTime());
+//		}
+		
+		if (savedTime != null) {
+	        model.addAttribute("videoTime", savedTime);
+	    } else if (noteId != null) {
+	        Note note = noteService.getNote(noteId);
+	        model.addAttribute("videoTime", note.getVideoTime());
+	    } else {
+	        model.addAttribute("videoTime", userVideo.getWatchingTime());
+	    }
+		
+		List<Video> videoList = videoService.VideoList(lecture);
+		
+		Map<Video, UserVideo> list = new LinkedHashMap<Video, UserVideo>();
 		for (Video vid : videoList) {
-			UserVideo userVideo = userVideoService.getUserVideoOrNew(user, vid);
-			list.put(video, userVideo);
+			UserVideo uv = userVideoService.getUserVideoOrNew(user, vid);
+			list.put(vid, uv);
 		}
 		
 		model.addAttribute("list", list);
-//		UserVideo userVid = userVideoService.getUserVideo(vidId, user.getId());
-//		model.addAttribute("userVid", userVid);
+		
+		
 		return "video/viewer4";
 	}
 	

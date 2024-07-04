@@ -26,7 +26,6 @@ public class UserVideoService {
 	public UserVideo getUserVideo(long vidId, long userId) {
 		SiteUser user = userRepository.findById(userId).get();
 		Video video = videoRepository.findById(vidId).get();
-//		UserVideo 
         return userVideoRepository.findByUserAndVideo(user, video).orElse(null);
     }
 	

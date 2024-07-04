@@ -127,14 +127,17 @@
         }
         
         function saveUserVideo() {
+     		const videoLength = player ? player.getDuration() : 0;
 			const watchingTime = player ? player.getCurrentTime() : 0;
+			const watchedPercentage = (watchingTime / videoLength) * 100;
+			
 			const videoData = {
-				userId: userId,
-				videoId: videoId,
-				watched: true,
-				watchedAt: new Date().toISOString(),
-				watchingTime: watchingTime
-			};
+	      	    userId: userId,
+	      	    videoId: videoId,
+	      	    watched: watchedPercentage >= 70,
+	      	    watchedAt: new Date().toISOString(),
+	      	    watchingTime: watchingTime
+      	  	};
 			
 			
 			$.ajax({

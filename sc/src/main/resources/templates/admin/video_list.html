@@ -19,6 +19,8 @@
 	                        <th>No</th>
 	                        <th>제목</th>
 	                        <th>소스코드</th>
+	                        <th>영상시간</th>
+	                        <th>삭제</th>
 	                    </tr>
 	                </thead>
 	                <tbody>
@@ -29,14 +31,14 @@
 								[[${video.title}]]
 							</td>
 							<td>[[${video.url}]]</td>
+							<td>[[${video.duration}]]</td>							
 							<td><a th:href="@{|/video/delete/${video.id}|}" class="btn remove">삭제</a></td>
-						</tr>
-						<tr>
-							<td><a class="btn register" th:href="@{|/video/addVideo/${lecture.id}|}">영상 등록</a></td>
 						</tr>
 	                </tbody>
 	            </table>
-	            
+	            <div>
+	            	<a class="btn register" th:href="@{|/video/addVideo/${lecture.id}|}">영상 등록</a>
+	            </div>
 	        </div>
 	    </section>
 	</th:block>

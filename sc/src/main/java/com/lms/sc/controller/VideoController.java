@@ -1,7 +1,9 @@
 package com.lms.sc.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.Note;
 import com.lms.sc.entity.SiteUser;
+import com.lms.sc.entity.UserVideo;
 import com.lms.sc.entity.Video;
 import com.lms.sc.service.LectureService;
 import com.lms.sc.service.NoteService;
 import com.lms.sc.service.UserService;
+import com.lms.sc.service.UserVideoService;
 import com.lms.sc.service.VideoService;
 
 import lombok.RequiredArgsConstructor;
@@ -33,6 +37,7 @@ public class VideoController {
 	private final LectureService lectureService;
 	private final NoteService noteService;
 	private final UserService userService;
+	private final UserVideoService userVideoService;
 	
 	//비디오 하나
 	@GetMapping("/viewer/{vidId}")
@@ -62,6 +67,15 @@ public class VideoController {
 		List<Video> videoList = videoService.VideoList(lecture);
 		model.addAttribute("videoList", videoList);
 		
+		Map<Video, UserVideo> list = new HashMap<Video, UserVideo>();
+		for (Video vid : videoList) {
+			UserVideo userVideo = userVideoService.getUserVideoOrNew(user, vid);
+			list.put(video, userVideo);
+		}
+		
+		model.addAttribute("list", list);
+//		UserVideo userVid = userVideoService.getUserVideo(vidId, user.getId());
+//		model.addAttribute("userVid", userVid);
 		return "video/viewer4";
 	}
 	

@@ -1,8 +1,12 @@
 package com.lms.sc.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +23,7 @@ import com.lms.sc.entity.Question;
 import com.lms.sc.exception.DataNotFoundException;
 import com.lms.sc.service.AnswerService;
 import com.lms.sc.service.QuestionService;
+import com.lms.sc.service.UserService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,13 +35,12 @@ public class QuestionController {
 
 	private final QuestionService questionService;
 	private final AnswerService answerService;
+	private final UserService userService;
 	
-	@GetMapping("/list")
-	public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
-		Page<Question> paging = this.questionService.getListPaging(page);
+	@GetMapping("/list") 
+	public String list(Model model, @RequestParam(value ="page", defaultValue = "0") int page) {
+		Page<Question> paging =	this.questionService.getList(page);
 		model.addAttribute("paging", paging);
-//		List<Question> questionList = this.questionService.getList();
-//		model.addAttribute("questionList", questionList);
 		return "question/question_list";
 	}
 
@@ -57,12 +61,13 @@ public class QuestionController {
 		return "question/question_form";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create") 
-	public String questionCreate(@Valid QuestionCreateForm questionCreateForm, BindingResult bindingResult) {
+	public String questionCreate(@Valid QuestionCreateForm questionCreateForm, BindingResult bindingResult, Principal principal) {
 		if (bindingResult.hasErrors()) {
 			return "question/question_form";
 		}
-		this.questionService.create(questionCreateForm.getTitle(), questionCreateForm.getContent());
+		this.questionService.create(questionCreateForm.getTitle(), questionCreateForm.getContent(), userService.getUserByEmail(principal.getName()));
 		return "redirect:/question/list"; //질문 저장 후 질문 목록으로 이동 }
 	}
 		

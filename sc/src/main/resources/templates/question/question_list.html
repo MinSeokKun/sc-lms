@@ -1,61 +1,63 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
       layout:decorate="~{layout}">
+      
 	<th:block layout:fragment="content">
-		<div>	
-			<!-- <div>
-				<div class="issue">
-					<h3>전체</h3>
-					<p class="issue-status">전체</p>
-					<p>Issue description goes here...</p>
-				  </div>
-				  <div class="issue">
-					<h3>미해결</h3>
-					<p class="issue-status">미해결</p>
-					<p>Issue description goes here...</p>
-				  </div>
-				  <div class="issue">
-					<h3>해결됨</h3>
-					<p class="issue-status">해결됨</p>
-					<p>Issue description goes here...</p>
-				  </div>
-	  		</div> 
-			<script>
-			  // 전체 미해결 해결됨 처리 함수
-			  function toggleIssueStatus(issueElement) {
-				const issueStatus = issueElement.querySelector('.issue-status');
-				if (issueStatus.textContent === '전체 미해결') {
-				  issueStatus.textContent = '해결됨';
-				  issueElement.classList.add('resolved');
-				} else {
-				  issueStatus.textContent = '전체 미해결';
-				  issueElement.classList.remove('resolved');
-				}
-			  }
-			  // 이슈 목록 요소에 대한 클릭 이벤트 리스너 등록
-			  const issueElements = document.querySelectorAll('.issue');
-			  issueElements.forEach(issueElement => {
-				issueElement.addEventListener('click', () => {
-				  toggleIssueStatus(issueElement);
-				});
-			  });
-			  </script>-->
-				
-			  
-  		<div>
-			<input type="text" placeholder="궁금한 질문 검색" name="ResearchQuestion" id="ResearchQuestion">
-			<button type="submit">검색</button>	
-  		</div>
-  		
-  		<div>
-			<a th:href="@{/question/create}" class="btn btn-primary">글쓰기</a>
-  		</div>
-  		<div>
-			<div th:each="question : ${paging}">
-				<a th:href="@{|/question/detail/${question.id}|}" th:text="${question.title}">제목</a>
-				<p th:text="${question.content}">내용</p>
-				<p th:text="${question.createDate}">생성일</p>
+	<div class="wrapper">
+	  	<section id="qustion" class="tbl2">
+	  		<div class="search">
+				<input type="text" placeholder="궁금한 질문 검색" name="ResearchQuestion" id="ResearchQuestion">
+				<button type="submit">검색</button>
 			</div>
-	  	</div>
+	  		
+	  		<div class="write">
+				<a th:href="@{/question/create}" class="write">글쓰기</a>
+	  		</div>
+	  		<div>
+				<table class="tbl">
+		        	<caption></caption>
+		        	<thead>
+		        		<tr>
+		        			<th style="width: 20%">제목</th>
+		        			<th style="width: 50%">내용</th>
+		        			<th style="width: 15%">작성자</th>
+		        			<th style="width: 15%">날짜</th>
+		        		</tr>
+		        	</thead>
+		        	<tbody>
+		        		<tr th:each="question, loop : ${paging}">
+		        			<td><a th:href="@{|/question/detail/${question.id}|}" th:text="${question.title}">제목</a></td>
+		        			<td>
+								<a th:href="@{|/question/detail/${question.id}|}" th:text="${question.content}" >내용</a>
+		        				<span class="text-danger small ms-2" th:if="${question.answerList != null and !#lists.isEmpty(question.answerList)}" th:text="${#lists.size(question.answerList)}"></span>
+
+		        			</td>
+		        			<td><a th:text="${question.author.name}"></a></td>
+			        		<td><a th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd')}">생성일</a></td>
+		        		</tr>
+		        	</tbody>
+		        </table>
+		  	</div>
+	  	</section>
+	  	<!--페이징-->
+	  	<div class="page" th:if="${!paging.isEmpty()}">
+			<ul class="pagination justify-content-center">
+				<li class="page_item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+					<a class="page-link" th:href="@{|?page=${paging.number-1}|}">
+						<span>이전</span>
+					</a>
+				</li>
+				<li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}" th:if="${page >= paging.number-5 and page <=paging.number+5}" th:classappend="${page == paging.number} ? 'active'"class="page-item">
+					<a th:text="${page+1}" class="page-link" th:href="@{|?page=${page}|}"></a>
+				</li>
+				</li>
+				<li class="page_item" th:classappend="${!paging.hasNext} ? 'disabled'">
+					<a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+						<span>다음</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>	
 	</th:block>
 </html>

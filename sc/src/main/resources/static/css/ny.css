@@ -94,11 +94,81 @@ input[type=submit]{
 	cursor: pointer;
 	}
 
-/* 버튼 호버 효과 */
-.button:hover {
-	background-color: #45a049;	
+
+/*페이징*/
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination li a {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    color: #333;
+    text-decoration: none;
+  }
+
+  .pagination li.active a {
+    background-color: #333;
+    color: #fff;
+  }
+
+/*게시판 리스트*/
+.search {
+	display: flex;
+	margin: 40px 15%;
+	}
+.search input[type="text"] {
+	padding: 15px;
+	border: 2px solid #ccc;
+	border-radius: 10px 0 0 10px;
+	flex-grow: 1;
 	}
 
+.search button {
+	padding: 10px 5%;
+	background-color: #00c853;
+	color: #fff;
+	border: none;
+	border-radius: 0 10px 10px 0;
+	cursor: pointer;
+	}
+
+.write { 
+	text-align: right;
+	margin: 20px; 
+	}
+.write a {
+	display: inline-block;
+	padding: 10px 5%;
+	background-color: #333;
+	color: #fff;
+	text-decoration: none;
+	border-radius: 5px;
+	}
+	
+.tbl2 {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0rem auto;
 }
 
+ /* 테이블 행 */
+.tbl2 th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
 
+.tbl2 th {
+  background-color: #1b1b1b;
+  color: #ddd;
+}

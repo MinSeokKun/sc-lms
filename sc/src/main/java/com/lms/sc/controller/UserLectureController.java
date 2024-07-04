@@ -1,7 +1,10 @@
 package com.lms.sc.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -13,8 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.UserLecture;
+import com.lms.sc.entity.UserVideo;
+import com.lms.sc.entity.Video;
 import com.lms.sc.service.UserLectureService;
 import com.lms.sc.service.UserService;
+import com.lms.sc.service.UserVideoService;
+import com.lms.sc.service.VideoService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,20 +32,41 @@ public class UserLectureController {
 	private final UserLectureService userLectureService;
 	private final UserService userService;
 //	private final LectureService lectureService;
-	
+	private final VideoService vidService;
+	private final UserVideoService userVidService;
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("list")
 	public String getMyList(Principal principal, Model model) throws Exception {
-		if (principal == null) {
-			return "user/login";
-		}
-		
-		SiteUser user = userService.getUserByEmail(principal.getName());
-		List<UserLecture> userLectureList = userLectureService.getMyList(user);
-		model.addAttribute("userLectureList", userLectureList);
-		
-		return "mypage/my_list";
+	    if (principal == null) {
+	        return "user/login";
+	    }
+	    
+	    SiteUser user = userService.getUserByEmail(principal.getName());
+	    List<UserLecture> userLectureList = userLectureService.getMyList(user);
+	    model.addAttribute("userLectureList", userLectureList);
+	    
+	    Map<UserLecture, Map<Integer, Integer>> list = new LinkedHashMap<>();
+	    
+	    for (UserLecture userLecture : userLectureList) {
+	        List<Video> videoList = vidService.VideoList(userLecture.getLecture());
+	        int watched = 0;
+	        
+	        for (Video video : videoList) {
+	            UserVideo userVideo = userVidService.getUserVideoOrNew(user, video);
+	            if (userVideo.isWatched())
+	                watched++;
+	        }
+	        
+	        Map<Integer, Integer> progress = new HashMap<Integer, Integer>();
+	        progress.put(videoList.size(), watched);
+	        
+	        list.put(userLecture, progress);
+	    }
+	    
+	    model.addAttribute("list", list);
+	    
+	    return "mypage/my_list";
 	}
 	
 	//강의 중복 확인
@@ -58,8 +86,8 @@ public class UserLectureController {
 		if (principal == null) {
 			return "user/login";
 		}
-		
 		SiteUser user = userService.getUserByEmail(principal.getName());
+		
 		return "mypage/dashboard";
 	}
 	

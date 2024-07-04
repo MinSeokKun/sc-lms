@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.UserLecture;
+import com.lms.sc.entity.Video;
 import com.lms.sc.repository.UserLectureRepository;
+import com.lms.sc.repository.UserVideoRepository;
+import com.lms.sc.repository.VideoRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +25,8 @@ public class UserLectureService {
 //	private final UserRepository userRepository;
 	
 	private final UserLectureRepository userLectureRepository;
+	private final UserVideoRepository userVidRepo;
+	private final VideoRepository vidRepo;
 	
 	// 나의 강의 리스트
 	public List<UserLecture> getMyList(SiteUser user){		
@@ -47,8 +53,14 @@ public class UserLectureService {
 	}
 	
 	// 강의 목록에서 듣고 있는 강의 삭제
+	@Transactional
 	public void deleteLec(SiteUser user, Lecture lecture) {
 		UserLecture userLec = userLectureRepository.findByUserAndLecture(user, lecture).get();
+		Lecture lec = userLec.getLecture();
+		List<Video> videoList = vidRepo.findAllByLecture(lec);
+		for (Video video : videoList) {
+			userVidRepo.deleteByVideoAndUser(video, user);
+		}
 		userLectureRepository.delete(userLec);
 	}
 }

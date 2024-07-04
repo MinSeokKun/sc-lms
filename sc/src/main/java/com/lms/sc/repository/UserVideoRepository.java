@@ -1,6 +1,5 @@
 package com.lms.sc.repository;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,8 +15,10 @@ public interface UserVideoRepository extends JpaRepository<UserVideo, Long> {
 	long countByUserAndWatchedTrue(SiteUser user);
 	
 	void deleteAllByVideo(Video video);
+	
+	void deleteByVideoAndUser(Video video, SiteUser user);
 
-	List<UserVideo> findByUserVideo(UserVideo userVideo);
+//	List<UserVideo> findByUserVideo(UserVideo userVideo);
 	
 //	UserVideo getUserVidoe(long userId, long vidId);
 }

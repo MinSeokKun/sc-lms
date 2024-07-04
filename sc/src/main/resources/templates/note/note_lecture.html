@@ -2,21 +2,37 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
       layout:decorate="~{layout}">
 <th:block layout:fragment="content">
-
-	<h2>강의 노트</h2>
-	
-	<table th:each="entry : ${noteList.entrySet()}">
-		<caption th:text="${entry.key.title}"></caption>
-		<tr>
-			<td>노트 내용</td>
-			<td>노트 시간</td>
-		</tr>
-		
-		<tr th:each="note : ${entry.value}">    
-		    <td><a th:text="${note.content}" th:href="@{|/video/viewer/${note.video.id}?n=${note.id}|}"></a></td>
-		    <td><a th:text="${note.videoTime}"></a></td>
-	   </tr>
-	</table>
-
+	<section class="wrapper">
+		<div class="mypage_wrap">
+			
+			<div class="mypage_nav">
+				<ul>
+					<li><a href="/my/dashboard">대시보드</a></li>
+					<li><a class="active" href="/note/list">노트</a></li>
+					<li><a href="/my/question">질문</a></li>
+					<li><a href="/my/list">강의</a></li>
+				</ul>
+			</div>
+			
+			<div class="note">
+			
+				<h2>강의 노트</h2>
+				
+				<table th:each="entry : ${noteList.entrySet()}">
+					<caption th:text="${entry.key.title}"></caption>
+					<tr>
+						<td>노트 내용</td>
+						<td>노트 시간</td>
+					</tr>
+					
+					<tr th:each="note : ${entry.value}">    
+					    <td><a th:text="${note.content}" th:href="@{|/video/viewer/${note.video.id}?n=${note.id}|}"></a></td>
+					    <td><a th:text="${note.videoTime}"></a></td>
+				   </tr>
+				</table>
+			</div>
+			
+		</div>
+	</section>
 </th:block>
 </html>

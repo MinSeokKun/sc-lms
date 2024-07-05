@@ -110,10 +110,11 @@ class ScApplicationTests {
 	}
 	@Test
 		void test6() {
-			for (int i = 1; i <= 300; i++) {
+			for (int i = 1; i <= 2; i++) {
 				String subject = String.format("테스트 데이터:[%03d]", i);
 				String content = "내용 없음";
-				this.questionService.create(subject, content);
+				SiteUser author = userservice.getUserByEmail("admin");
+				this.questionService.create(subject, content, author);
 			}
 	}
 }

@@ -33,7 +33,7 @@ a {
 	height: 100%;	
 	margin: 0 auto;
 }
-.logo img { width: 130px; }
+.logo img { width: 270px; }
 
 .gnb { display: flex; gap: 0 40px; }
 .gnb a { font-size: 20px; font-weight: 700; }

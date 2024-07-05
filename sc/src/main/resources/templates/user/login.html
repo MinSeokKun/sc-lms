@@ -2,25 +2,87 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
       layout:decorate="~{layout}">
 	<th:block layout:fragment="content">
-		<div class="login-container">
-			<h1>LMS 학습관리시스템</h1>
-			<p>로그인 또는 회원가입을 해주세요.</p>
-			<form th:action="@{/user/login}" method="post">
-			  	<input type="text" placeholder="이메일" name="username" id="username" required>
-			  	<input type="password" placeholder="비밀번호" name="password" id="password" required>
-			  	<button type="submit" class="login-btn">로그인</button>
-			</form>
-	    	<div class="signup-options">
-	      		<a class="signup-btn" th:href="@{|/user/signup|}">회원가입</a>
-	     		<div class="oauth-buttons">
-		       		 <button class="oauth-btn" id="kakao-login">
-		         		 <img src="kakao-icon.png" alt="Kakao Login">
-		        	</button>
-			        <button class="oauth-btn" id="google-login">
-			          <img src="google-icon.png" alt="Google Login">
-			        </button>
-	      		</div>
-	    	</div>
-  		</div>
+		<style>
+			.login-wrapper {
+			  display: flex;
+			  flex-direction: column;
+			  justify-content: center;
+			  align-items: center;
+			  height: 100vh;
+			  margin: 0;
+			  font-family: Arial, sans-serif;
+			}
+			
+			.login-container {
+			  width: 400px;
+/* 			  padding: 30px; */
+/* 			  background-color: #fff; */
+/* 			  border-radius: 5px; */
+/* 			  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+			}
+			
+			#username, #password {
+			  width: 100%;
+			  padding: 10px;
+			  margin-bottom: 20px;
+			  border: 1px solid #ccc;
+			  border-radius: 3px;
+			  font-size: 16px;
+			}
+			
+			.login-btn {
+			  width: 100%;
+			  padding: 10px;
+			  background-color: #007bff;
+			  color: #fff;
+			  border: none;
+			  border-radius: 3px;
+			  font-size: 16px;
+			  cursor: pointer;
+			}
+			
+			.login-btn:hover {
+			  background-color: #0056b3;
+			}
+			.signup-btn{ display: block; width: 100%; padding: 10px; margin-top: 16px; background: #F5F5F5; }
+			.oauth-btn {
+			  display: flex;
+			  justify-content: center;
+			  margin-top: 20px;
+			}
+			
+			.oauth-btn a {
+			  margin: 0 10px;
+			  color: #666;
+			  text-decoration: none;
+			}
+			
+			.oauth-btn a:hover {
+			  color: #333;
+			}
+						
+		</style>
+		<section class="login-wrapper">
+			<div class="login-container">
+				<h1>LMS 학습관리시스템</h1>
+				<p>로그인 또는 회원가입을 해주세요.</p>
+				<form th:action="@{/user/login}" method="post">
+				  	<input type="text" placeholder="이메일" name="username" id="username" required>
+				  	<input type="password" placeholder="비밀번호" name="password" id="password" required>
+				  	<button type="submit" class="login-btn">로그인</button>
+				</form>
+		    	<div class="signup-options">
+		      		<a class="signup-btn" th:href="@{|/user/signup|}">회원가입</a>
+		     		<div class="oauth-buttons">
+			       		 <button class="oauth-btn" id="kakao-login">
+			         		 <img src="kakao-icon.png" alt="Kakao Login">
+			        	</button>
+				        <button class="oauth-btn" id="google-login">
+				          <img src="google-icon.png" alt="Google Login">
+				        </button>
+		      		</div>
+		    	</div>
+	  		</div>
+  		</section>
 	</th:block>
 </html>

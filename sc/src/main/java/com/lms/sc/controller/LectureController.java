@@ -40,10 +40,6 @@ public class LectureController {
 		model.addAttribute("lecture", lecture);
 
 		return "admin/lec_list";
-//		if(principal.getName().equals("admin")) {
-//		}else {
-//			return "error/error";
-//		}
 	}
 	
 	//에러페이지 이동
@@ -127,6 +123,4 @@ public class LectureController {
 		lectureService.remove(lecture);
 		return "redirect:/lecture/list";
 	}
-	
-  
 }

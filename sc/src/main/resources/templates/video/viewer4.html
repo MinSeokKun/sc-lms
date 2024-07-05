@@ -50,7 +50,7 @@
 					        			<span class="VideoTime" data-time="${entry.key.duration}">[[${entry.key.duration}]]</span>
 				        			</span>
 				        			<span>
-									    진행율 : [[${entry.value.watchingTime != null ? (entry.value.watchingTime * 100.0 / entry.key.duration == 0 ? '0' : #numbers.formatDecimal((entry.value.watchingTime * 100.0 / entry.key.duration), 0, 1)) : '0'}]]%
+									    진행율 : [[${entry.value.watchingTime != null ? (entry.value.watchingTime * 100.0 / entry.key.duration >= 99 ? '100' : #numbers.formatDecimal((entry.value.watchingTime * 100.0 / entry.key.duration), 0, 1)) : '0'}]]%
 									</span>
 			        			</a>
 			        		</li>
@@ -105,29 +105,6 @@
         let savedWatchingTime = $('#watchingTime').val();
 
 		window.onload = function(){
-			
-			 // CSRF 토큰을 쿠키에서 가져오기
-	        function getCsrfTokenFromCookie() {
-	            const name = 'XSRF-TOKEN=';
-	            const decodedCookie = decodeURIComponent(document.cookie);
-	            const cookies = decodedCookie.split(';');
-	            for(let i = 0; i < cookies.length; i++) {
-	                let cookie = cookies[i].trim();
-	                if (cookie.indexOf(name) == 0) {
-	                    return cookie.substring(name.length, cookie.length);
-	                }
-	            }
-	            return "";
-	        }
-	
-	        // 모든 AJAX 요청에 CSRF 토큰을 포함시키기
-	        $.ajaxSetup({
-	            beforeSend: function(xhr, settings) {
-	                if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
-			            xhr.setRequestHeader("X-XSRF-TOKEN", getCsrfTokenFromCookie());
-			        }
-	            }
-	        });
 			
 			let player;
 			let lastUpdateTime = 0;
@@ -224,28 +201,7 @@
 	
 			$(document).ready(function() {
 		    
-		    // CSRF 토큰을 쿠키에서 가져오기
-	        function getCsrfTokenFromCookie() {
-	            const name = 'XSRF-TOKEN=';
-	            const decodedCookie = decodeURIComponent(document.cookie);
-	            const cookies = decodedCookie.split(';');
-	            for(let i = 0; i < cookies.length; i++) {
-	                let cookie = cookies[i].trim();
-	                if (cookie.indexOf(name) == 0) {
-	                    return cookie.substring(name.length, cookie.length);
-	                }
-	            }
-	            return "";
-	        }
-	
-	        // 모든 AJAX 요청에 CSRF 토큰을 포함시키기
-	        $.ajaxSetup({
-	            beforeSend: function(xhr, settings) {
-	                if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
-						xhr.setRequestHeader("X-XSRF-TOKEN", getCsrfTokenFromCookie());
-					}
-	            }
-	        });
+		   
 		    
 			// 커리큘럼 클릭 시 저장된 영상 시간으로 이동
 			$('.lec_list > li > a').click(function(e) {

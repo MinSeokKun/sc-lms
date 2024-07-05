@@ -3,11 +3,8 @@ package com.lms.sc.controller;
 import java.util.Date;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,13 +30,7 @@ public class UserVideoController {
 	
 	
 	@PostMapping("/save")
-	public ResponseEntity<?> saveUserVideo(@RequestBody Map<String, Object> data, HttpServletRequest request) {
-		// CSRF 토큰 검증 (옵션)
-        String csrfToken = request.getHeader("X-XSRF-TOKEN");
-        if (csrfToken == null || !csrfToken.equals(((CsrfToken) request.getAttribute("_csrf")).getToken())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Invalid CSRF token"));
-        }
-		
+	public ResponseEntity<Void> saveUserVideo(@RequestBody Map<String, Object> data) {
 		try {
 			
 			ObjectMapper objectMapper = new ObjectMapper();

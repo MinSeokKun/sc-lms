@@ -5,12 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -101,13 +98,7 @@ public class NoteController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create/{videoId}")
 	@ResponseBody
-	public ResponseEntity<?> createNote(@PathVariable("videoId") long videoId, @RequestBody Map<String, Object> payload, Principal principal, HttpServletRequest request) throws Exception {
-		// CSRF 토큰 검증 (옵션)
-        String csrfToken = request.getHeader("X-XSRF-TOKEN");
-        if (csrfToken == null || !csrfToken.equals(((CsrfToken) request.getAttribute("_csrf")).getToken())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid CSRF token");
-        }
-		
+	public ResponseEntity<?> createNote(@PathVariable("videoId") long videoId, @RequestBody Map<String, Object> payload, Principal principal) throws Exception {
 	    asyncService.executeAsyncTask();
 	    SiteUser author = userService.getUserByEmail(principal.getName());
 	    Video video = videoService.getVideo(videoId);

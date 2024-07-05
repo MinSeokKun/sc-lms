@@ -4,7 +4,7 @@
 			<img src="/images/newLogo.png">
 		</a>
 	    <nav class="gnb">
-	        <a th:href="@{||}">강의</a>
+	        <a th:href="@{|/|}">강의</a>
 	        <a th:href="@{|/question/list|}">질문 게시판</a>
 	        <a th:href="@{||}">공지사항</a>
 	    </nav>
@@ -14,7 +14,7 @@
 			</li>
 			<li sec:authorize="isAuthenticated()">
                 <a href="javascript:void(0)" class="my">
-                	<span>[[${#authentication.principal.username}]]</span><span>님</span>
+                	<span th:text="${user.name} + '님'"></span>
                 </a>
 				<div class="dropMenu" style="display: none;">
 					<ul>

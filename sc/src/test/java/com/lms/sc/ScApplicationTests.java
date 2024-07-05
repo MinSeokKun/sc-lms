@@ -108,7 +108,8 @@ class ScApplicationTests {
 			q1.setCreateDate(LocalDateTime.now());
 			this.questionRepository.save(q1);
 	}
-	@Test
+
+  @Test
 		void test6() {
 			for (int i = 1; i <= 2; i++) {
 				String subject = String.format("테스트 데이터:[%03d]", i);

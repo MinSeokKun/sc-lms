@@ -49,9 +49,6 @@
 					        			<span>/</span>
 					        			<span class="VideoTime" data-time="${entry.key.duration}">[[${entry.key.duration}]]</span>
 				        			</span>
-<!-- 				        			<span> -->
-<!-- 				        				진행율 : [[${entry.value.watchingTime != null ? #numbers.formatDecimal((entry.value.watchingTime * 100.0 / entry.key.duration), 0, 1) : '0'}]]% -->
-<!-- 				        			</span> -->
 				        			<span>
 									    진행율 : [[${entry.value.watchingTime != null ? (entry.value.watchingTime * 100.0 / entry.key.duration == 0 ? '0' : #numbers.formatDecimal((entry.value.watchingTime * 100.0 / entry.key.duration), 0, 1)) : '0'}]]%
 									</span>
@@ -107,49 +104,6 @@
         let videoId = $('#videoId').val();
         let savedWatchingTime = $('#watchingTime').val();
 
-		// let userId = [[${user.id}]];
-    	// let videoId = [[${video.id}]];
-    	// let savedWatchingTime = [[${savedWatchingTime}]];
-
-        // async function getUserData() {
-		// 	try{
-		// 		const response = await fetch('/user/getUser');
-		// 		if(!response.ok){
-		// 			throw new Error('Failed to fetch user data');
-		// 		}
-		// 		return await response.json();
-		// 	} catch(error){
-		// 		console.error('Error fetching user data:', error);
-		// 		return null;
-		// 	}        	
-        // }
-        
-//         function getVideoDataFromHTML(){
-//         	const playerElement = document.getElementById('player');
-// 			const videoUrl = playerElement.dataset.url;
-			
-// 			const playerTimeElement = document.getElementById('playerTime');
-//             const videoTime = parseInt(playerTimeElement.dataset.time, 10);
-
-//             return { videoUrl, videoTime };
-//         }
-        
-        // async function initializeData() {
-        //     user = await getUserData();
-        //     video = getVideoDataFromHTML();
-
-        //     if (user) {
-        //         console.log('User data:', user);
-        //     } else {
-        //         console.error('Failed to fetch user data');
-        //     }
-
-        //     console.log('Video data:', video);
-        // }
-        
-        
-        
-        
 		window.onload = function(){
 			// initializeData();
 			
@@ -227,30 +181,22 @@
 			window.addEventListener('beforeunload', function(event) {
 				saveUserVideo();
 			});
-
-			// initializeData().then(() => {
-            //     onYouTubeIframeAPIReady();
-            // });
-
-            // window.addEventListener('beforeunload', function(event) {
-            //     saveUserVideo();
-            //     event.returnValue = ''; // 일부 브라우저에서 확인 대화 상자를 트리거하려면 이 줄이 필요합니다
-            // });
 			
 	        onYouTubeIframeAPIReady();
 	        
      		// 전역 스코프에 player 변수를 저장
-			// window.player = player;
+			window.player = player;
 		};
 	</script>
 	<script layout:fragment="script" type="text/javascript">
-		// 초를 "분:초" 형식으로 변환하는 함수
-		function formatTime(seconds) {
-			const minutes = Math.floor(seconds / 60);
-			const remainingSeconds = seconds % 60;
-			return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-		}
-		$(document).ready(function() {
+			// 초를 "분:초" 형식으로 변환하는 함수
+			function formatTime(seconds) {
+				const minutes = Math.floor(seconds / 60);
+				const remainingSeconds = seconds % 60;
+				return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+			}
+	
+			$(document).ready(function() {
 			
 			
 			// 커리큘럼 클릭 시 저장된 영상 시간으로 이동
@@ -273,10 +219,20 @@
 			});
 			
 			// 노트 클릭시 비디오 영상 시간으로 이동
-			$('#notesContainer li').click(function(e){
-				const videoTime = parseInt($(this).find('.VideoTime').attr('data-time'), 10);
-				window.player.seekTo(videoTime, true);
-			});
+// 			$('#notesContainer li').click(function(e){
+// 				const videoTime = parseInt($(this).find('.VideoTime').attr('data-time'), 10);
+// 				window.player.seekTo(videoTime, true);
+// 			});
+			
+			// 노트 클릭 시 비디오 영상 시간으로 이동
+		    $(document).on('click', '#notesContainer li', function(e) {
+		        const videoTime = parseInt($(this).find('.VideoTime').attr('data-time'), 10);
+		        if (typeof player !== 'undefined' && player !== null && typeof player.seekTo === 'function') {
+		            player.seekTo(videoTime, true);
+		        } else {
+		            console.log('Player is not ready or seekTo is not available');
+		        }
+		    });
 			
 			// 강의 영상 사이드 메뉴
 			let tab_area = $('.tab_area > li');
@@ -299,24 +255,29 @@
 		        previewStyle: 'tab'
 		    });
 	
-		    // 노트 저장 버튼 클릭 시
-		    $('#saveButton').on('click', function() {
+		 	// 노트 저장 버튼 클릭 시
+		    $(document).on('click', '#saveButton', function() {
+		        console.log('Save button clicked');
 		        const content = editor.getMarkdown();
 		        const videoId = $('#videoId').val();
 		        
-		        const videoTime = player ? player.getCurrentTime() : 0;
-				console.log(player);
-				console.log(videoTime);
-				console.log('1234');
-				
+		        console.log('Content:', content);
+		        console.log('Video ID:', videoId);
+
+		        let videoTime = 0;
+		        if (typeof player !== 'undefined' && player !== null) {
+		            videoTime = player.getCurrentTime();
+		        }
+		        console.log('Video Time:', videoTime);
+
 		        // 노트가 생성될 DOM 요소를 미리 준비
 		        const noteElement = createNoteElement('저장 중...', '');
 		        $('#notesContainer').append(noteElement);
-	
+
 		        // 노트를 서버에 저장
 		        saveNoteToServer(videoId, content, videoTime, noteElement, editor);
 
-				editor.reset();
+		        editor.reset();
 		    });
 	
 		    // 노트 삭제 버튼 클릭 시
@@ -324,16 +285,41 @@
 		});
 	
 		// 새로운 노트 DOM 요소 생성 함수
-		function createNoteElement(content, videoTime) {
+// 		function createNoteElement(content, videoTime) {
+// 		    return $('<li>').html(`
+// 		        <div>
+// 		            <span>${content}</span>
+// 		            <span>${videoTime}</span>
+// 		        </div>
+// 		    `);
+// 		}
+		
+		// 수정된 코드
+		function createNoteElement(content, formattedTime) {
 		    return $('<li>').html(`
-		        <div>
-		            <span>${content}</span>
-		            <span>${videoTime}</span>
-		        </div>
+		        <span>${content}</span>
+		        <span class="VideoTime" data-time="${formattedTime}">${formattedTime}</span>
 		    `);
 		}
 	
 		// 서버에 노트 저장 함수
+// 		function saveNoteToServer(videoId, content, videoTime, noteElement, editor) {
+// 		    $.ajax({
+// 		        url: `/note/create/${videoId}`,
+// 		        method: 'POST',
+// 		        contentType: 'application/json',
+// 		        data: JSON.stringify({ content: content, videoTime: videoTime }),
+// 		        success: function(newNote) {
+// 		            updateNoteElement(noteElement, newNote);
+// 		            editor.setMarkdown(''); // 입력 필드 초기화
+// 		        },
+// 		        error: function(xhr, status, error) {
+// 		            noteElement.find('p').text('노트 작성 실패');
+// 		            console.error('노트 작성 실패:', error);
+// 		        }
+// 		    });
+// 		}
+		
 		function saveNoteToServer(videoId, content, videoTime, noteElement, editor) {
 		    $.ajax({
 		        url: `/note/create/${videoId}`,
@@ -345,23 +331,31 @@
 		            editor.setMarkdown(''); // 입력 필드 초기화
 		        },
 		        error: function(xhr, status, error) {
-		            noteElement.find('p').text('노트 작성 실패');
+		            noteElement.find('span:first').text('노트 작성 실패');
 		            console.error('노트 작성 실패:', error);
 		        }
 		    });
 		}
 	
 		// 노트 DOM 요소 업데이트 함수
+// 		function updateNoteElement(noteElement, note) {
+// 		    noteElement.find('span:first-child').text(note.content);
+// 		    noteElement.find('.VideoTime')
+// 				.text(formatTime(note.videoTime) || '')
+// 				.attr('data-time', note.videoTime); // 비디오 시간이 없을 경우 빈 문자열로 처리
+// 		    noteElement.attr('data-note-id', note.id);
+// 		    noteElement.find('.delete-link').attr('data-note-id', note.id);
+// 		}
+	
 		function updateNoteElement(noteElement, note) {
-		    noteElement.find('span:first-child').text(note.content);
+		    noteElement.find('span:first').text(note.content);
+		    const formattedTime = formatTime(note.videoTime);
 		    noteElement.find('.VideoTime')
-				.text(formatTime(note.videoTime) || '')
-				.attr('data-time', note.videoTime); // 비디오 시간이 없을 경우 빈 문자열로 처리
+		        .text(formattedTime)
+		        .attr('data-time', note.videoTime);
 		    noteElement.attr('data-note-id', note.id);
-		    noteElement.find('.delete-link').attr('data-note-id', note.id);
 		}
-	
-	
+		
 		// 기존 노트를 DOM에 추가하는 함수
 		function addNoteToDOM(note) {
 		    const noteElement = createNoteElement(note.content, note.videoTime);

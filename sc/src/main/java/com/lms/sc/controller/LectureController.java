@@ -35,10 +35,21 @@ public class LectureController {
 	//강의 리스트 이동
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
-	public String lecList(Model model) {
+	public String lecList(Model model, Principal principal) {
 		List<Lecture> lecture = lectureService.lecList();
 		model.addAttribute("lecture", lecture);
+
 		return "admin/lec_list";
+//		if(principal.getName().equals("admin")) {
+//		}else {
+//			return "error/error";
+//		}
+	}
+	
+	//에러페이지 이동
+	@GetMapping("/error")
+	public String showErrorPage() {
+	    return "error/error";
 	}
 	
 	// 강의 상세페이지 이동

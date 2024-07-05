@@ -32,7 +32,12 @@
 			        	<div class="lec_info">
 			        		<h4>[[${lecture.title}]]</h4>
 							<p>
-								진도율 : 
+<!-- 								<div class="course-progress" th:each="progress : ${entry.value.entrySet()}"> -->
+<!-- 					                <div class="progress-bar"> -->
+<!-- 					                    <div class="progress-fill" th:style="'width:' + ${progress.value != null ? (progress.value * 100.0 / progress.key == 0 ? '0' : #numbers.formatDecimal((progress.value * 100.0 / progress.key), 0, 1)) : '0'} + '%'"></div> -->
+<!-- 					                </div> -->
+<!-- 					                <span class="progress-text" th:text="${progress.value != null ? (progress.value * 100.0 / progress.key == 0 ? '0' : #numbers.formatDecimal((progress.value * 100.0 / progress.key), 0, 1)) : '0'} + '%'"></span> -->
+<!-- 					            </div> -->
 							</p>			        		
 			        	</div>
 			        	<ul class="lec_list">

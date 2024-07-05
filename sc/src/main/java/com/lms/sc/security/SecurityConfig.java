@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -17,14 +19,16 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-			.csrf(csrf -> csrf.disable())
+			.csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
 			.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-				.requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")
+				.requestMatchers(new AntPathRequestMatcher("/lecture/list")).hasRole("ADMIN")
 				.requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
 				.formLogin((formLogin) -> formLogin.loginPage("/user/login")
 						.defaultSuccessUrl("/"))
 				.logout((logout) -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
 						.logoutSuccessUrl("/").invalidateHttpSession(true))
+				.exceptionHandling(exceptionHandling -> exceptionHandling
+		                .accessDeniedHandler(accessDeniedHandler()))
 			;
 			
 		return http.build();
@@ -39,5 +43,10 @@ public class SecurityConfig {
 	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
+	
+	 @Bean
+    AccessDeniedHandler accessDeniedHandler() {
+        return (request, response, accessDeniedException) -> response.sendRedirect("/lecture/error");
+    }
 	
 }

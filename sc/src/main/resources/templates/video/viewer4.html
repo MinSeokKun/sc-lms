@@ -105,7 +105,29 @@
         let savedWatchingTime = $('#watchingTime').val();
 
 		window.onload = function(){
-			// initializeData();
+			
+			 // CSRF 토큰을 쿠키에서 가져오기
+	        function getCsrfTokenFromCookie() {
+	            const name = 'XSRF-TOKEN=';
+	            const decodedCookie = decodeURIComponent(document.cookie);
+	            const cookies = decodedCookie.split(';');
+	            for(let i = 0; i < cookies.length; i++) {
+	                let cookie = cookies[i].trim();
+	                if (cookie.indexOf(name) == 0) {
+	                    return cookie.substring(name.length, cookie.length);
+	                }
+	            }
+	            return "";
+	        }
+	
+	        // 모든 AJAX 요청에 CSRF 토큰을 포함시키기
+	        $.ajaxSetup({
+	            beforeSend: function(xhr, settings) {
+	                if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+			            xhr.setRequestHeader("X-XSRF-TOKEN", getCsrfTokenFromCookie());
+			        }
+	            }
+	        });
 			
 			let player;
 			let lastUpdateTime = 0;
@@ -169,11 +191,15 @@
 					data: JSON.stringify(videoData),
 					contentType: "application/json; charset=utf-8",
 					dataType: "json",
-					success: function () {
-						// alert("User video saved successfully");
+					success: function (response) {
+						//alert("User video saved successfully");
+						console.log("User video saved successfully", response);
 					},
-					error: function () {
-						// alert("Error saving user video");
+					error: function (xhr, status, error) {
+						//alert("Error saving user video");
+						// console.error("Error saving user video", error);
+						// console.log("XHR:", xhr);
+            			// console.log("Status:", status);
 					}
 				});
 			}
@@ -197,8 +223,30 @@
 			}
 	
 			$(document).ready(function() {
-			
-			
+		    
+		    // CSRF 토큰을 쿠키에서 가져오기
+	        function getCsrfTokenFromCookie() {
+	            const name = 'XSRF-TOKEN=';
+	            const decodedCookie = decodeURIComponent(document.cookie);
+	            const cookies = decodedCookie.split(';');
+	            for(let i = 0; i < cookies.length; i++) {
+	                let cookie = cookies[i].trim();
+	                if (cookie.indexOf(name) == 0) {
+	                    return cookie.substring(name.length, cookie.length);
+	                }
+	            }
+	            return "";
+	        }
+	
+	        // 모든 AJAX 요청에 CSRF 토큰을 포함시키기
+	        $.ajaxSetup({
+	            beforeSend: function(xhr, settings) {
+	                if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+						xhr.setRequestHeader("X-XSRF-TOKEN", getCsrfTokenFromCookie());
+					}
+	            }
+	        });
+		    
 			// 커리큘럼 클릭 시 저장된 영상 시간으로 이동
 			$('.lec_list > li > a').click(function(e) {
 		        e.preventDefault(); // 기본 링크 동작 방지
@@ -331,8 +379,10 @@
 		            editor.setMarkdown(''); // 입력 필드 초기화
 		        },
 		        error: function(xhr, status, error) {
-		            noteElement.find('span:first').text('노트 작성 실패');
-		            console.error('노트 작성 실패:', error);
+		            noteElement.find('span:first').text('마 영상 재생해라');
+		            // console.error('노트 작성 실패:', error);
+					// console.log("XHR:", xhr);
+            		// console.log("Status:", status);
 		        }
 		    });
 		}

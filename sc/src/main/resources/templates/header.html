@@ -14,14 +14,15 @@
 			</li>
 			<li sec:authorize="isAuthenticated()">
                 <a href="javascript:void(0)" class="my">
-                	<span>[[${#authentication.principal.username}]] 님</span>
+                	<span th:text="${userName} + '님'"></span>
+<!--                 	<span>[[${#authentication.principal.username}]] 님</span> -->
                 </a>
 				<div class="dropMenu" style="display: none;">
 					<ul>
 						<li><i class="fa-solid fa-book"></i><a th:href="@{|/my/list|}">내 학습</a></li>
 						<li><i class="fa-solid fa-clipboard"></i><a th:href="@{|/note/list|}">강의노트</a></li>
 						<li><i class="fa-solid fa-chart-pie"></i><a th:href="@{|/my/dashboard|}">대시보드</a></li>
-						<li><i class="fa-solid fa-user"></i><a th:href="@{||}">마이페이지</a></li>
+						<li><i class="fa-solid fa-user"></i><a th:href="@{|/user/mypage|}">마이페이지</a></li>
 					</ul>
 				</div>
             </li>

@@ -6,13 +6,13 @@ import java.util.Optional;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.lms.sc.entity.SiteUser;
+import com.lms.sc.entity.SiteUserDetails;
 import com.lms.sc.repository.UserRepository;
 import com.lms.sc.role.UserRole;
 
@@ -37,6 +37,6 @@ public class UserSecurityService implements UserDetailsService {
 		} else {
 			authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
 		}
-		return new User(siteUser.getEmail(), siteUser.getPassword(), authorities);
+		return new SiteUserDetails(siteUser, authorities);
 	}
 }

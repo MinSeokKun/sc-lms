@@ -5,6 +5,7 @@ import java.security.Principal;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -89,5 +90,13 @@ public class UserController {
 		return "redirect:/my/list";
 	}
 	
-	
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/mypage")
+	public String myPage(Model model, Principal principal) {
+		
+		SiteUser user = userService.getUserByEmail(principal.getName());
+		model.addAttribute("user", user);
+		
+		return "mypage/mypage";
+	}
 }

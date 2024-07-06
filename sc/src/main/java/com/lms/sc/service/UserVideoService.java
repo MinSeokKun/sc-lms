@@ -50,6 +50,7 @@ public class UserVideoService {
 	        UserVideo userVideo = new UserVideo();
 	        userVideo.setUser(user);
 	        userVideo.setVideo(video);
+	        userVideo.setWatchingTime(0);
 	        return userVideoRepository.save(userVideo);
 	    }
 	}

@@ -4,8 +4,6 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,6 +68,16 @@ public class QuestionController {
 		this.questionService.create(questionCreateForm.getTitle(), questionCreateForm.getContent(), userService.getUserByEmail(principal.getName()));
 		return "redirect:/question/list"; //질문 저장 후 질문 목록으로 이동 }
 	}
+	
+	@GetMapping("/delete/{id}")
+	public String questionDelete(Model model, @PathVariable("id") Integer id) {
+		Question question = this.questionService.getQuestion(id);
+		if (question == null) {
+			throw new DataNotFoundException("Question not found");
+		}
+		questionService.delete(question);
 		
+		return "redirect:/question/list";
+	}
 	
 }

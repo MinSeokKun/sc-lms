@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.lms.sc.entity.Note;
+import com.lms.sc.entity.Question;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.UserLecture;
 import com.lms.sc.entity.UserVideo;
 import com.lms.sc.entity.Video;
+import com.lms.sc.service.NoteService;
+import com.lms.sc.service.QuestionService;
 import com.lms.sc.service.UserLectureService;
 import com.lms.sc.service.UserService;
 import com.lms.sc.service.UserVideoService;
@@ -34,6 +38,8 @@ public class UserLectureController {
 //	private final LectureService lectureService;
 	private final VideoService vidService;
 	private final UserVideoService userVidService;
+	private final QuestionService questService;
+	private final NoteService noteService;
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("list")
@@ -86,7 +92,18 @@ public class UserLectureController {
 		if (principal == null) {
 			return "user/login";
 		}
+		// 질문 리스트 가져오기
 		SiteUser user = userService.getUserByEmail(principal.getName());
+		List<Question> questionList = questService.getListByAuthor(user);
+		model.addAttribute("questionList", questionList);
+		
+		// 노트 리스트 가져오기
+		List<Note> noteList = noteService.getNoteList(user.getId());
+		model.addAttribute("noteList", noteList);
+		
+		// 노트 리스트 가져오기
+		List<UserLecture> userLectureList = userLectureService.getMyList(user);
+		model.addAttribute("userLectureList", userLectureList);
 		
 		return "mypage/dashboard";
 	}

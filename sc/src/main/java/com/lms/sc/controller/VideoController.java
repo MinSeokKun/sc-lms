@@ -146,10 +146,18 @@ public class VideoController {
 		if(principal == null) {
 			return "redirect:/user/login";
 		}
-		// SiteUser user = userService.getUserByEmail(principal.getName());
+		SiteUser user = userService.getUserByEmail(principal.getName());
 		Lecture lecture = lectureService.getLecture(lecId);
 		List<Video> videoList = videoService.VideoList(lecture);
+		Map<Video, UserVideo> userVideoList = new LinkedHashMap<>();
+		
 		model.addAttribute("videoList", videoList);
+		for (Video video : videoList) {
+			UserVideo userVid = userVideoService.getUserVideoOrNew(user, video);
+			userVideoList.put(video, userVid);
+		}
+		
+		model.addAttribute("userVideoList", userVideoList);
 		return "mypage/my_lec_videos";
 	}
 	

@@ -1,12 +1,15 @@
 package com.lms.sc.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.lms.sc.entity.Question;
+import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.Video;
+
 
 
 public interface QuestionRepository extends JpaRepository<Question, Integer>{
@@ -14,4 +17,6 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>{
 	Page<Question> findAll(Pageable pageable);
 	
 	void deleteAllByVideo(Video video);
+	
+	List<Question> findByAuthor(SiteUser author);
 }

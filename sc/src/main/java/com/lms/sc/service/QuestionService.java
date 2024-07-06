@@ -32,13 +32,16 @@ public class QuestionService {
 		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
 		Page<Question> questions = questionRepository.findAll(pageable);
 		   questions.forEach(question -> Hibernate.initialize(question.getAnswerList()));
-	        return questions;
+        return questions;
 	}
 	
 	 public List<Question> getList() { 
-		 return
-		this.questionRepository.findAll(); 
+		 return this.questionRepository.findAll(); 
 	 	}
+	 
+	 public List<Question> getListByAuthor(SiteUser author) {
+		 return this.questionRepository.findByAuthor(author);
+	 }
 
 
 	public Question getQuestion(Integer id) {
@@ -57,5 +60,9 @@ public class QuestionService {
 		q.setAuthor(author);
 		q.setCreateDate(LocalDateTime.now());
 		this.questionRepository.save(q);
+	}
+	
+	public void delete(Question question) {
+		this.questionRepository.delete(question);
 	}
 }

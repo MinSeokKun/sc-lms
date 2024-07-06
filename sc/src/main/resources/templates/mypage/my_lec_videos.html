@@ -5,37 +5,30 @@
 		<div id="content">
 			<div class="wrapper">
 			    <section>
-			        <div>
-			            <div><h2>리스트 제목</h2></div>
-			            <!-- 검색영역 -->
-			            <div>
-			                <input type="text" placeholder="검색">
-			                <button type="button">검색</button>
-			            </div>
-			        </div>
-			        <div>
-			            <table class="tbl">
-			                <caption>리스트 테이블</caption>
-			                <thead>
-			                    <tr>
-			                        <th style="width: 10%">No</th>
-			                        <th style="width: 50%">제목</th>
-			                        <th style="width: 10%">등록일</th>
-			                        <th style="width: 10%">수정일</th>
-			                        <th style="width: 10%">수정</th>
-			                        <th style="width: 10%">삭제</th>
-			                    </tr>
-			                </thead>
-			                <tr th:each="video, loop : ${videoList}">
-			                	<td>[[${loop.index + 1}]]</td>
-						        <td><a th:href="@{|/video/viewer/${video.id}|}" th:text="${video.title}"></a></td>
-						        <td>진행률 그래프</td>
-						    </tr>
-			            </table>
-			        </div>
-			        <div>
-			            <button type="button">등록</button>
-			        </div>
+		            <div class="course-list">
+				        <div>
+				            <div><h2>리스트 제목</h2></div>
+				            <!-- 검색영역 -->
+				            <div>
+				                <input type="text" placeholder="검색">
+				                <button type="button">검색</button>
+				            </div>
+				        </div>
+					    <div class="course-item" th:each="entry, loop : ${userVideoList.entrySet()}">
+					        <div class="course-title">
+					            <span class="course-number" th:text="${loop.index + 1}"></span>
+					            <a th:href="@{|/video/viewer/${entry.key.id}|}" th:text="${entry.key.title}"></a>
+					        </div>
+					        <div class="course-details">
+					            <div class="course-progress">
+					                <div class="progress-bar">
+					                    <div class="progress-fill" th:style="'width:' + ${entry.key.duration == 0 ? '0%' : (#numbers.formatDecimal((entry.value.watchingTime * 100.0 / entry.key.duration), 0, 1) + '%')}"></div>
+					                </div>
+					                <span class="progress-text" th:text="${entry.key.duration == 0 ? '0%' : (#numbers.formatDecimal((entry.value.watchingTime * 100.0 / entry.key.duration), 0, 1) + '%')}"></span>
+					            </div>
+					        </div>
+					    </div>
+					</div>
 			    </section>
 		    </div>
 		</div>

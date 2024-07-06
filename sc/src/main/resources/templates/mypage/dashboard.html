@@ -25,12 +25,8 @@
 							<a href="">학습목록</a>
 						</div>
 						<ul>
-							<li>
-								<img src="adf.jpng" alt="재생이미지">
-								<div>
-									<span>제목</span>
-									<span>진행률</span>
-								</div>
+							<li th:each="userLecture : ${userLectureList}">
+								<a href="#" th:text="${userLecture.lecture.title}"></a>
 							</li>
 						</ul>
 					</div>
@@ -70,16 +66,44 @@
 							<a href="">전체보기</a>
 						</div>
 						<ul>
-							<li>
-								<div>
-									<span>제목</span>
-									<span>내용</span>
-								</div>
+							<li th:each="note : ${noteList}">
+								<a href="#" th:text="${note.content}"></a>
 							</li>
 						</ul>
 					</div>
 		
 				</div>
+				
+				<div class="dash_info_wrap">
+		
+					<div id="exp_log">
+						<div>
+							<h5>성장 로그</h5>
+							<a href="">전체보기</a>
+						</div>
+						<ul>
+							<li>
+								<div>
+									<span>제목 + 수강완료!</span>
+								</div>
+							</li>
+						</ul>
+					</div>
+		
+					<div id="question">
+						<div>
+							<h5>최근질문</h5>
+							<a href="">전체보기</a>
+						</div>
+						<ul>
+							<li th:each="question : ${questionList}">
+								<a th:href="@{|/|}" th:text="${question.title}"></a>
+							</li>
+						</ul>
+					</div>
+		
+				</div>
+				
 			</div>
 		</div>
     </section>

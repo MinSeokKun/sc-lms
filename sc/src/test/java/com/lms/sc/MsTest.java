@@ -38,6 +38,11 @@ public class MsTest {
 	private VideoService vs;
 	
 	@Test
+	void adminUser() {
+		us.create("admin", "admin", "1234", "01012340101", null);
+	}
+	
+//	@Test
 	void youtubeApi() {
 		vs.regVideo("비오는날 듣기좋은 노래 모음", "MEpoa_afo0U", 9);
 	}

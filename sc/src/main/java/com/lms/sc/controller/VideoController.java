@@ -1,6 +1,7 @@
 package com.lms.sc.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.Note;
 import com.lms.sc.entity.SiteUser;
+import com.lms.sc.entity.UserLecture;
 import com.lms.sc.entity.UserVideo;
 import com.lms.sc.entity.Video;
 import com.lms.sc.service.LectureService;
 import com.lms.sc.service.NoteService;
+import com.lms.sc.service.UserLectureService;
 import com.lms.sc.service.UserService;
 import com.lms.sc.service.UserVideoService;
 import com.lms.sc.service.VideoService;
@@ -38,6 +41,8 @@ public class VideoController {
 	private final NoteService noteService;
 	private final UserService userService;
 	private final UserVideoService userVideoService;
+	private final UserLectureService userLectureService;
+	
 	
 	//비디오 하나
 	@GetMapping("/viewer/{vidId}")
@@ -81,16 +86,32 @@ public class VideoController {
 	        model.addAttribute("videoTime", userVideo.getWatchingTime());
 	    }
 		
-		List<Video> videoList = videoService.VideoList(lecture);
+		List<UserLecture> userLectureList = userLectureService.getMyList(user);
 		
-		Map<Video, UserVideo> list = new LinkedHashMap<Video, UserVideo>();
-		for (Video vid : videoList) {
-			UserVideo uv = userVideoService.getUserVideoOrNew(user, vid);
-			list.put(vid, uv);
+		Map<UserLecture, Map<Video, UserVideo>> list = new LinkedHashMap<UserLecture, Map<Video, UserVideo>>();
+		Map<UserLecture, Map<Integer, Integer>> progressMap = new HashMap<>();
+		
+		for (UserLecture userLecture: userLectureList) {
+			List<Video> videoList = videoService.VideoList(lecture);
+			Map<Video, UserVideo> videoMap = new LinkedHashMap<>();
+			model.addAttribute("videoMap", videoMap);
+			int watched = 0;
+			for (Video vid : videoList) {
+				UserVideo uv = userVideoService.getUserVideoOrNew(user, vid);
+				videoMap.put(vid, uv);
+				
+				if(uv.isWatched()) {
+					watched++;
+				}
+			}
+			list.put(userLecture, videoMap);
+			Map<Integer, Integer> progress = new HashMap<>();
+			progress.put(videoList.size(), watched);
+			progressMap.put(userLecture, progress);
 		}
 		
 		model.addAttribute("list", list);
-		
+		model.addAttribute("progressMap", progressMap);
 		
 		return "video/viewer4";
 	}

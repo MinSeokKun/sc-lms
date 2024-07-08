@@ -51,6 +51,16 @@
 	margin: 10px;
 }
 
+.dash_info_wrap div ul li a {
+	display: flex;
+	justify-content: space-around;
+}
+
+.dash_info_wrap div div {
+	display: flex;
+	justify-content: space-around;
+}
+
 .mypage_nav ul li a {
     color: black;
     text-decoration: none;

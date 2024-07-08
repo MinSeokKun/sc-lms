@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.UserVideo;
 import com.lms.sc.entity.Video;
@@ -54,4 +55,10 @@ public class UserVideoService {
 	        return userVideoRepository.save(userVideo);
 	    }
 	}
+	
+	// UserVideo 중 watched가 true인 리스트를 가져오기
+	public List<UserVideo> getUserVideoByWatched(SiteUser user, Lecture lecture, boolean watched){
+		return userVideoRepository.findByUserAndLectureAndWatched(user, lecture, watched);
+	}
+	
 }

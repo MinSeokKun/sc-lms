@@ -2,6 +2,7 @@ package com.lms.sc.controller;
 
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +52,7 @@ public class NoteController {
 		long userId = user.getId();
 		List<Lecture> noteLecture = noteService.getNoteLecture(userId);
 		
-		Map<Lecture, Integer> noteList = new HashMap<Lecture, Integer>();
+		Map<Lecture, Integer> noteList = new LinkedHashMap<>();
 		noteLecture.forEach(lecture -> 
 			noteList.put(lecture, noteService.getByLecture(lecture.getId(), userId).size()));
 		model.addAttribute("userId", userId);
@@ -69,7 +70,7 @@ public class NoteController {
 		}
 		SiteUser user = userService.getUserByEmail(principal.getName());
 		List<Video> videoList = noteService.getVideosByLecture(lecId, user.getId());
-		Map<Video, List<Note>> noteList = new HashMap<Video, List<Note>>();
+		Map<Video, List<Note>> noteList = new LinkedHashMap<>();
 		
 		videoList.forEach(video -> noteList.put(video, noteService.getByVideo(video.getId(), user.getId())));
 		

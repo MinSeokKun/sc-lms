@@ -98,7 +98,7 @@ public class UserLectureController {
 		model.addAttribute("questionList", questionList);
 		
 		// 노트 리스트 가져오기
-		List<Note> noteList = noteService.getNoteList(user.getId());
+		List<Note> noteList = noteService.getRecentNotes(user);
 		model.addAttribute("noteList", noteList);
 		
 		// 노트 리스트 가져오기

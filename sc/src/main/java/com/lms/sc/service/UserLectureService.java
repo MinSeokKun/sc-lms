@@ -35,6 +35,11 @@ public class UserLectureService {
 		return userLectureList;
 	}
 	
+	// userLecture 하나 가져오기
+	public UserLecture getMyUserLec(SiteUser user, Lecture lecture) {
+		return userLectureRepository.findByUserAndLecture(user, lecture).get();
+	}
+	
 	// 강의 수강 시작시 UserLecture도 등록되게
 	public UserLecture createUserLecture(SiteUser user, Lecture lecture) {
 		UserLecture userLec = new UserLecture();
@@ -42,6 +47,13 @@ public class UserLectureService {
 		userLec.setLecture(lecture);
 		userLec.setProgress(0);
 		userLec.setRegDate(LocalDateTime.now());
+		return userLectureRepository.save(userLec);
+	}
+	
+	// userLecture의 progress를 업데이트
+	public UserLecture updateProgress(SiteUser user, Lecture lecture, double progress) {
+		UserLecture userLec = userLectureRepository.findByUserAndLecture(user, lecture).get();
+		userLec.setProgress(progress);
 		return userLectureRepository.save(userLec);
 	}
 	

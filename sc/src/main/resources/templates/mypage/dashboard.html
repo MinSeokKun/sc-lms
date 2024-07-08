@@ -67,7 +67,10 @@
 						</div>
 						<ul>
 							<li th:each="note : ${noteList}">
-								<a href="#" th:text="${note.content}"></a>
+								<a th:href="@{|/note/list/${note.video.lecture.id}|}">
+									<span th:text="${#strings.length(note.content) > 10 ? note.content.substring(0, 10) + '...' : note.content}"></span>
+									<span th:text="${#temporals.format(note.createDate, 'yyyy-MM-dd HH:mm')}"></span>
+								</a>
 							</li>
 						</ul>
 					</div>

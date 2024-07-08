@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.lms.sc.entity.Lecture;
@@ -86,4 +88,8 @@ public class NoteService {
 		return noteRepository.findByLectureAndAuthor(lecture, author);
 	}
 	
+	public List<Note> getRecentNotes(SiteUser author) {
+		Pageable pageable = PageRequest.of(0, 3);
+		return noteRepository.findTop3ByAuthor(author, pageable);
+	}
 }

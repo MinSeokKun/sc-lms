@@ -1,6 +1,7 @@
 package com.lms.sc.controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -12,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lms.sc.entity.SiteUser;
+import com.lms.sc.entity.UserLecture;
 import com.lms.sc.entity.UserVideo;
 import com.lms.sc.entity.Video;
+import com.lms.sc.service.NoteService;
+import com.lms.sc.service.UserLectureService;
 import com.lms.sc.service.UserService;
 import com.lms.sc.service.UserVideoService;
 import com.lms.sc.service.VideoService;
@@ -27,7 +31,8 @@ public class UserVideoController {
 	private final UserVideoService userVideoService;
 	private final UserService userService;
 	private final VideoService videoService;
-	
+	private final UserLectureService userLecService;
+	private final NoteService noteService;
 	
 	@PostMapping("/save")
 	public ResponseEntity<Void> saveUserVideo(@RequestBody Map<String, Object> data) {
@@ -47,6 +52,15 @@ public class UserVideoController {
 			Integer watchingTime = objectMapper.convertValue(data.get("watchingTime"), Integer.class);
 			
 			userVideoService.saveUserVideo(userVideo, watched, watchedAt, watchingTime);
+			
+			// watched 가 true 일 때 userLecture의 progress를 업데이트
+			if (watched) {
+				UserLecture userLec = userLecService.getMyUserLec(user, video.getLecture());
+				List<Video> videoList = noteService.getVideosByLecture(video.getLecture().getId(), userId);
+				List<UserVideo> watchedList = userVideoService.getUserVideoByWatched(user, video.getLecture(), true);
+				double progress = (double) watchedList.size() / videoList.size();
+				userLec.setProgress(progress);
+			}
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();

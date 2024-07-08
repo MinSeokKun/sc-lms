@@ -69,14 +69,6 @@ public class VideoController {
 		UserVideo userVideo = userVideoService.getUserVideoOrNew(user, video);
 		model.addAttribute("userVideo", userVideo);
 		
-		//저장된 시청 시간을 모델에 추가
-//		model.addAttribute("savaWatchingTime", userVideo.getWatchingTime() != null ? userVideo.getWatchingTime() : 0);
-		
-//		if (noteId != null) {
-//			Note note = noteService.getNote(noteId);
-//			model.addAttribute("videoTime", note.getVideoTime());
-//		}
-		
 		if (savedTime != null) {
 	        model.addAttribute("videoTime", savedTime);
 	    } else if (noteId != null) {
@@ -88,7 +80,7 @@ public class VideoController {
 		
 		List<UserLecture> userLectureList = userLectureService.getMyList(user);
 		
-		Map<UserLecture, Map<Video, UserVideo>> list = new LinkedHashMap<UserLecture, Map<Video, UserVideo>>();
+//		Map<UserLecture, Map<Video, UserVideo>> list = new LinkedHashMap<UserLecture, Map<Video, UserVideo>>();
 		Map<UserLecture, Map<Integer, Integer>> progressMap = new HashMap<>();
 		
 		for (UserLecture userLecture: userLectureList) {
@@ -104,13 +96,13 @@ public class VideoController {
 					watched++;
 				}
 			}
-			list.put(userLecture, videoMap);
-			Map<Integer, Integer> progress = new HashMap<>();
+//			list.put(userLecture, videoMap);
+			Map<Integer, Integer> progress = new HashMap<Integer, Integer>();
 			progress.put(videoList.size(), watched);
 			progressMap.put(userLecture, progress);
 		}
 		
-		model.addAttribute("list", list);
+//		model.addAttribute("list", list);
 		model.addAttribute("progressMap", progressMap);
 		
 		return "video/viewer4";

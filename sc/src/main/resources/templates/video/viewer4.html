@@ -31,16 +31,17 @@
         				</div>
 			        	<div class="lec_info">
 			        		<h4>[[${lecture.title}]]</h4>
-							<p>
-								<div th:each="entry : ${progressMap.entrySet()}">
-							        <div class="course-progress" th:each="progress : ${entry.value.entrySet()}">
+			        		<div style="display: flex; gap: 10px;">
+			        			<span>전체 강의 학습율 : </span>
+								<div th:each="entry : ${progressMap.entrySet()}" th:if="${entry.key.lecture.id == lecture.id}">
+							        <div class="course-progress" th:each="progress : ${entry.value.entrySet()}" style="display: flex; align-items: center;">
 							            <div class="progress-bar">
 							                <div class="progress-fill" th:style="'width:' + (${progress.value * 100.0 / progress.key}) + '%'"></div>
 							            </div>
 							            <span class="progress-text" th:text="${progress.value != null ? (progress.value * 100.0 / progress.key == 0 ? '0' : #numbers.formatDecimal((progress.value * 100.0 / progress.key), 0, 1)) : '0'} + '%'"></span>
 							        </div>
 							    </div>
-							</p>			        		
+						    </div>
 			        	</div>
 			        	<ul class="lec_list">
 			        		<li th:each="entry : ${videoMap.entrySet()}">

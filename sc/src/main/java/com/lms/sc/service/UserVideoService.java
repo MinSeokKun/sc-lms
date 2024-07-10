@@ -1,14 +1,15 @@
 package com.lms.sc.service;
 
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.lms.sc.entity.Lecture;
@@ -19,6 +20,7 @@ import com.lms.sc.repository.UserRepository;
 import com.lms.sc.repository.UserVideoRepository;
 import com.lms.sc.repository.VideoRepository;
 
+import groovy.util.logging.Log4j;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -94,7 +96,19 @@ public class UserVideoService {
         return orderedDailyCount;
     }
 	
+	//최근 학습 완료한 강의(성장로그)
+//	public List<String> getRecentlyCompletedLectures(long userId) {
+//        List<Lecture> completedLectures = userVideoRepository.findCompletedLecturesByUserId(userId, PageRequest.of(0, 3));
+//        return completedLectures.stream()
+//                .map(Lecture::getTitle)
+//                .collect(Collectors.toList());
+//    }
 	
+	
+	public List<String> getRecentlyCompletedLectures(long userId) {
+	    List<String> watchedLectures = userVideoRepository.findWatchedLectureTitles(userId, PageRequest.of(0, 3));
+	    return watchedLectures;
+	}
 }
 
 

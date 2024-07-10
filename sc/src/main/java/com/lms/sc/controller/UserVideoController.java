@@ -1,5 +1,6 @@
 package com.lms.sc.controller;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,8 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +37,7 @@ public class UserVideoController {
 	private final UserLectureService userLecService;
 	private final NoteService noteService;
 	
+	//유튜브 영상 시간 체크
 	@PostMapping("/save")
 	public ResponseEntity<Void> saveUserVideo(@RequestBody Map<String, Object> data) {
 		try {
@@ -67,5 +71,15 @@ public class UserVideoController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	}
-	
+
+	// 최근 학습 완료 강의 (성장로그)
+	@GetMapping("dashboard")
+	public String dashboard(Model model, Principal principal) {
+        SiteUser user = userService.getUserByEmail(principal.getName());
+        long userId = user.getId();
+        
+        List<String> recentlyCompletedLectures = userVideoService.getRecentlyCompletedLectures(userId);
+        model.addAttribute("recentlyCompletedLectures", recentlyCompletedLectures);
+        return "mypage/dashboard";
+    }
 }

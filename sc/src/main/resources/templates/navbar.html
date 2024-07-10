@@ -1,24 +1,62 @@
-<nav th:fragment="navbarFragment" class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-	<div class="container-fluid">
-		<a class="navbar-brand" href="/">LMS학습관리시스템</a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-		data-bs-target="#navbarSupportedContent"
-		aria-controls="navbarSupportedContent" aria-expanded="false"
-		aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				<li class="nav-item">
-					<a class="nav-link" sec:authorize="isAnonymous()"
-					th:href="@{/user/login}">로그인</a>
-					<a class="nav-link" sec:authorize="isAuthenticated()"
-					th:href="@{/user/logout}">로그아웃</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" th:href="@{/user/signup}">회원가입</a>
-				</li>
-			</ul>
-		</div>		
-	</div>
-</nav>
+<!-- Sidebar -->
+<ul th:fragment="navbar" class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center logo" th:href="@{|/|}">
+        <img src="/images/newLogo.png">
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item" sec:authorize="isAuthenticated">
+        <a class="nav-link" th:href="@{|/my/dashboard|}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>대시보드</span>
+        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        메뉴
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" th:href="@{|/|}" data-toggle="collapse" data-target="#collapseTwo"
+            aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>강의</span>
+        </a>
+    </li>
+
+    <!-- Nav Item - Utilities Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" th:href="@{|/question/list|}" data-toggle="collapse" data-target="#collapseUtilities"
+            aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>질문 게시판</span>
+        </a>
+    </li>
+	
+	<!-- Nav Item - Utilities Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" th:href="@{|/|}" data-toggle="collapse" data-target="#collapseUtilities"
+            aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>공지사항</span>
+        </a>
+    </li>
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+</ul>
+<!-- End of Sidebar -->

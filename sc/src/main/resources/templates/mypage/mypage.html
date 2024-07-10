@@ -2,29 +2,41 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
       layout:decorate="~{layout}">
 <th:block layout:fragment="content">
-	<div id="content">
+	<style>
+		.input_box label { display: inline-block; width: 110px; }
+	</style>
+	<div id="content" style="height: calc(100vh - 190px);">
 		<div class="wrapper">
-			<form  method="post">
-				<div class="input_box">
-					<input type="text" name="name" th:value="${user.name}" />
-				</div>
-				<div class="input_box">
-					<input type="email" name="email" th:value="${user.email}" />
-				</div>
-				<div class="input_box">
-					<input type="password" name="password1" />
-				</div>
-				<div class="input_box">
-					<input type="password" name="password2" />
-				</div>
-				<div class="input_box">
-					<input type="text" name="tellNumber" th:value="${user.tellNumber}" />
-					<p>-를 빼고 입력해주세요.</p>
-				</div>
-				<div>
-					
-				</div>
-			</form>
+			<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 80px;">
+				<h2 style="margin-bottom: 40px;">개인정보수정</h2>
+				<form th:action="@{/user/modify}" method="post">
+					<input type="hidden" name="id" th:value="${user.id}" />
+					<div class="input_box">
+						<label>이름</label>
+						<input type="text" name="name" th:value="${user.name}" />
+					</div>
+					<div class="input_box">
+						<label>이메일</label>	
+						<input type="email" name="email" th:value="${user.email}" readonly="readonly" style="border: none;" />
+					</div>
+					<div class="input_box">
+						<label>비밀번호</label>
+						<input type="password" name="password" id="pw" autofocus="autofocus" />
+					</div>
+					<div class="input_box">
+						<label>비밀번호 확인</label>
+						<input type="password" id="pw_chk" required="required" />
+					</div>
+					<div class="input_box">
+						<label>전화번호</label>
+						<input type="text" name="tellNumber" th:value="${user.tellNumber}" />
+						<p>-를 빼고 입력해주세요.</p>
+					</div>
+					<div>
+						<button class="login-btn" type="submit" style="margin-top: 40px">수정</button>
+					</div>
+				</form>
+			</div>
 		</div>
 	</div>
 </th:block>

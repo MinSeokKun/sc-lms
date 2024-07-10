@@ -45,7 +45,7 @@ public class LectureController {
 	//에러페이지 이동
 	@GetMapping("/error")
 	public String showErrorPage() {
-	    return "error/error";
+	    return "error/404";
 	}
 	
 	// 강의 상세페이지 이동

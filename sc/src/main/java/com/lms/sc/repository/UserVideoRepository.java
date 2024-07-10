@@ -1,5 +1,6 @@
 package com.lms.sc.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,8 @@ public interface UserVideoRepository extends JpaRepository<UserVideo, Long> {
             @Param("lecture") Lecture lecture,
             @Param("watched") boolean watched);
 
+	
+	List<UserVideo> findByUserAndWatchedAtBetween(SiteUser user, Date startDate, Date endDate);
 	
 //	List<UserVideo> findByUserVideo(UserVideo userVideo);
 	

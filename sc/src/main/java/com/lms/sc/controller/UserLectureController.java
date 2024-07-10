@@ -88,7 +88,8 @@ public class UserLectureController {
 	// 대시보드
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("dashboard")
-	public String dashboard(Principal principal, Model model) {
+	public String dashboard(Principal principal, Model model,
+				@RequestParam(name = "weekOffset", required = false, defaultValue = "0") Integer weekOffset) {
 		if (principal == null) {
 			return "user/login";
 		}
@@ -104,6 +105,11 @@ public class UserLectureController {
 		// 노트 리스트 가져오기
 		List<UserLecture> userLectureList = userLectureService.getMyList(user);
 		model.addAttribute("userLectureList", userLectureList);
+		
+		// 주간 학습 현황
+		Map<String, Long> weeklyWatchCount = userVidService.getWeeklyWatchCount(user, weekOffset);
+        model.addAttribute("weeklyWatchCount", weeklyWatchCount);
+        model.addAttribute("weekOffset", weekOffset != null ? weekOffset : 0);
 		
 		return "mypage/dashboard";
 	}

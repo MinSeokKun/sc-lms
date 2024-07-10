@@ -1,7 +1,12 @@
 package com.lms.sc.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -61,4 +66,53 @@ public class UserVideoService {
 		return userVideoRepository.findByUserAndLectureAndWatched(user, lecture, watched);
 	}
 	
+	public Map<String, Long> getWeeklyWatchCount(SiteUser user, Integer weekOffset) {
+		Calendar cal = Calendar.getInstance();
+        if (weekOffset != null) {
+            cal.add(Calendar.WEEK_OF_YEAR, -weekOffset);
+        }
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        Date startDate = cal.getTime();
+
+        cal.add(Calendar.DATE, 7);
+        Date endDate = cal.getTime();
+
+        List<UserVideo> watchedVideos = userVideoRepository.findByUserAndWatchedAtBetween(user, startDate, endDate);
+
+        String[] daysOfWeek = {"월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"};
+        Map<String, Long> orderedDailyCount = new LinkedHashMap<>();
+        for (String day : daysOfWeek) {
+            orderedDailyCount.put(day, 0L);
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+        for (UserVideo video : watchedVideos) {
+            String dayOfWeek = sdf.format(video.getWatchedAt());
+            orderedDailyCount.put(dayOfWeek, orderedDailyCount.get(dayOfWeek) + 1);
+        }
+
+        return orderedDailyCount;
+    }
+	
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

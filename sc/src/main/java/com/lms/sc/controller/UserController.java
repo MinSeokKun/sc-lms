@@ -90,13 +90,27 @@ public class UserController {
 		return "redirect:/my/list";
 	}
 	
+	// 마이페이지 이동
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/mypage")
 	public String myPage(Model model, Principal principal) {
+		if(principal == null) {
+			return "main/main";
+		}
 		
 		SiteUser user = userService.getUserByEmail(principal.getName());
 		model.addAttribute("user", user);
 		
 		return "mypage/mypage";
 	}
+	
+	//유저 정보 수정
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/modify")
+	public String modify(@RequestParam("id") long id, @RequestParam("name") String name, @RequestParam("password") String password, @RequestParam("tellNumber") String tellNumber) {
+	    SiteUser user = userService.getUserById(id);
+	    userService.modify(user, name, password, tellNumber);
+	    return "redirect:/user/mypage";
+	}
+
 }

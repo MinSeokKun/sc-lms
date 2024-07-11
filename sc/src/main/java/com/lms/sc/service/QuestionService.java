@@ -13,8 +13,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.Question;
 import com.lms.sc.entity.SiteUser;
+import com.lms.sc.entity.Video;
 import com.lms.sc.exception.DataNotFoundException;
 import com.lms.sc.repository.QuestionRepository;
 
@@ -64,5 +66,29 @@ public class QuestionService {
 	
 	public void delete(Question question) {
 		this.questionRepository.delete(question);
+	}
+	
+	
+	//비디오뷰에서 질문을 저장
+	public Question createQuestion(String title, String content, SiteUser author, Video video) {
+        Question question = new Question();
+        question.setTitle(title);
+        question.setContent(content);
+        question.setAuthor(author);
+        question.setVideo(video);
+        question.setCreateDate(LocalDateTime.now());
+//        question.setLikeCnt(0);
+//        question.setResult(false);
+        return questionRepository.save(question);
+    }
+	
+	//유저마다 강의 가져오기
+	public List<Question> getQusetionByUserAndLecture(SiteUser user, Lecture lecture){
+		return questionRepository.findByAuthorAndVideo_Lecture(user, lecture);
+	}
+	
+	//강의 질문 가져오기
+	public List<Question> getQuestionByLecture(Lecture lecture){
+		return questionRepository.findByVideo_Lecture(lecture);
 	}
 }

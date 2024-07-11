@@ -73,13 +73,12 @@ public class UserVideoController {
 	}
 
 	// 최근 학습 완료 강의 (성장로그)
-	@GetMapping("dashboard")
+	@GetMapping("/dashboard")
 	public String dashboard(Model model, Principal principal) {
         SiteUser user = userService.getUserByEmail(principal.getName());
         long userId = user.getId();
         
-        List<String> recentlyCompletedLectures = userVideoService.getRecentlyCompletedLectures(userId);
-        model.addAttribute("recentlyCompletedLectures", recentlyCompletedLectures);
+        
         return "mypage/dashboard";
     }
 }

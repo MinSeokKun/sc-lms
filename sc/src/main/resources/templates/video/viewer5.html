@@ -85,27 +85,6 @@
 		        			<h2>커뮤니티</h2>
 		        			<button type="button">X</button>
         				</div>
-        				<ul class="lec_list" style="height: 400px">
-			        		<li th:each="question : ${qustList}">
-			        			<span>[[${question.title}]]</span>
-			        			<span>[[${question.content}]]</span>
-			        			<span>[[${question.author.name}]]</span>
-			        			<span>[[${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}]]</span>
-			        		</li>
-			        	</ul>
-			        	<div style="border-top: 1px solid #ddd; padding-top: 20px;">
-						    <form th:action="@{|/question/create/${video.id}}" method="post">
-						    	<div class="input_box">
-						    		<label>제목</label>
-							    	<input name="title" type="text" />
-						    	</div>
-						    	<div class="input_box">
-						    		<label>내용</label>
-							    	<input name="content" type="text" />						    	
-						    	</div>
-						    	<button type="submit">등록</button>
-						    </form>
-					    </div>
 			        </li>
 			    </ul>
 			    <div class="side_menu">

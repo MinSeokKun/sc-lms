@@ -10,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.lms.sc.entity.Lecture;
+import com.lms.sc.entity.Question;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.UserVideo;
 import com.lms.sc.entity.Video;
 import com.lms.sc.repository.LectureRepository;
+import com.lms.sc.repository.QuestionRepository;
 import com.lms.sc.repository.UserRepository;
 import com.lms.sc.repository.UserVideoRepository;
 import com.lms.sc.repository.VideoRepository;
@@ -41,6 +43,26 @@ class ShTests {
 	
 	@Autowired
 	private UserVideoRepository uvr;
+	
+	@Autowired
+	private QuestionRepository qs;
+	
+	@Autowired
+	private VideoRepository vr;
+	
+	@Test
+	public void createTest() {
+        Question question = new Question();
+        SiteUser user = ur.getById(5L);
+        Video video = vr.getById(68L);
+        question.setTitle("제목");
+        question.setContent("내용");
+        question.setAuthor(user);
+        question.setVideo(video);
+        question.setCreateDate(LocalDateTime.now());
+        qs.save(question);
+    }
+	
 	
 //	@Test
 //	void userVideoTest() {

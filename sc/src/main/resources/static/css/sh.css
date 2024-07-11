@@ -302,6 +302,13 @@ a {
   color: #333;
 }
 
+/* 비디오 커뮤니티 */
+#questionForm .input_box > input, #questionForm .input_box > textarea { width: 100%; }
+.quest_list{ height: 400px; overflow-y: auto; }
+.quest_list li { padding: 16px 20px; border: 1px solid #ddd; margin: 16px 20px; border-radius: 5px; }
+.quest_list li:frist-of-type { margin-top: 0px; }
+.quest_list li span { display: block; }
+
 /* 푸터 */
 #footer { width: 100%; height: 40px; text-align: center; background-color: #f1f1f1; }
 address { line-height: 40px; color: #666; font-size: 15px; }

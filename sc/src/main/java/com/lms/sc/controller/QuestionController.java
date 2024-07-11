@@ -98,6 +98,7 @@ public class QuestionController {
 		return "question/question_form";
 		
 	}
+	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify/{id}")
 	public String questionModify(@Valid QuestionCreateForm questionCreateForm, BindingResult bindingResult, Principal principal, @PathVariable("id") Integer id) {
@@ -110,7 +111,8 @@ public class QuestionController {
 		}
 		this.questionService.modify(question, questionCreateForm.getTitle(), questionCreateForm.getContent());
 		return String.format("redirect:/question/detail/%s", id);
-    
+	}
+	
 	//비디오 질문 등록
 	@PostMapping("/create/{videoId}")
 	public String createQuestion(@PathVariable("videoId") long videoId, @RequestParam("title") String title, @RequestParam("content") String content, Principal principal) {

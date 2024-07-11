@@ -73,6 +73,7 @@ public class QuestionService {
 		question.setContent(content);
 		question.setModifyDate(LocalDateTime.now());
 		this.questionRepository.save(question);
+	}
 	
 	//비디오뷰에서 질문을 저장
 	public Question createQuestion(String title, String content, SiteUser author, Video video) {

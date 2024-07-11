@@ -31,6 +31,7 @@ public class Answer {
 	
 	private LocalDateTime modifyDate;
 	
+	
 	@ManyToOne
 	private Question question;
 	

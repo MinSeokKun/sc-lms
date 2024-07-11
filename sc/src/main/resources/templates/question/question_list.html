@@ -19,9 +19,10 @@
 		        	<thead>
 		        		<tr>
 		        			<th style="width: 20%">제목</th>
-		        			<th style="width: 50%">내용</th>
+		        			<th style="width: 45%">내용</th>
 		        			<th style="width: 15%">작성자</th>
-		        			<th style="width: 15%">날짜</th>
+		        			<th style="width: 10%">등록일</th>
+							<th style="width: 10%">수정일</th>
 		        		</tr>
 		        	</thead>
 		        	<tbody>
@@ -33,7 +34,8 @@
 
 		        			</td>
 		        			<td><a th:text="${question.author.name}"></a></td>
-			        		<td><a th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd')}">생성일</a></td>
+			        		<td><a th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd')}">등록일</a></td>
+							<td><a th:text="${#temporals.format(question.modifyDate, 'yyyy-MM-dd')}">수정일</a></td>
 		        		</tr>
 		        	</tbody>
 		        </table>

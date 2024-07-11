@@ -4,33 +4,24 @@
 <th:block layout:fragment="content">
 
 <section class="wrapper">
-	<div class="mypage_wrap">
-		
-		<div class="mypage_nav">
-			<ul>
-				<li><a href="/my/dashboard">대시보드</a></li>
-				<li><a class="active" href="/note/list">노트</a></li>
-				<li><a href="/my/question">질문</a></li>
-				<li><a href="/my/list">강의</a></li>
-			</ul>
+	<div class="container-fluid">
+
+		<div class="row">
+			<div class="course-list-title"><h2>강의노트</h2></div>
 		</div>
 
-		<table>
-			<thead>
-			    <tr>
-			        <th>강의 제목</th>
-			        <th>노트 수</th>
-			    </tr>
-			</thead>
-			<tbody>
-			    <tr th:each="entry : ${noteList.entrySet()}">
-			        <td>
-			        	<a th:href="@{|/note/list/${entry.key.id}|}">[[${entry.key.title}]]</a>
-			        </td>
-			        <td th:text="${entry.value}"></td>
-			    </tr>
-			</tbody>
-		</table>
+		<div id="note" class="card shadow mb-4" th:each="entry : ${noteList.entrySet()}">
+			<div class="card-header">
+
+				<div onclick="location.href=this.querySelector('a').href" style="cursor: pointer;">
+					<a th:href="@{|/note/list/${entry.key.id}|}" th:text="${entry.key.title}" class="py-3 d-block"></a>
+					<p th:text="'노트 수 : ' + ${entry.value}"></p>
+				</a>
+				
+			</div>
+
+		</div>
+
 	</div>
 </section>
 

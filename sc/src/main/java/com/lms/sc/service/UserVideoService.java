@@ -16,11 +16,11 @@ import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.UserVideo;
 import com.lms.sc.entity.Video;
+import com.lms.sc.entity.WeeklyWatchData;
 import com.lms.sc.repository.UserRepository;
 import com.lms.sc.repository.UserVideoRepository;
 import com.lms.sc.repository.VideoRepository;
 
-import groovy.util.logging.Log4j;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -68,18 +68,19 @@ public class UserVideoService {
 		return userVideoRepository.findByUserAndLectureAndWatched(user, lecture, watched);
 	}
 	
-	public Map<String, Long> getWeeklyWatchCount(SiteUser user, Integer weekOffset) {
-		Calendar cal = Calendar.getInstance();
-        if (weekOffset != null) {
-            cal.add(Calendar.WEEK_OF_YEAR, -weekOffset);
-        }
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        Date startDate = cal.getTime();
+	public WeeklyWatchData getWeeklyWatchCount(SiteUser user, Integer weekOffset) {
+	    Calendar cal = Calendar.getInstance();
+	    if (weekOffset != null) {
+	        cal.add(Calendar.WEEK_OF_YEAR, -weekOffset);
+	    }
+	    cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+	    Date startDate = cal.getTime();
 
-        cal.add(Calendar.DATE, 7);
-        Date endDate = cal.getTime();
+	    cal.add(Calendar.DATE, 6);
+	    Date endDate = cal.getTime();
 
-        List<UserVideo> watchedVideos = userVideoRepository.findByUserAndWatchedAtBetween(user, startDate, endDate);
+	    // 기존의 watchedVideos 처리 코드...
+	    List<UserVideo> watchedVideos = userVideoRepository.findByUserAndWatchedAtBetween(user, startDate, endDate);
 
         String[] daysOfWeek = {"월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"};
         Map<String, Long> orderedDailyCount = new LinkedHashMap<>();
@@ -92,9 +93,45 @@ public class UserVideoService {
             String dayOfWeek = sdf.format(video.getWatchedAt());
             orderedDailyCount.put(dayOfWeek, orderedDailyCount.get(dayOfWeek) + 1);
         }
+	    
+	    // 날짜 범위 문자열 생성
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("M/d");
+	    String dateRange = dateFormat.format(startDate) + " ~ " + dateFormat.format(endDate);
 
-        return orderedDailyCount;
-    }
+	    WeeklyWatchData result = new WeeklyWatchData();
+	    result.setWatchCount(orderedDailyCount);
+	    result.setDateRange(dateRange);
+
+	    return result;
+	}
+	
+//	public Map<String, Long> getWeeklyWatchCount(SiteUser user, Integer weekOffset) {
+//		Calendar cal = Calendar.getInstance();
+//        if (weekOffset != null) {
+//            cal.add(Calendar.WEEK_OF_YEAR, -weekOffset);
+//        }
+//        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+//        Date startDate = cal.getTime();
+//
+//        cal.add(Calendar.DATE, 7);
+//        Date endDate = cal.getTime();
+//
+//        List<UserVideo> watchedVideos = userVideoRepository.findByUserAndWatchedAtBetween(user, startDate, endDate);
+//
+//        String[] daysOfWeek = {"월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"};
+//        Map<String, Long> orderedDailyCount = new LinkedHashMap<>();
+//        for (String day : daysOfWeek) {
+//            orderedDailyCount.put(day, 0L);
+//        }
+//
+//        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+//        for (UserVideo video : watchedVideos) {
+//            String dayOfWeek = sdf.format(video.getWatchedAt());
+//            orderedDailyCount.put(dayOfWeek, orderedDailyCount.get(dayOfWeek) + 1);
+//        }
+//
+//        return orderedDailyCount;
+//    }
 	
 	//최근 학습 완료한 강의(성장로그)
 //	public List<String> getRecentlyCompletedLectures(long userId) {
@@ -106,7 +143,7 @@ public class UserVideoService {
 	
 	
 	public List<String> getRecentlyCompletedLectures(long userId) {
-	    List<String> watchedLectures = userVideoRepository.findWatchedLectureTitles(userId, PageRequest.of(0, 3));
+	    List<String> watchedLectures = userVideoRepository.findRecentlyCompletedLectureTitles(userId, PageRequest.of(0, 3));
 	    return watchedLectures;
 	}
 }

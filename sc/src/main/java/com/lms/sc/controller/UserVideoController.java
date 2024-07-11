@@ -19,7 +19,6 @@ import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.UserLecture;
 import com.lms.sc.entity.UserVideo;
 import com.lms.sc.entity.Video;
-import com.lms.sc.service.NoteService;
 import com.lms.sc.service.UserLectureService;
 import com.lms.sc.service.UserService;
 import com.lms.sc.service.UserVideoService;
@@ -35,7 +34,6 @@ public class UserVideoController {
 	private final UserService userService;
 	private final VideoService videoService;
 	private final UserLectureService userLecService;
-	private final NoteService noteService;
 	
 	//유튜브 영상 시간 체크
 	@PostMapping("/save")
@@ -57,14 +55,21 @@ public class UserVideoController {
 			
 			userVideoService.saveUserVideo(userVideo, watched, watchedAt, watchingTime);
 			
+			UserLecture userLec = userLecService.getMyUserLec(user, video.getLecture());
+			double progress = userLec.getProgress();
+			
 			// watched 가 true 일 때 userLecture의 progress를 업데이트
 			if (watched) {
-				UserLecture userLec = userLecService.getMyUserLec(user, video.getLecture());
-				List<Video> videoList = noteService.getVideosByLecture(video.getLecture().getId(), userId);
+				List<Video> videoList = videoService.VideoList(video.getLecture());
 				List<UserVideo> watchedList = userVideoService.getUserVideoByWatched(user, video.getLecture(), true);
-				double progress = (double) watchedList.size() / videoList.size();
-				userLec.setProgress(progress);
+				System.out.println("videoSize : " + videoList.size());
+				
+				System.out.println("watchedList :" + watchedList.size());
+				
+				System.out.println( (double) watchedList.size() / videoList.size());
+				progress = (double) watchedList.size() / videoList.size();
 			}
+			userLecService.updateProgress(user, userLec.getLecture(), progress);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -73,13 +78,12 @@ public class UserVideoController {
 	}
 
 	// 최근 학습 완료 강의 (성장로그)
-	@GetMapping("dashboard")
+	@GetMapping("/dashboard")
 	public String dashboard(Model model, Principal principal) {
         SiteUser user = userService.getUserByEmail(principal.getName());
         long userId = user.getId();
         
-        List<String> recentlyCompletedLectures = userVideoService.getRecentlyCompletedLectures(userId);
-        model.addAttribute("recentlyCompletedLectures", recentlyCompletedLectures);
+        
         return "mypage/dashboard";
     }
 }

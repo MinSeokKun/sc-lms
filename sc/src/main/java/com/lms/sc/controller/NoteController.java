@@ -100,7 +100,7 @@ public class NoteController {
 	@PostMapping("/create/{videoId}")
 	@ResponseBody
 	public ResponseEntity<?> createNote(@PathVariable("videoId") long videoId, @RequestBody Map<String, Object> payload, Principal principal) throws Exception {
-	    asyncService.executeAsyncTask();
+//	    asyncService.executeAsyncTask();
 	    SiteUser author = userService.getUserByEmail(principal.getName());
 	    Video video = videoService.getVideo(videoId);
 	    

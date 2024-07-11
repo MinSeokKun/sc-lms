@@ -20,10 +20,13 @@ import com.lms.sc.createForm.AnswerCreateForm;
 import com.lms.sc.createForm.QuestionCreateForm;
 import com.lms.sc.entity.Answer;
 import com.lms.sc.entity.Question;
+import com.lms.sc.entity.SiteUser;
+import com.lms.sc.entity.Video;
 import com.lms.sc.exception.DataNotFoundException;
 import com.lms.sc.service.AnswerService;
 import com.lms.sc.service.QuestionService;
 import com.lms.sc.service.UserService;
+import com.lms.sc.service.VideoService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +39,7 @@ public class QuestionController {
 	private final QuestionService questionService;
 	private final AnswerService answerService;
 	private final UserService userService;
+	private final VideoService videoService;
 	
 	@GetMapping("/list") 
 	public String list(Model model, @RequestParam(value ="page", defaultValue = "0") int page) {
@@ -106,6 +110,23 @@ public class QuestionController {
 		}
 		this.questionService.modify(question, questionCreateForm.getTitle(), questionCreateForm.getContent());
 		return String.format("redirect:/question/detail/%s", id);
+    
+	//비디오 질문 등록
+	@PostMapping("/create/{videoId}")
+	public String createQuestion(@PathVariable("videoId") long videoId, @RequestParam("title") String title, @RequestParam("content") String content, Principal principal) {
+		try {
+	        SiteUser user = userService.getUserByEmail(principal.getName());
+	        Video video = videoService.getVideo(videoId);
+	        
+	        questionService.createQuestion(title, content, user, video);
+	        return "redirect:/video/viewer/" + video.getId();
+	        
+	    } catch (Exception e) {
+	        // 로그 기록
+	        e.printStackTrace();
+	        // 에러 페이지로 리다이렉트 또는 에러 메시지와 함께 폼으로 돌아가기
+	        return "redirect:/error";
+	    }
 	}
 	
 }

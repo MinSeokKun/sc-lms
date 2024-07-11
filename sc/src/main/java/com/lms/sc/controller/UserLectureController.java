@@ -20,6 +20,7 @@ import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.UserLecture;
 import com.lms.sc.entity.UserVideo;
 import com.lms.sc.entity.Video;
+import com.lms.sc.entity.WeeklyWatchData;
 import com.lms.sc.service.NoteService;
 import com.lms.sc.service.QuestionService;
 import com.lms.sc.service.UserLectureService;
@@ -67,8 +68,13 @@ public class UserLectureController {
 	        Map<Integer, Integer> progress = new HashMap<Integer, Integer>();
 	        progress.put(videoList.size(), watched);
 	        
+	        double userLecProgress = (double) watched / videoList.size(); 
+	        userLecture = userLectureService.updateProgress(user, userLecture.getLecture(), userLecProgress);
+	        
 	        list.put(userLecture, progress);
 	    }
+	    List<UserLecture> updateList = userLectureService.getMyList(user);
+	    model.addAttribute("userLecList", updateList);
 	    
 	    model.addAttribute("list", list);
 	    
@@ -107,10 +113,15 @@ public class UserLectureController {
 		model.addAttribute("userLectureList", userLectureList);
 		
 		// 주간 학습 현황
-		Map<String, Long> weeklyWatchCount = userVidService.getWeeklyWatchCount(user, weekOffset);
-        model.addAttribute("weeklyWatchCount", weeklyWatchCount);
-        model.addAttribute("weekOffset", weekOffset != null ? weekOffset : 0);
+		WeeklyWatchData weeklyData = userVidService.getWeeklyWatchCount(user, weekOffset);
+	    model.addAttribute("weeklyWatchCount", weeklyData.getWatchCount());
+	    model.addAttribute("weekDateRange", weeklyData.getDateRange());
+	    System.out.println(weeklyData.getDateRange());
+	    model.addAttribute("weekOffset", weekOffset != null ? weekOffset : 0);
 		
+        List<String> recentlyCompletedLectures = userVidService.getRecentlyCompletedLectures(user.getId());
+        model.addAttribute("recentlyCompletedLectures", recentlyCompletedLectures);
+        
 		return "mypage/dashboard";
 	}
 	

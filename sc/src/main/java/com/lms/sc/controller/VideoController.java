@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.Note;
+import com.lms.sc.entity.Question;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.UserLecture;
 import com.lms.sc.entity.UserVideo;
 import com.lms.sc.entity.Video;
 import com.lms.sc.service.LectureService;
 import com.lms.sc.service.NoteService;
+import com.lms.sc.service.QuestionService;
 import com.lms.sc.service.UserLectureService;
 import com.lms.sc.service.UserService;
 import com.lms.sc.service.UserVideoService;
@@ -42,7 +44,7 @@ public class VideoController {
 	private final UserService userService;
 	private final UserVideoService userVideoService;
 	private final UserLectureService userLectureService;
-	
+	private final QuestionService questionService;
 	
 	//비디오 하나
 	@GetMapping("/viewer/{vidId}")
@@ -104,6 +106,9 @@ public class VideoController {
 		
 //		model.addAttribute("list", list);
 		model.addAttribute("progressMap", progressMap);
+		
+		List<Question> qustList = questionService.getQusetionByUserAndLecture(user, lecture);
+		model.addAttribute("qustList", qustList);
 		
 		return "video/viewer4";
 	}

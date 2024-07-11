@@ -6,149 +6,198 @@
 <div id="content">
     <section class="wrapper">
 
-        <div class="mypage_wrap">
-			<div class="mypage_nav">
-				<ul>
-					<li><a class="active" href="/my/dashboard">대시보드</a></li>
-					<li><a href="/note/list">노트</a></li>
-					<li><a href="/my/question">질문</a></li>
-					<li><a href="/my/list">강의</a></li>
-				</ul>
+        <div class="container-fluid">
+<!-- 			<div class="mypage_nav"> -->
+<!-- 				<ul> -->
+<!-- 					<li><a class="active" href="/my/dashboard">대시보드</a></li> -->
+<!-- 					<li><a href="/note/list">노트</a></li> -->
+<!-- 					<li><a href="/my/question">질문</a></li> -->
+<!-- 					<li><a href="/my/list">강의</a></li> -->
+<!-- 				</ul> -->
+<!-- 			</div> -->
+			<!-- Page Heading -->
+			<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
 			</div>
 			
 			<div class="dash">
 				
-				<div class="dash_info_wrap">
+				<div class="row">
 		
-					<div id="recent_lec">
-						<div>
-							<h5>최근 학습한 강의</h5>
-							<a href="">학습목록</a>
+					<div id="recent_lec" class="col-xl-6 col-lg-5">
+
+						<div class="card shadow mb-4">
+							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+								<h5>최근 학습한 강의</h5>
+								<a href="#">학습목록</a>
+							</div>
+							<div class="card-body">
+
+								<ul>
+									<li th:each="userLecture : ${userLectureList}">
+										<a href="">
+											<span class="text-gray-700" th:text="${userLecture.lecture.title}"></span>
+											<span class th:text="${userLecture.progress}"></span>
+										</a>
+									</li>
+								</ul>
+
+							</div>
 						</div>
-						<ul>
-							<li th:each="userLecture : ${userLectureList}">
-								<a href="#" th:text="${userLecture.lecture.title}"></a>
-							</li>
-						</ul>
+						
+						<div class="card shadow mb-4">
+							<div id="exp_log" >
+								<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+									<h5>성장 로그</h5>
+									<a href="">전체보기</a>
+								</div>
+								<div class="card-body">
+
+									<ul th:if="${not #lists.isEmpty(recentlyCompletedLectures)}">
+										<li th:each="lecture : ${recentlyCompletedLectures}">
+											<a href="" class="text-gray-700" th:text="${lecture}"></a>
+										</li>
+									</ul>
+									<p th:if="${#lists.isEmpty(recentlyCompletedLectures)}">최근 학습 완료한 강의가 없습니다.</p>
+
+								</div>
+							</div>
+						</div>
+
 					</div>
 		
-					<div id="weekly_check">
-						<div>
-							<h5>주간 학습 현황</h5>
-						    <button id="prevWeek">이전 주</button>
-						    <button id="nextWeek">다음 주</button>
+					<div id="weekly_check" class="col-xl-6 col-lg-7">
+						<div class="card shadow mb-4">
+							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+								<button class="btn btn-info" id="prevWeek">이전 주</button>
+								<h5 th:text="|주간 학습 현황 ( ${weekDateRange} )|"></h5>
+								<button class="btn btn-info" id="nextWeek">다음 주</button>
+							</div>
+							<div class="card-body p-0"> <!-- padding을 0으로 설정 -->
+								<div class="chart-container">
+									<canvas id="weeklyWatchChart"></canvas>
+								</div>
+							</div>
 						</div>
-						<canvas id="weeklyWatchChart"></canvas>
-<!-- 						<div> -->
-<!-- 							<input type="date" name="" id=""> -->
-<!-- 							달력 -->
-<!-- 						</div> -->
+		
 					</div>
-		
-				</div>
-		
-				<div class="dash_info_wrap">
-		
-					<div id="exp_log">
-						<div>
-							<h5>성장 로그</h5>
-							<a href="">전체보기</a>
-						</div>
-						<ul th:if="${not #lists.isEmpty(recentlyCompletedLectures)}">
-					        <li th:each="lecture : ${recentlyCompletedLectures}" th:text="${lecture}"></li>
-					    </ul>
-					    <p th:if="${#lists.isEmpty(recentlyCompletedLectures)}">최근 학습 완료한 강의가 없습니다.</p>
-					</div>
-		
-					<div id="note">
-						<div>
-							<h5>최근노트</h5>
-							<a href="">전체보기</a>
-						</div>
-						<ul>
-							<li th:each="note : ${noteList}">
-								<a th:href="@{|/note/list/${note.video.lecture.id}|}">
-									<span th:text="${#strings.length(note.content) > 10 ? note.content.substring(0, 10) + '...' : note.content}"></span>
-									<span th:text="${#temporals.format(note.createDate, 'yyyy-MM-dd HH:mm')}"></span>
-								</a>
-							</li>
-						</ul>
-					</div>
-		
-				</div>
-				
-				<div class="dash_info_wrap">
-		
-<!--					<div id="exp_log">-->
-<!--						<div>-->
-<!--							<h5>성장 로그</h5>-->
-<!--							<a href="">전체보기</a>-->
-<!--						</div>-->
-<!--						<ul>-->
-<!--							<li>-->
-<!--								<div>-->
-<!--									<span>제목 + 수강완료!</span>-->
-<!--								</div>-->
-<!--							</li>-->
-<!--						</ul>-->
-<!--					</div>-->
-		
-					<div id="question">
-						<div>
-							<h5>최근질문</h5>
-							<a href="">전체보기</a>
-						</div>
-						<ul>
-							<li th:each="question : ${questionList}">
-								<a th:href="@{|/|}" th:text="${question.title}"></a>
-							</li>
-						</ul>
-					</div>
-		
+
 				</div>
 				
+				<div class="row">
+
+		
+					<div class="col-xl-6 col-lg-5">
+			
+						<div id="note" class="card shadow mb-4">
+							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+								<h5>최근노트</h5>
+								<a href="">전체보기</a>
+							</div>
+
+							<div class="card-body">
+
+								<ul>
+									<li th:each="note : ${noteList}">
+										<a th:href="@{|/note/list/${note.video.lecture.id}|}" class="py-1 d-flex flex-row align-items-center justify-content-between">
+											<span class="text-gray-700" th:text="${#strings.length(note.content) > 10 ? note.content.substring(0, 10) + '...' : note.content}"></span>
+											<span class="text-gray-700" th:text="${#temporals.format(note.createDate, 'MM-dd HH:mm')}"></span>
+										</a>
+									</li>
+								</ul>
+
+							</div>
+						</div>
+			
+					</div>
+					
+					<div class="col-xl-6 col-lg-5">
+			
+						<div id="question" class="card shadow mb-4">
+							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+								<h5>최근질문</h5>
+								<a href="">전체보기</a>
+							</div>
+							<div class="card-body">
+
+								<ul th:if="${not #lists.isEmpty(questionList)}">
+									<li th:each="lecture : ${questionList}" th:text="${lecture}"></li>
+								</ul>
+								<p th:if="${#lists.isEmpty(questionList)}">최근 작성한 질문이 없습니다.</p>
+
+							</div>
+						</div>
+			
+					</div>
+				</div>
 			</div>
 		</div>
     </section>
 
     <script th:inline="javascript">
         var weeklyWatchCount = /*[[${weeklyWatchCount}]]*/ {};
-        var weekOffset = /*[[${weekOffset}]]*/ 0;
-        var labels = Object.keys(weeklyWatchCount);
-        var data = Object.values(weeklyWatchCount);
+		var weekOffset = /*[[${weekOffset}]]*/ 0;
+		var labels = Object.keys(weeklyWatchCount);
+		var data = Object.values(weeklyWatchCount);
 
-        var ctx = document.getElementById('weeklyWatchChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: '시청한 영상 수',
-                    data: data,
-                    backgroundColor: 'rgba(75, 192, 192, 0.6)'
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1
-                        }
-                    }
-                },
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: '주간 영상 시청 현황'
-                    }
-                }
-            }
-        });
+		var ctx = document.getElementById('weeklyWatchChart').getContext('2d');
+		var chart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: labels,
+				datasets: [{
+					label: '시청한 영상 수',
+					data: data,
+					backgroundColor: 'rgba(75, 192, 192, 0.6)',
+					borderColor: 'rgba(75, 192, 192, 1)',
+					borderWidth: 1,
+					borderRadius: 5,
+					hoverBackgroundColor: 'rgba(75, 192, 192, 0.8)'
+				}]
+			},
+			options: {
+				scales: {
+					y: {
+						beginAtZero: true,
+						ticks: {
+							stepSize: 1,
+							font: {
+								size: 12
+							}
+						},
+						grid: {
+							color: 'rgba(0, 0, 0, 0.1)'
+						}
+					},
+					x: {
+						ticks: {
+							font: {
+								size: 12
+							}
+						},
+						grid: {
+							display: false
+						}
+					}
+				},
+				responsive: true,
+				plugins: {
+					legend: {
+						position: 'top',
+						labels: {
+							font: {
+								size: 14,
+								weight: 'bold'
+							}
+						}
+					}
+				},
+				animation: {
+					duration: 1500,
+					easing: 'easeOutQuart'
+				}
+			}
+		});
 
         document.getElementById('prevWeek').addEventListener('click', function() {
             window.location.href = '/my/dashboard?weekOffset=' + (weekOffset + 1);

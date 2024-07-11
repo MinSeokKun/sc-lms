@@ -6,45 +6,42 @@
 			<div>
 			    <section class="wrapper">
 			        <div class="mypage_wrap">
-	        			<div class="mypage_nav">
-							<ul>
-								<li><a href="/my/dashboard">대시보드</a></li>
-								<li><a href="/note/list">노트</a></li>
-								<li><a href="/my/question">질문</a></li>
-								<li><a class="active" href="/my/list">강의</a></li>
-							</ul>
-						</div>
 						
-						<div class="course-list">
+						<div class="container-fluid">
 						
-					        <div>
+					        <div class="row">
 					            <div class="course-list-title"><h2>내 강의 목록</h2></div>
-					            <!-- 검색영역 -->
-					            <div>
-					                <input type="text" placeholder="검색">
-					                <button type="button">검색</button>
-					            </div>
 					        </div>
 							
-						    <div class="course-item" th:each="entry, loop : ${list.entrySet()}">
-						        <div class="course-title">
-						            <span class="course-number" th:text="${loop.index} + 1"></span>
-						            <a th:href="@{|/video/study/list/${entry.key.lecture.id}|}" th:text="${entry.key.lecture.title}"></a>
-						        </div>
-						        <div class="course-details">
-						            <div class="course-date" th:text="${#temporals.format(entry.key.regDate, 'yyyy-MM-dd')}"></div>
-						            <div class="course-videos" th:each="progress : ${entry.value.entrySet()}">
-						                <span th:text="${progress.key} + '강'"></span>
-						            </div>
-						            <div class="course-progress" th:each="progress : ${entry.value.entrySet()}">
-						                <div class="progress-bar">
-						                    <div class="progress-fill" th:style="'width:' + ${progress.value != null ? (progress.value * 100.0 / progress.key == 0 ? '0' : #numbers.formatDecimal((progress.value * 100.0 / progress.key), 0, 1)) : '0'} + '%'"></div>
-						                </div>
-						                <span class="progress-text" th:text="${progress.value != null ? (progress.value * 100.0 / progress.key == 0 ? '0' : #numbers.formatDecimal((progress.value * 100.0 / progress.key), 0, 1)) : '0'} + '%'"></span>
-						            </div>
-						            <a th:href="@{|/user/lec/delete/${entry.key.lecture.id}|}" class="delete-btn">삭제</a>
-						        </div>
+						    <div class="card mb-4" th:each="entry, loop : ${list.entrySet()}">
+
+								<div class="card-header py-3" onclick="location.href=this.querySelector('a').href" style="cursor: pointer;">
+									<a th:href="@{|/video/study/list/${entry.key.lecture.id}|}" th:text="${entry.key.lecture.title}" style="text-decoration: none; color: inherit;"></a>
+								</div>
+								
+						        <div class="card-body" 
+									th:with="progress=${entry.key.progress != null and entry.key.progress instanceof T(java.lang.Number) ? entry.key.progress : 0}">
+
+									<div class="progress progress-sm mb-2">
+										<div class="progress-bar" role="progressbar" 
+											th:style="'width:' + ${#numbers.formatDecimal(progress * 100, 0, 1)} + '%'" 
+											th:aria-valuenow="${#numbers.formatDecimal(progress * 100, 0, 1)}"
+											aria-valuemin="0" 
+											aria-valuemax="100">
+										</div>
+									</div>
+									<div class="d-flex flex-row align-items-center justify-content-between">
+										<div class="course-date" th:text="${#temporals.format(entry.key.regDate, 'yyyy-MM-dd')}"></div>
+										<div class="course-videos" th:each="videoProgress : ${entry.value.entrySet()}">
+											<span th:text="${videoProgress.key} + '강'"></span>
+										</div>
+										<span th:text="${progress == 0 ? '0%' : #numbers.formatDecimal(progress * 100, 1, 1) + '%'}"></span>
+										<a th:href="@{|/user/lec/delete/${entry.key.lecture.id}|}" class="delete-btn">삭제</a>
+									</div>
+								</div>
+
 						    </div>
+
 						</div>
 			        </div>
 			    </section>

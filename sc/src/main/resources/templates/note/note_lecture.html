@@ -1,35 +1,44 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
-      layout:decorate="~{layout}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout}">
 <th:block layout:fragment="content">
 	<section class="wrapper">
-		<div class="mypage_wrap">
-			
-			<div class="mypage_nav">
-				<ul>
-					<li><a href="/my/dashboard">대시보드</a></li>
-					<li><a class="active" href="/note/list">노트</a></li>
-					<li><a href="/my/question">질문</a></li>
-					<li><a href="/my/list">강의</a></li>
-				</ul>
-			</div>
-			
+		<div class="container-fluid">
+
 			<div class="note">
 			
 				<h2>강의 노트</h2>
-				
-				<table th:each="entry : ${noteList.entrySet()}">
-					<caption th:text="${entry.key.title}"></caption>
-					<tr>
-						<td>노트 내용</td>
-						<td>노트 시간</td>
-					</tr>
+
+				<div id="note" class="card shadow mb-4" th:each="entry : ${noteList.entrySet()}">
+
+					<div class="card-header">
+						<h5 th:text="${entry.key.title}"></h5>
+					</div>
 					
-					<tr th:each="note : ${entry.value}">    
-					    <td><a th:text="${note.content}" th:href="@{|/video/viewer/${note.video.id}?n=${note.id}|}"></a></td>
-					    <td><a th:text="${note.videoTime}"></a></td>
-				   </tr>
-				</table>
+					<div class="card-body">
+
+						<ul>
+							<li th:each="note : ${entry.value}" class="py-2">
+								<div class="py-1 d-flex flex-row align-items-center justify-content-between">
+									<a th:href="@{|/video/viewer/${note.video.id}?n=${note.id}|}" class="text-gray-700"
+									th:with="minutes=${note.videoTime / 60},
+									seconds=${note.videoTime % 60}">
+									<i class="fa-solid fa-play"></i> [[${#numbers.formatInteger(minutes, 2) + ':' + #numbers.formatInteger(seconds, 2)}]]
+									<div>
+										<a href="#" class="btn btn-secondary">수정</a>
+										<a href="#" class="btn btn-danger">삭제</a>
+									</div>
+								</div>
+								</a>
+								<span class="text-gray-700" th:text="${note.content}"></span>
+								</span>
+							</li>
+						</ul>
+
+					</div>
+
+				</div>
+
 			</div>
 			
 		</div>

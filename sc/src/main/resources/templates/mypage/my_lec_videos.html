@@ -5,29 +5,34 @@
 		<div id="content">
 			<div class="wrapper">
 			    <section>
-		            <div class="course-list">
+		            <div class="container-fluid">
+
 				        <div>
 				            <div><h2>리스트 제목</h2></div>
-				            <!-- 검색영역 -->
-				            <div>
-				                <input type="text" placeholder="검색">
-				                <button type="button">검색</button>
-				            </div>
 				        </div>
-					    <div class="course-item" th:each="entry, loop : ${userVideoList.entrySet()}">
-					        <div class="course-title">
-					            <span class="course-number" th:text="${loop.index + 1}"></span>
+
+					    <div class="card mb-4" th:each="entry, loop : ${userVideoList.entrySet()}">
+
+					        <div class="card-header py-3" onclick="location.href=this.querySelector('a').href" style="cursor: pointer;">
 					            <a th:href="@{|/video/viewer/${entry.key.id}|}" th:text="${entry.key.title}"></a>
 					        </div>
-					        <div class="course-details">
-					            <div class="course-progress">
-					                <div class="progress-bar">
-					                    <div class="progress-fill" th:style="'width:' + ${entry.key.duration == 0 ? '0%' : (#numbers.formatDecimal((entry.value.watchingTime * 100.0 / entry.key.duration), 0, 1) + '%')}"></div>
-					                </div>
-					                <span class="progress-text" th:text="${entry.key.duration == 0 ? '0%' : (#numbers.formatDecimal((entry.value.watchingTime * 100.0 / entry.key.duration), 0, 1) + '%')}"></span>
-					            </div>
+							
+					        <div class="card-body" th:with="progressPercentage=${entry.key.duration == 0 ? 0 : (entry.value.watchingTime * 100.0 / entry.key.duration)}">
+								
+								<div class="progress progress-sm mb-2">
+									<div class="progress-bar" role="progressbar"
+										th:style="'width:' + ${#numbers.formatDecimal(progressPercentage, 0, 1) + '%'}"
+										th:aria-valuenow="${#numbers.formatDecimal(progressPercentage, 0, 1)}"
+										aria-valuemin="0" 
+										aria-valuemax="100">
+										<div class="progress-fill" th:style="'width: 100%'"></div>
+									</div>
+								</div>
+								
+								<span class="progress-text" th:text="${progressPercentage == 0 ? '0%' : #numbers.formatDecimal(progressPercentage, 0, 1) + '%'}"></span>
 					        </div>
 					    </div>
+
 					</div>
 			    </section>
 		    </div>

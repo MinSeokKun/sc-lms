@@ -106,7 +106,7 @@ public class UserVideoService {
 	
 	
 	public List<String> getRecentlyCompletedLectures(long userId) {
-	    List<String> watchedLectures = userVideoRepository.findWatchedLectureTitles(userId, PageRequest.of(0, 3));
+	    List<String> watchedLectures = userVideoRepository.findRecentlyCompletedLectureTitles(userId, PageRequest.of(0, 3));
 	    return watchedLectures;
 	}
 }

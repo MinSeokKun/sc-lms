@@ -41,8 +41,7 @@ a {
 .gnb a { font-size: 20px; font-weight: 700; }
 
 .util { position: relative; display: flex; gap: 0 16px; }
-.util > a { font-size: 16px; }
-
+.util > a { font-size: 15px; color: #333; }
 .dashBtn {
 	padding: 6px 12px;
     border: 1px solid #ced4da;
@@ -52,19 +51,30 @@ a {
     color: #212529;
 }
 
+
 .dropMenu { 
-    display: flex;
-    flex-direction: column;
     position: absolute;
-    width: 200px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px 0 rgba(33, 37, 41, .24);
-    background-color: #fff;
-    top: 40px;
-    left: 48px;
-    z-index: 10;
-    border: 1px solid #e0e0e0;
+	  top: 120%;
+	  left: -70px;
+	  z-index: 1000;
+	  display: none;
+	  float: left;
+	  min-width: 10rem;
+	  padding: 0.5rem 0;
+	  margin: 0.125rem 0 0;
+	  font-size: 0.85rem;
+	  color: #858796;
+	  text-align: left;
+	  list-style: none;
+	  background-color: #fff;
+	  background-clip: padding-box;
+	  border: 1px solid #e3e6f0;
+	  border-radius: 0.35rem;
  }
+ .dropMenu a { 
+ 	font-size: 0.85rem;
+ }
+ 
  .dropMenu:before {
     display: inline-block;
     position: absolute;
@@ -85,6 +95,9 @@ a {
 .dropMenu ul li:last-child { margin-bottom: 0; }
 .dropMenu ul li a { display: block; width: 100%; font-size: 16px; }
 .dropMenu ul li i { font-size: 16px; color: #aaa; }
+
+
+.admin_btn { font-size: 12px; color: #ccc; }
 
 /* 메인 */
 .wrapper.search { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 48px; }

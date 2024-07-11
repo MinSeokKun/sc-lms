@@ -111,6 +111,9 @@ public class UserLectureController {
         model.addAttribute("weeklyWatchCount", weeklyWatchCount);
         model.addAttribute("weekOffset", weekOffset != null ? weekOffset : 0);
 		
+        List<String> recentlyCompletedLectures = userVidService.getRecentlyCompletedLectures(user.getId());
+        model.addAttribute("recentlyCompletedLectures", recentlyCompletedLectures);
+        
 		return "mypage/dashboard";
 	}
 	

@@ -94,6 +94,15 @@ public class QuestionService {
 	}
 	
 	//강의 질문 가져오기
+	public List<Question> getQuestionByLecture(Lecture lecture){
+		return questionRepository.findByVideo_Lecture(lecture);
+	}
+	
+	public Page<Question> searchQuestions(int page, String keyword) {
+	    Pageable pageable = PageRequest.of(page, 10, Sort.by("createDate").descending());
+	    return questionRepository.findByKeywordWithAnswers(keyword, pageable);
+	}
+	
 //	public List<Question> getQuestionByLecture(Lecture lecture){
 //		return questionRepository.findByVideo_Lecture(lecture);
 //	}

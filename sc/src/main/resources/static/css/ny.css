@@ -172,3 +172,10 @@ input[type=submit]{
   background-color: #1b1b1b;
   color: #ddd;
 }
+
+.question-search {
+	text-align:right;
+}
+.tbl2{
+	margin: 20px;
+}

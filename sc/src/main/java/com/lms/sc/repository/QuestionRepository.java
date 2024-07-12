@@ -26,6 +26,13 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>{
 	List<Question> findByAuthorAndVideo_Lecture(SiteUser author, Lecture lecture);
 	List<Question> findByVideo_Lecture(Lecture lecture);
 	
+	List<Question> findByTitleContainingAndContentContainingAndAuthor(String title, String content, SiteUser author);
+	
+	@Query("SELECT q FROM Question q WHERE q.title LIKE %:keyword% OR q.content LIKE %:keyword% OR q.author.name LIKE %:keyword%")
+    Page<Question> searchQuestions(@Param("keyword") String keyword, Pageable pageable);
+	
+	@Query("SELECT DISTINCT q FROM Question q LEFT JOIN FETCH q.answerList WHERE q.title LIKE %:keyword% OR q.content LIKE %:keyword%")
+	Page<Question> findByKeywordWithAnswers(@Param("keyword") String keyword, Pageable pageable);
 	@Query("SELECT q FROM Question q WHERE q.author = :author AND q.video.lecture = :lecture ORDER BY q.createDate DESC")
     List<Question> findByAuthorAndLectureOrderByCreateDateAsc(@Param("author") SiteUser author, @Param("lecture") Lecture lecture);
 }

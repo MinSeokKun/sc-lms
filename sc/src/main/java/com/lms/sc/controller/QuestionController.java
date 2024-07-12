@@ -1,10 +1,14 @@
 package com.lms.sc.controller;
 
 import java.security.Principal;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.lms.sc.createForm.AnswerCreateForm;
@@ -115,19 +120,31 @@ public class QuestionController {
 	
 	//비디오 질문 등록
 	@PostMapping("/create/{videoId}")
-	public String createQuestion(@PathVariable("videoId") long videoId, @RequestParam("title") String title, @RequestParam("content") String content, Principal principal) {
+	@ResponseBody
+	public ResponseEntity<?> createQuestion(@PathVariable("videoId") long videoId, @RequestParam("title") String title, @RequestParam("content") String content, Principal principal) {
 		try {
 	        SiteUser user = userService.getUserByEmail(principal.getName());
 	        Video video = videoService.getVideo(videoId);
 	        
-	        questionService.createQuestion(title, content, user, video);
-	        return "redirect:/video/viewer/" + video.getId();
+	        Question question = questionService.createQuestion(title, content, user, video);
+	        
+	     // 생성된 질문의 정보를 반환
+            Map<String, Object> response = new HashMap<>();
+            response.put("id", question.getId());
+            response.put("title", question.getTitle());
+            response.put("content", question.getContent());
+            response.put("author", question.getAuthor().getName());
+            response.put("createDate", question.getCreateDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            
+//	        return "redirect:/video/viewer/" + video.getId();
+	        return ResponseEntity.ok(response);
 	        
 	    } catch (Exception e) {
 	        // 로그 기록
 	        e.printStackTrace();
 	        // 에러 페이지로 리다이렉트 또는 에러 메시지와 함께 폼으로 돌아가기
-	        return "redirect:/error";
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("질문 생성 중 오류가 발생했습니다.");
+
 	    }
 	}
 	

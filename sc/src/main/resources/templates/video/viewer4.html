@@ -85,7 +85,7 @@
 		        			<h2>커뮤니티</h2>
 		        			<button type="button">X</button>
         				</div>
-        				<ul class="lec_list" style="height: 400px">
+        				<ul class="quest_list" style="height: 400px">
 			        		<li th:each="question : ${qustList}">
 			        			<span>[[${question.title}]]</span>
 			        			<span>[[${question.content}]]</span>
@@ -93,17 +93,17 @@
 			        			<span>[[${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}]]</span>
 			        		</li>
 			        	</ul>
-			        	<div style="border-top: 1px solid #ddd; padding-top: 20px;">
-						    <form th:action="@{|/question/create/${video.id}}" method="post">
+			        	<div style="padding: 16px 20px; border-top: 1px solid #ddd; padding-top: 20px;">
+						    <form id="questionForm">
 						    	<div class="input_box">
 						    		<label>제목</label>
 							    	<input name="title" type="text" />
 						    	</div>
 						    	<div class="input_box">
 						    		<label>내용</label>
-							    	<input name="content" type="text" />						    	
+							    	<textarea name="content" style="height: 146px; resize: none"></textarea>   	
 						    	</div>
-						    	<button type="submit">등록</button>
+						    	<button class="login-btn" type="submit">등록</button>
 						    </form>
 					    </div>
 			        </li>
@@ -122,6 +122,52 @@
 			</div>
 	    </div>
 	</div>
+	<script>
+		$(document).ready(function() {
+			let token = $("meta[name='_csrf']").attr("content");
+		    let header = $("meta[name='_csrf_header']").attr("content");
+		    
+		    $('#questionForm').submit(function(e) {
+		        e.preventDefault(); // 폼 제출 기본 동작 방지
+		
+		        let videoId = $('#videoId').val();
+		        let title = $('input[name="title"]').val();
+		        let content = $('textarea[name="content"]').val();
+		
+		        $.ajax({
+		            url: `/question/create/${videoId}`,
+		            method: 'POST',
+		            data: { title: title, content: content },
+		            beforeSend: function(xhr) {
+		                xhr.setRequestHeader(header, token);
+		            },
+		            dataType: 'json', // 응답 데이터 타입을 JSON으로 명시
+		            success: function(response) {
+		                // 새로운 질문을 리스트에 추가
+		                let newQuestion = `
+		                    <li>
+		                        <span>${response.title}</span>
+		                        <span>${response.content}</span>
+		                        <span>${response.author}</span>
+		                        <span>${response.createDate}</span>
+		                    </li>
+		                `;
+		                $('.lec_list').append(newQuestion);
+		
+		                // 입력 필드 초기화
+		                $('input[name="title"]').val('');
+		                $('textarea[name="content"]').val('');
+		
+		                alert('질문이 성공적으로 등록되었습니다.');
+		            },
+		            error: function(xhr, status, error) {
+		                console.error('Error:', error);
+		                alert('질문 등록 중 오류가 발생했습니다.');
+		            }
+		        });
+		    });
+		});
+	</script>
 	<script>
 		// 사용자 및 비디오 데이터를 전역 변수로 저장
         let userId = $('#userId').val();

@@ -94,7 +94,11 @@ public class QuestionService {
 	}
 	
 	//강의 질문 가져오기
-	public List<Question> getQuestionByLecture(Lecture lecture){
-		return questionRepository.findByVideo_Lecture(lecture);
-	}
+//	public List<Question> getQuestionByLecture(Lecture lecture){
+//		return questionRepository.findByVideo_Lecture(lecture);
+//	}
+	
+	public List<Question> getQuestionByUserAndLectureSortedAsc(SiteUser user, Lecture lecture) {
+        return questionRepository.findByAuthorAndLectureOrderByCreateDateAsc(user, lecture);
+    }
 }

@@ -107,7 +107,8 @@ public class VideoController {
 //		model.addAttribute("list", list);
 		model.addAttribute("progressMap", progressMap);
 		
-		List<Question> qustList = questionService.getQusetionByUserAndLecture(user, lecture);
+//		List<Question> qustList = questionService.getQusetionByUserAndLecture(user, lecture);
+		List<Question> qustList = questionService.getQuestionByUserAndLectureSortedAsc(user, lecture);
 		model.addAttribute("qustList", qustList);
 		
 		return "video/viewer4";

@@ -97,4 +97,10 @@ public class QuestionService {
 	public List<Question> getQuestionByLecture(Lecture lecture){
 		return questionRepository.findByVideo_Lecture(lecture);
 	}
+	
+	public Page<Question> searchQuestions(int page, String keyword) {
+	    Pageable pageable = PageRequest.of(page, 10, Sort.by("createDate").descending());
+	    return questionRepository.findByKeywordWithAnswers(keyword, pageable);
+	}
+	
 }

@@ -13,8 +13,12 @@
 	         <li class="nav-item dropdown no-arrow" style="display: flex; align-items: center; gap: 10px;">
 	             <a class="nav-link dropdown-toggle my" href="javascript:void(0)" id="userDropdown" role="button"
 	                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">[[${#authentication.principal.username}]] 님</span>
-	                 <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+	                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">[[${#authentication.principal.name}]] 님</span>
+	                 <img class="img-profile rounded-circle" 
+					     th:src="${#authentication.principal.profileImage != null && !#authentication.principal.profileImage.isEmpty()} 
+					              ? @{${#authentication.principal.profileImage}} 
+					              : @{/img/undraw_profile.svg}"
+					     alt="Profile Image">
 	             </a>
 	             <!-- 어드민 페이지 이동 -->
 	             <a th:href="@{/lecture/list}" class="admin_btn" sec:authorize="hasRole('ADMIN')">관리자 페이지</a>

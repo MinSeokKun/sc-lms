@@ -4,28 +4,35 @@
 	<th:block layout:fragment=content>
 		<div id="content">
 		    <!-- 검색섹션 === S -->
-		    <section class="wrapper search">
-				<h3>인프런에서 가치를 높이세요</h3>
-		        <div class="search_input">
-		            <input type="text" placeholder="배우고 싶은 지식을 입력하세요.">
-		            <button type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-		        </div>
-		    </section>
+<!-- 		    <section class="wrapper search"> -->
+<!-- 				<h3>인프런에서 가치를 높이세요</h3> -->
+<!-- 		        <div class="search_input"> -->
+<!-- 		            <input type="text" placeholder="배우고 싶은 지식을 입력하세요."> -->
+<!-- 		            <button type="button"><i class="fa-solid fa-magnifying-glass"></i></button> -->
+<!-- 		        </div> -->
+<!-- 		    </section> -->
 		    <!-- 검색섹션 === E -->
 		    <!-- 강의 리스트 === S -->
 		    <section class="wrapper">
           
-		        <div class="tit" style="margin-bottom: 20px;"><h2>강의 리스트</h2></div>
-		        
+		        <div class="tit" style="margin: 20px;"><h2>강의 리스트</h2></div>
+				
 				<div class="container-fluid">
-					<div class="row row-cols-3 grid-gap-3">
-						<div class="col" th:each="lecture, loop : ${lecture}">
+					<div class="row row-cols-5 grid-gap-3">
+						<div class="col" th:each="lecture, loop : ${userLecture}">
 							<div class="card">
-								<img class="thumnail" th:src="${lecture.thumnailUrl}" alt="썸네일이미지">
-								<div class="card-subtitle d-flex align-items-center flex-sm-column">
-									<a th:href="@{|/lecture/detail/${lecture.id}|}" class="text-lg text-gray-700">[[${lecture.title}]]</a>
-									<input type="hidden" id="lecId" th:value="${lecture.id}">
-									<a th:href="@{|/lecture/startlearn/${lecture.id}|}" id="reglec" class="text-gray-700" th:data-lecture-id="${lecture.id}">수강신청</a>
+								<img class="thumnail" th:src="${lecture.key.thumnailUrl}" alt="썸네일이미지">
+								<div class="card-subtitle d-flex align-items-start flex-sm-column p-2">
+									<a th:href="@{|/lecture/detail/${lecture.key.id}|}" class="text-lg text-gray-700">[[${lecture.key.title}]]</a>
+									<input type="hidden" id="lecId" th:value="${lecture.key.id}">
+									<span>[[${lecture.value} + ' 명 수강중']]</span>
+									<span class="text-primary font-weight-bold">무료</span>
+									<div class="badge-wrap">
+										<span class="btn-warning text-gray-200">새강의</span>
+									</div>
+									<a th:href="@{|/lecture/startlearn/${lecture.key.id}|}" id="reglec" class="text-gray-100 btn btn-success btn-icon-split p-1 mt-1 mb-1 border-radious-1" th:data-lecture-id="${lecture.key.id}">
+										수강신청
+									</a>
 								</div>
 							</div>
 						</div>

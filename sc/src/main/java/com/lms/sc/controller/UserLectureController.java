@@ -101,7 +101,7 @@ public class UserLectureController {
 		}
 		// 질문 리스트 가져오기
 		SiteUser user = userService.getUserByEmail(principal.getName());
-		List<Question> questionList = questService.getListByAuthor(user);
+		List<Question> questionList = questService.getRecentQuestions(user);
 		model.addAttribute("questionList", questionList);
 		
 		// 노트 리스트 가져오기

@@ -23,7 +23,6 @@ import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.Note;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.entity.Video;
-import com.lms.sc.service.AsyncService;
 import com.lms.sc.service.NoteService;
 import com.lms.sc.service.UserService;
 import com.lms.sc.service.VideoService;
@@ -39,7 +38,6 @@ public class NoteController {
 	private final NoteService noteService;
 	private final UserService userService;
 	private final VideoService videoService;
-	private final AsyncService asyncService;
 	
 	// 강의 별 노트 갯수 리스트
 	@PreAuthorize("isAuthenticated()")
@@ -63,7 +61,7 @@ public class NoteController {
 	// 강의의 영상별 노트 리스트
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list/{lecId}")
-	public String getMethodName(Principal principal,
+	public String notesInLecture(Principal principal,
 			@PathVariable("lecId") long lecId, Model model) {
 		if (principal == null) {
 			return "user/login";
@@ -120,8 +118,9 @@ public class NoteController {
 	
 	// 노트 삭제
 	@PreAuthorize("isAuthenticated()")
-	@GetMapping("/delete/{noteId}")
-	public ResponseEntity<Void> delNote(@PathVariable("noteId") long noteId, Principal principal) {
+	@PostMapping("/delete/{noteId}")
+	@ResponseBody
+	public ResponseEntity<Void> delNoteInViewer(@PathVariable("noteId") long noteId, Principal principal) {
 		Note note = noteService.getNote(noteId);
 		if (!note.getAuthor().getEmail().equals(principal.getName())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
@@ -130,6 +129,14 @@ public class NoteController {
 		return ResponseEntity.ok().build();
 	}
 	
-	
-	
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/delete/{noteId}")
+	public String delNoteInMypage(@PathVariable("noteId") long noteId, Principal principal) {
+		Note note = noteService.getNote(noteId);
+		if (!note.getAuthor().getEmail().equals(principal.getName())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
+		}
+		noteService.delNote(noteId);
+		return "redirect:/note/list/" + note.getVideo().getLecture().getId();
+	}
 }

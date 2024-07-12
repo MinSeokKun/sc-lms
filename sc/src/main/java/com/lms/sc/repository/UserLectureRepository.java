@@ -27,4 +27,6 @@ public interface UserLectureRepository extends JpaRepository<UserLecture, Long> 
 //	Optional<UserLecture> findByUserLecture(String userEmail, long lecId);
 	
 	boolean existsByUserAndLecture(SiteUser user, Lecture lecture);
+	
+	List<UserLecture> findByLecture(Lecture lecture);
 }

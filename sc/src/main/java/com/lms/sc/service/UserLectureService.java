@@ -50,6 +50,12 @@ public class UserLectureService {
 		return userLectureRepository.save(userLec);
 	}
 	
+	// 수강중인 학생 수 가져오기
+	public Integer getStudents(Lecture lecture) {
+		List<UserLecture> list = userLectureRepository.findByLecture(lecture);
+		return list.size();
+	}
+	
 	// userLecture의 progress를 업데이트
 	public UserLecture updateProgress(SiteUser user, Lecture lecture, double progress) {
 		UserLecture userLec = userLectureRepository.findByUserAndLecture(user, lecture).get();
@@ -75,4 +81,5 @@ public class UserLectureService {
 		}
 		userLectureRepository.delete(userLec);
 	}
+	
 }

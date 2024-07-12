@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.Question;
@@ -23,4 +25,7 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>{
 	
 	List<Question> findByAuthorAndVideo_Lecture(SiteUser author, Lecture lecture);
 	List<Question> findByVideo_Lecture(Lecture lecture);
+	
+	@Query("SELECT q FROM Question q WHERE q.author = :author ORDER BY q.createDate DESC")
+	List<Question> findTop3ByAuthor(@Param("author") SiteUser author, Pageable pageable);
 }

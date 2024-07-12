@@ -40,6 +40,10 @@ public class SiteUserDetails implements UserDetails {
 		return user.getTellNumber();
 	}
 
+	public String getProfileImage() {
+		return user.getProfileImage();
+	}
+	
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;

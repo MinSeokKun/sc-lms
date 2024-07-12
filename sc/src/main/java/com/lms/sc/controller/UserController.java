@@ -1,5 +1,6 @@
 package com.lms.sc.controller;
 
+import java.io.IOException;
 import java.security.Principal;
 
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.lms.sc.createForm.TempPasswordForm;
 import com.lms.sc.createForm.UserCreateForm;
@@ -46,6 +48,12 @@ public class UserController {
 	@PostMapping("/signup")
 	public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()) {
+			System.out.println(bindingResult.getErrorCount());
+			System.out.println(bindingResult.getObjectName());
+			bindingResult.getAllErrors().forEach(error -> {
+		        System.out.println("Error: " + error.getObjectName() + " - " + error.getDefaultMessage());
+		    });
+		    
 			return "user/sign_up";
 		}
 		if(!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
@@ -110,9 +118,18 @@ public class UserController {
 	//유저 정보 수정
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify")
-	public String modify(@RequestParam("id") long id, @RequestParam("name") String name, @RequestParam("password") String password, @RequestParam("tellNumber") String tellNumber) {
+	public String modify(@RequestParam("id") long id,
+	                     @RequestParam("name") String name,
+	                     @RequestParam("password") String password,
+	                     @RequestParam("tellNumber") String tellNumber,
+	                     @RequestParam(value = "profileImage", required = false) MultipartFile profileImage) throws IOException {
 	    SiteUser user = userService.getUserById(id);
 	    userService.modify(user, name, password, tellNumber);
+	    
+	    if (profileImage != null && !profileImage.isEmpty()) {
+	        userService.updateProfileImage(user.getId(), profileImage);
+	    }
+	    
 	    return "redirect:/user/mypage";
 	}
 	

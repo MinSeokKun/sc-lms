@@ -45,6 +45,10 @@ public class QuestionService {
 		 return this.questionRepository.findByAuthor(author);
 	 }
 
+	 public List<Question> getRecentQuestions(SiteUser author) {
+		 Pageable pageable = PageRequest.of(0, 3);
+		 return questionRepository.findTop3ByAuthor(author, pageable);
+	 }
 
 	public Question getQuestion(Integer id) {
 		Optional<Question> question = this.questionRepository.findById(id);

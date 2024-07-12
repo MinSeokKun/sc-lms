@@ -74,8 +74,17 @@ public class VideoController {
 		if (savedTime != null) {
 	        model.addAttribute("videoTime", savedTime);
 	    } else if (noteId != null) {
-	        Note note = noteService.getNote(noteId);
-	        model.addAttribute("videoTime", note.getVideoTime());
+	    	try {
+	            Note note = noteService.getNote(noteId);
+	            if (note != null) {
+	                model.addAttribute("videoTime", note.getVideoTime());
+	            } else {
+	                model.addAttribute("videoTime", userVideo.getWatchingTime());
+	            }
+	        } catch (Exception e) {
+	            // 노트를 찾지 못했을 때의 처리
+	            model.addAttribute("videoTime", userVideo.getWatchingTime());
+	        }
 	    } else {
 	        model.addAttribute("videoTime", userVideo.getWatchingTime());
 	    }

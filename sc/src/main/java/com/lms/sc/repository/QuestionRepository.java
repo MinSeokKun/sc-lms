@@ -33,4 +33,6 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>{
 	
 	@Query("SELECT DISTINCT q FROM Question q LEFT JOIN FETCH q.answerList WHERE q.title LIKE %:keyword% OR q.content LIKE %:keyword%")
 	Page<Question> findByKeywordWithAnswers(@Param("keyword") String keyword, Pageable pageable);
+	@Query("SELECT q FROM Question q WHERE q.author = :author AND q.video.lecture = :lecture ORDER BY q.createDate DESC")
+    List<Question> findByAuthorAndLectureOrderByCreateDateAsc(@Param("author") SiteUser author, @Param("lecture") Lecture lecture);
 }

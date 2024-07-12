@@ -103,4 +103,11 @@ public class QuestionService {
 	    return questionRepository.findByKeywordWithAnswers(keyword, pageable);
 	}
 	
+//	public List<Question> getQuestionByLecture(Lecture lecture){
+//		return questionRepository.findByVideo_Lecture(lecture);
+//	}
+	
+	public List<Question> getQuestionByUserAndLectureSortedAsc(SiteUser user, Lecture lecture) {
+        return questionRepository.findByAuthorAndLectureOrderByCreateDateAsc(user, lecture);
+    }
 }

@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.lms.sc.createForm.TempPasswordForm;
 import com.lms.sc.createForm.UserCreateForm;
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
+import com.lms.sc.exception.DataNotFoundException;
+import com.lms.sc.exception.EmailException;
 import com.lms.sc.service.LectureService;
 import com.lms.sc.service.UserLectureService;
 import com.lms.sc.service.UserService;
@@ -111,6 +114,33 @@ public class UserController {
 	    SiteUser user = userService.getUserById(id);
 	    userService.modify(user, name, password, tellNumber);
 	    return "redirect:/user/mypage";
+	}
+	
+	//임시비밀번호 관련
+	@GetMapping("/tempPassword")
+	public String showTempPasswordForm(Model model) {
+		//임시비밀번호 html 페이지로 넘겨준다.
+	    model.addAttribute("tempPasswordForm", new TempPasswordForm());
+	    return "user/find_temp_password";
+	}
+
+	//임시비밀번호 메일 전송
+	@PostMapping("/tempPassword")
+	public String sendTempPassword(@Valid TempPasswordForm tpf) {
+		try {
+			//사용자의 이메일로 임시 비밀번호를 생성하고 전송
+			userService.modifyPassword(tpf.getEmail());
+		}catch(DataNotFoundException e) {
+			e.printStackTrace();
+//			br.reject("emailNotFound", e.getMessage());
+			return "user/find_temp_password";
+		}catch (EmailException e) {
+            e.printStackTrace();
+//            br.reject("sendEmailFail", e.getMessage());
+            return "user/find_temp_password";
+        }
+		
+		return "redirect:/user/login?success=true";
 	}
 
 }

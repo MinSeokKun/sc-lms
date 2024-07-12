@@ -87,10 +87,10 @@
         				</div>
         				<ul class="quest_list" style="height: 400px">
 			        		<li th:each="question : ${qustList}">
-			        			<span>[[${question.title}]]</span>
-			        			<span>[[${question.content}]]</span>
-			        			<span>[[${question.author.name}]]</span>
-			        			<span>[[${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}]]</span>
+			        			<strong>[[${question.title}]]</strong>
+			        			<span class="desc">[[${question.content}]]</span>
+			        			<span class="author">[[${question.author.name}]]</span>
+			        			<span class="date">[[${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}]]</span>
 			        		</li>
 			        	</ul>
 			        	<div style="padding: 16px 20px; border-top: 1px solid #ddd; padding-top: 20px;">
@@ -124,6 +124,10 @@
 	</div>
 	<script>
 		$(document).ready(function() {
+			//사이바 제거
+			$('.navbar-nav.bg-gradient-primary').hide();
+			
+			//커뮤니티
 			let token = $("meta[name='_csrf']").attr("content");
 		    let header = $("meta[name='_csrf_header']").attr("content");
 		    
@@ -146,13 +150,13 @@
 		                // 새로운 질문을 리스트에 추가
 		                let newQuestion = `
 		                    <li>
-		                        <span>${response.title}</span>
-		                        <span>${response.content}</span>
-		                        <span>${response.author}</span>
-		                        <span>${response.createDate}</span>
+		                        <strong>${response.title}</strong>
+		                        <span class="desc">${response.content}</span>
+		                        <span class="author">${response.author}</span>
+		                        <span class="date">${response.createDate}</span>
 		                    </li>
 		                `;
-		                $('.lec_list').append(newQuestion);
+		                $('.quest_list').prepend(newQuestion);
 		
 		                // 입력 필드 초기화
 		                $('input[name="title"]').val('');

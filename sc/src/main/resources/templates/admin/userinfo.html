@@ -1,0 +1,83 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout}">
+	<th:block layout:fragment="content">
+		<div id="content">
+			<div class="wrapper">
+				<section class="mt-5">
+					<div style="display: flex; justify-content: space-between;">
+						<h1>회원정보목록</h1>
+						<div id="dataTable_filter" class="dataTables_filter">
+							<label style="white-space: nowrap; display: flex; gap: 10px; align-items: center;">검색:<input th:value="${kw}" type="search" id="search_kw" class="form-control form-control-sm" placeholder="검색어를 입력하세요." aria-controls="dataTable"></label>
+						</div>
+					</div>
+					<div class="table-responsive">
+						<table class="table table-bordered" id="dataTable" style="text-align: center;">
+							<thead>
+								<tr>				
+									<th>No</th>
+									<th>이름</th>
+									<th>이메일</th>
+									<th>전화번호</th>
+									<th>생성일</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="user, loop : ${paging}">
+									<td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
+									<td>
+										[[${user.name}]]
+									</td>
+									<td>[[${user.email}]]</td>
+									<td>[[${user.tellNumber}]]</td>
+									<td>[[${#temporals.format(user.createDate, 'yyyy-MM-dd HH:mm')}]]</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="noResult" th:if="${paging.isEmpty()}" style="display: flex; justify-content: center; align-items: center; height: 300px">검색 결과가 없습니다.</div>
+					</div>
+					<div th:if="${!paging.isEmpty()}">
+						<ul class="pagination justify-content-center">
+							<li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+								<a class="page-link" href="javascript:void(0)" th:data-page="${paging.number-1}"><span>이전</span></a>
+							</li>
+							<li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+								th:if="${page >= paging.number-5 and page <= paging.number+5}" 
+								th:classappend="${page == paging.number} ? 'active'" class="page-item">
+								<a class="page-link" href="javascript:void(0)" th:data-page="${page}">[[${page+1}]]</a>
+							</li>
+							<li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+								<a class="page-link" href="javascript:void(0)" th:data-page="${paging.number+1}"><span>다음</span></a>
+							</li>
+						</ul>
+					</div>
+					<form th:action="@{/admin/userList}" method="get" id="searchForm">
+						<input type="hidden" id="kw" name="kw" th:value="${kw}">
+						<input type="hidden" id="page" name="page" th:value="${paging.number}">
+					</form>
+				</section>
+			</div>
+		</div>
+		<script layout:fragment="script" type="text/javascript">
+			document.addEventListener('DOMContentLoaded', function () {
+			    const page_elements = document.getElementsByClassName("page-link");
+			    Array.from(page_elements).forEach(function(element){
+			        element.addEventListener('click', function(){
+			            document.getElementById('page').value = this.dataset.page;
+			            document.getElementById('searchForm').submit();
+			        });
+			    });
+			
+			    const search_input = document.getElementById("search_kw");
+			    search_input.addEventListener('keypress', function(e){
+			        if (e.key === 'Enter') {
+			            e.preventDefault(); // 기본 제출 동작 방지
+			            document.getElementById('kw').value = this.value;
+			            document.getElementById('page').value = 0;
+			            document.getElementById('searchForm').submit();
+			        }
+			    });
+			});
+		</script>
+	</th:block>
+</html>

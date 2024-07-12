@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import com.lms.sc.createForm.AnswerCreateForm;
 import com.lms.sc.entity.Answer;
 import com.lms.sc.entity.Question;
 import com.lms.sc.entity.SiteUser;
+import com.lms.sc.exception.DataNotFoundException;
 import com.lms.sc.service.AnswerService;
 import com.lms.sc.service.QuestionService;
 import com.lms.sc.service.UserService;
@@ -63,4 +65,17 @@ public class AnswerController {
 		this.answerService.modify(answer, answerCreateForm.getContent());
 		return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
 	}
+	
+	
+	 @GetMapping("/delete/{id}") 
+	 public String answerDelete(Model model, @PathVariable("id") Integer id) {
+		Answer answer = this.answerService.getAnswer(id); 
+		if (answer == null) {
+			throw new DataNotFoundException("Answer not found"); 
+		} 
+		answerService.delete(answer);
+	 
+		return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
+	}
+	 
 }

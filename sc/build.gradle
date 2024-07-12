@@ -47,6 +47,10 @@ dependencies {
 	
 	// jackson datatype에서 instant 타입을 지원하기 위한 디펜던시	
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0'
+	
+	//임시 이메일 발송
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.commonmark:commonmark:0.21.0'
 }
 
 tasks.named('test') {

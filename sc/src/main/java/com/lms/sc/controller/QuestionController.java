@@ -2,6 +2,7 @@ package com.lms.sc.controller;
 
 import java.security.Principal;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,12 +81,18 @@ public class QuestionController {
 		return "redirect:/question/list"; //질문 저장 후 질문 목록으로 이동 }
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/delete/{id}")
-	public String questionDelete(Model model, @PathVariable("id") Integer id) {
+	public String questionDelete(Model model, @PathVariable("id") Integer id, Principal principal) {
 		Question question = this.questionService.getQuestion(id);
 		if (question == null) {
 			throw new DataNotFoundException("Question not found");
 		}
+		
+		if(!question.getAuthor().getName().equals(principal.getName())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
+		}
+		
 		questionService.delete(question);
 		
 		return "redirect:/question/list";
@@ -147,5 +154,21 @@ public class QuestionController {
 
 	    }
 	}
+	
+	@GetMapping("/search")
+	public String search(Model model, @RequestParam(value = "keyword", defaultValue = "") String keyword, @RequestParam(value = "page", defaultValue = "0") int page) {
+	    Page<Question> questions = questionService.searchQuestions(page, keyword);
+	    
+	    questions.getContent().forEach(question -> {
+	        if (question.getAnswerList() == null) {
+	            question.setAnswerList(new ArrayList<>());
+	        }
+	    });
+	    
+	    model.addAttribute("paging", questions);
+	    model.addAttribute("keyword", keyword);
+	    return "question/question_list";
+	}
+	
 	
 }

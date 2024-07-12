@@ -2,8 +2,8 @@
 <ul th:fragment="navbar" class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 	<li>
 	    <!-- Sidebar - Brand -->
-	    <a class="sidebar-brand d-flex align-items-center justify-content-center logo" th:href="@{|/|}">
-	        <img src="/images/9.png">
+	    <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{|/|}">
+	    	<span class="logo"></span>
 	    </a>
 	
 	    <!-- Divider -->
@@ -85,7 +85,7 @@
 	        </a>
 	    </div>
 	    <div class="nav-item">
-	        <a class="nav-link collapsed" th:href="@{|/|}">
+	        <a class="nav-link collapsed" th:href="@{|/admin/userList|}">
 	            <i class="fas fa-fw fa-wrench"></i>
 	            <span>유저 정보</span>
 	        </a>

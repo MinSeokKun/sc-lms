@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Dongle&family=Jua&family=Noto+Sans+KR:wght@100..900&display=swap');
 
 * {
     margin: 0px;
@@ -13,12 +14,15 @@ a {
     text-decoration: none;
     color: #333;
 }
-#container { display: flex; }
-.content_wrap { width: 100%; }
+body{ font-family: "Noto Sans KR", sans-serif !important; }
 
+#container { display: flex; }
+#content { padding: 0 40px; }
+.content_wrap { width: 100%; }
+.container-fluid { padding: 0 !important; }
 /* 헤더 */
 #header { 
-	
+	padding: 0 20px;
 	width: 100%;
 	z-index: 75;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
@@ -26,16 +30,23 @@ a {
     min-height: unset;
 }
 #header > .wrapper {
-	justify-content: space-between;
+	justify-content: end;
 	display: flex; 
 	align-items: center; 
 }
 .wrapper { 
-	max-width: 1440px;
+/* 	max-width: 1440px; */
 	height: 100%;	
 	margin: 0 auto;
 }
-.logo img { width: 200px; }
+
+.logo {
+    width: 100%;
+    height: 52px;
+    background: url(/images/9.png) no-repeat center;
+    display: block;
+    background-size: cover;
+ }
 
 .gnb { display: flex; gap: 0 40px; }
 .gnb a { font-size: 20px; font-weight: 700; }
@@ -192,12 +203,11 @@ a {
     height: 68px;
 }
 
-.tab_area{ width: 400px; }
+.tab_area{ width: 400px; padding: 0; }
 
 .note_area { display: flex; flex-direction: column; }
 
 /* 커리큘럼 */
-.curriculum {  }
 .view_tit { 
 	display: flex;
     -webkit-box-align: center;
@@ -304,11 +314,24 @@ a {
 
 /* 비디오 커뮤니티 */
 #questionForm .input_box > input, #questionForm .input_box > textarea { width: 100%; }
-.quest_list{ height: 400px; overflow-y: auto; }
+.quest_list{ height: 400px; overflow-y: auto; padding: 0; }
 .quest_list li { padding: 16px 20px; border: 1px solid #ddd; margin: 16px 20px; border-radius: 5px; }
 .quest_list li:frist-of-type { margin-top: 0px; }
 .quest_list li span { display: block; }
 
+.quest_list li strong{ font-size: 16px; color: #333; }
+.quest_list li .desc{ font-size: 14px; color: #aaa; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.quest_list li .author { font-size: 12px; color: #bbb; }
+.quest_list li .date { font-size: 12px; color: #ccc; }
 /* 푸터 */
 #footer { width: 100%; height: 40px; text-align: center; background-color: #f1f1f1; }
 address { line-height: 40px; color: #666; font-size: 15px; }
+
+
+@media (max-width: 768px) {
+  .logo {
+    background: url('/images/11.png') no-repeat center;
+	height: 72px;
+	background-size: 65% 65%;
+  } 
+}

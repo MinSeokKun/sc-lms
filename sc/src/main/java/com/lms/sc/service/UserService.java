@@ -1,21 +1,34 @@
 package com.lms.sc.service;
 
 import java.io.IOException;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.lms.sc.entity.CommonUtil;
 import com.lms.sc.entity.SiteUser;
+import com.lms.sc.exception.DataNotFoundException;
+import com.lms.sc.exception.EmailException;
 import com.lms.sc.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +39,8 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final PasswordMailService pms;
+	private final CommonUtil cu;
 	
 	@Value("${file.upload-dir}")
 	private String uploadDir;
@@ -39,6 +54,7 @@ public class UserService {
 		user.setPassword(passwordEncoder.encode(password));
 		user.setTellNumber(tellNumber);
 		user.setProfileImage(profileImage);
+		user.setCreateDate(LocalDateTime.now());
 		this.userRepository.save(user);
 		return user;
 	}
@@ -97,6 +113,31 @@ public class UserService {
 		user.setTellNumber(tellNumber);
 		
 		userRepository.save(user);
+	}
+	
+	// 회원 목록 - 어드민
+	public Page<SiteUser> getList(int page, String kw){
+		List<Sort.Order> sorts = new ArrayList<>();
+		sorts.add(Sort.Order.desc("id"));
+		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+		return userRepository.findAllByKeyword(kw, pageable);
+	}
+	
+	//임시 비밀번호 이메일 전송
+	public void modifyPassword(String email) throws EmailException{
+		//CommonUtil 클래스안의 createTempPassword 불러온다.
+		String tempPassword = cu.createTempPassword();
+		
+		//ur(유저레포지토리)에서 주어진 이메일을 찾고 없으면 예외메세지를 넘겨준다.
+		SiteUser user = userRepository.findByEmail(email).orElseThrow(()-> new DataNotFoundException("해당 이메일의 유저가 없습니다."));
+		//찾은 사용자의 비밀번호을 임시번호로 설정합니다. encode코드를 사용해 
+		//임시비밀번호를 암호화하고 암호와된 비밀번호를 사용자 객체에 설정합니다.
+		user.setPassword(passwordEncoder.encode(tempPassword));
+		//user.setTemppassword(true);
+		//디비에 저장합니다.
+		userRepository.save(user);
+		//사용자의 임시비밀번호를 전송합니다.
+		pms.sendSimpleMessage(email, tempPassword);
 	}
 	
 }

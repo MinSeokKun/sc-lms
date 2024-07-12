@@ -1,6 +1,6 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
-  layout:decorate="~{layout}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout}">
 
 	<th:block layout:fragment="content">
 		<div>
@@ -41,16 +41,16 @@
 	<button type="button" value="취소" class="btn" onclick="window.history.back();">취소</button>
 	<script>
 		$(document).ready(function() {
-		  $('.mod_btn').click(function() { 
-		    let input = $(this).parent().find('.answerInput');
-		    if(input.prop("readonly")) {
-		      input.prop("readonly", false);
-		      input.css("border", "1px solid black");
-		    } else {
-		      input.prop("readonly", true);
-		      input.css("border", "none");
-		    }
-		  });
+			$('.mod_btn').click(function() { 
+				let input = $(this).parent().find('.answerInput');
+				if(input.prop("readonly")) {
+					input.prop("readonly", false);
+					input.css("border", "1px solid black");
+				} else {
+					input.prop("readonly", true);
+					input.css("border", "none");
+				}
+			});
 		});
 
 	</script>

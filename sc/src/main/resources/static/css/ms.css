@@ -1,5 +1,23 @@
 @charset "UTF-8";
 
+/* main */
+.grid-gap-3 {
+    gap: 20px 0;
+}
+
+.thumnail {
+    width: 100%;
+    height: 300px;
+}
+
+.card-subtitle a {
+    text-decoration: none;
+}
+
+/* .card-subtitle a:hover {
+    text-decoration: none;
+} */
+
 #notesContainer li {
 	cursor: pointer;
 	padding: 8px 12px;

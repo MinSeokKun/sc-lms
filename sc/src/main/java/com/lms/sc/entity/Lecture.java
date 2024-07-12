@@ -1,7 +1,6 @@
 package com.lms.sc.entity;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -10,10 +9,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,6 +29,8 @@ public class Lecture {
 	
 	@CreatedDate
 	private LocalDateTime createDate;
+	
+	private String thumnailUrl;
 	
 //	@ManyToMany
 //	@JoinTable(

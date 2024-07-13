@@ -32,8 +32,25 @@ public interface UserVideoRepository extends JpaRepository<UserVideo, Long> {
             @Param("lecture") Lecture lecture,
             @Param("watched") boolean watched);
 
+	List<UserVideo> findByUserAndWatched(SiteUser user, boolean watched);
+	
+	@Query("SELECT uv FROM UserVideo uv JOIN FETCH uv.video WHERE uv.user = :user AND uv.watched = :watched")
+	List<UserVideo> findByUserAndWatchedWithVideo(@Param("user") SiteUser user, @Param("watched") boolean watched);
+	
+	@Query("SELECT uv FROM UserVideo uv JOIN FETCH uv.video v JOIN FETCH v.lecture WHERE uv.user = :user AND uv.watched = true")
+	List<UserVideo> findByUserAndWatchedWithVideoAndLecture(@Param("user") SiteUser user);
 	
 	List<UserVideo> findByUserAndWatchedAtBetween(SiteUser user, Date startDate, Date endDate);
+	
+//	@Query("SELECT uv FROM UserVideo uv WHERE uv.user = :user ORDER BY uv.watchedAt ASC")
+//	List<UserVideo> findTop3ByAuthorUserVideos(@Param("user") SiteUser user);
+	
+//	@Query("SELECT uv FROM UserVideo uv JOIN FETCH uv.video WHERE uv.user = :user ORDER BY uv.watchedAt ASC")
+//	List<UserVideo> findTop3ByAuthorUserVideos(@Param("user") SiteUser user);
+	
+	@Query("SELECT uv FROM UserVideo uv JOIN FETCH uv.video v JOIN FETCH v.lecture WHERE uv.user = :user ORDER BY uv.watchedAt DESC")
+	List<UserVideo> findTop3ByAuthorUserVideos(@Param("user") SiteUser user, Pageable pageable);
+
 	
 	@Query("SELECT l.title FROM Lecture l WHERE l.id IN " +
 	           "(SELECT DISTINCT v.lecture.id FROM Video v WHERE v.lecture.id IN " +

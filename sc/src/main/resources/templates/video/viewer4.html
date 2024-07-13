@@ -5,7 +5,7 @@
 <th:block layout:fragment="content">
 	<script th:src="@{/js/viewer.js}"></script>
 	<div id="wrap">
-	    <div id="content" class="videoViewer">
+	    <div id="video-content" class="videoViewer">
 	    	<!-- 데이터 히든으로 받아오기 -->
 	    	<div style="display: none">
 	    		<input id="videoId" hidden="hidden" th:value="${video.id}">
@@ -17,8 +17,12 @@
 				<div id="player" class="url-link" th:data-url="${video.url}"></div>
 				<div id="playerTime" th:data-time="${videoTime ?: 0}"></div>
 				<div class="pre-next-btn">
-					<a th:href="@{|/video/viewer/${video.id}/pre|}" class="pre-btn btn">이전</a>
-					<a th:href="@{|/video/viewer/${video.id}/next|}" class="next-btn btn">다음</a>
+					<a th:href="@{|/video/viewer/${video.id}/pre|}" class="btn btn-primary btn-icon-split">
+						<span class="text">이전</span>
+					</a>
+					<a th:href="@{|/video/viewer/${video.id}/next|}" class="btn btn-primary btn-icon-split">
+						<span class="text">다음</span>
+					</a>
 				</div>
 			</div>
 			<!-- 사이드바 -->

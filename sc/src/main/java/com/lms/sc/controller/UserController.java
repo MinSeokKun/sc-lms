@@ -2,9 +2,14 @@ package com.lms.sc.controller;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Collections;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,6 +42,7 @@ public class UserController {
 	private final UserService userService;
 	private final UserLectureService userLecService;
 	private final LectureService lecService;
+	private final PasswordEncoder passwordEncoder;
 	
 	// 회원가입 이동
 	@GetMapping("/signup")
@@ -118,11 +124,15 @@ public class UserController {
 	//유저 정보 수정
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify")
-	public String modify(@RequestParam("id") long id,
+	public String modify(@AuthenticationPrincipal UserDetails userDetails,
+						 @RequestParam("id") long id,
 	                     @RequestParam("name") String name,
 	                     @RequestParam("password") String password,
 	                     @RequestParam("tellNumber") String tellNumber,
 	                     @RequestParam(value = "profileImage", required = false) MultipartFile profileImage) throws IOException {
+		if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+            return "redirect:/user/mypage?error=password";
+        }
 	    SiteUser user = userService.getUserById(id);
 	    userService.modify(user, name, password, tellNumber);
 	    
@@ -132,6 +142,16 @@ public class UserController {
 	    
 	    return "redirect:/user/mypage";
 	}
+	
+	// 현재 비밀번호 확인
+	@PostMapping("/checkPassword")
+	@ResponseBody
+	public Map<String, Boolean> checkPassword(@AuthenticationPrincipal UserDetails userDetails,
+	            @RequestParam String password) {
+		boolean isPasswordCorrect = passwordEncoder.matches(password, userDetails.getPassword());
+		return Collections.singletonMap("passwordCorrect", isPasswordCorrect);
+	}
+	
 	
 	//임시비밀번호 관련
 	@GetMapping("/tempPassword")

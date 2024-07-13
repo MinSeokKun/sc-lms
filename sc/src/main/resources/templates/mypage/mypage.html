@@ -9,7 +9,7 @@
 		<div class="wrapper">
 			<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 80px;">
 				<h2 style="margin-bottom: 40px;">개인정보수정</h2>
-				<form th:action="@{/user/modify}" method="post" enctype="multipart/form-data">
+				<form id="modifyForm" th:action="@{/user/modify}" method="post" enctype="multipart/form-data">
 				    <input type="hidden" name="id" th:value="${user.id}" />
 				    
 				    <!-- 기존 필드들 -->
@@ -21,9 +21,14 @@
 				        <label>이메일</label>
 				        <input type="email" name="email" th:value="${user.email}" readonly="readonly" style="border: none;" />
 				    </div>
-				    <div class="input_box">
-				        <label>비밀번호</label>
+					<div class="input_box">
+				        <label>현재 비밀번호</label>
 				        <input type="password" name="password" id="pw" autofocus="autofocus" />
+				    </div>
+					<input type="hidden" id="currentPassword" th:value="${#authentication.principal.password}" />
+				    <div class="input_box">
+				        <label>수정할 비밀번호</label>
+				        <input type="password" name="changePassword" id="pw" autofocus="autofocus" />
 				    </div>
 				    <div class="input_box">
 				        <label>비밀번호 확인</label>
@@ -55,4 +60,28 @@
 		</div>
 	</div>
 </th:block>
+<script>
+	document.getElementById('modifyForm').addEventListener('submit', function(e) {
+		e.preventDefault();
+		
+		var formData = new FormData(this);
+		
+		fetch('/user/checkPassword', {
+			method: 'POST',
+			body: formData
+		})
+		.then(response => response.json())
+		.then(data => {
+			if (data.passwordCorrect) {
+				this.submit();
+			} else {
+				alert('현재 비밀번호가 일치하지 않습니다.');
+			}
+		})
+		.catch(error => {
+			console.error('Error:', error);
+			alert('오류가 발생했습니다. 다시 시도해 주세요.');
+		});
+	});
+</script>
 </html>

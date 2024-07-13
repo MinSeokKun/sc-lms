@@ -169,16 +169,19 @@ body{ font-family: "Noto Sans KR", sans-serif !important; }
 
 /* 비디어 뷰어 */
 .videoViewer { display: flex;  }
+#video-content {
+  padding: 0;
+}
 .video {
 	display: flex;
     flex-direction: column;
-	width: calc(100% - 468px);
+	width: 100%;
 }
 .video iframe { height: 807px; }
 #nav2 {
 	position: relative;
 	display: flex;
-	width: 464px;
+	width: 390px;
 }
 .side_menu{ 
     width: 68px;

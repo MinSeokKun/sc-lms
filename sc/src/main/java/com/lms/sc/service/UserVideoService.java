@@ -10,7 +10,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
@@ -63,9 +65,21 @@ public class UserVideoService {
 	    }
 	}
 	
-	// UserVideo 중 watched가 true인 리스트를 가져오기
+	// 최근 본 영상 3개 가져오기
+	public List<UserVideo> getTop3UserVideo(SiteUser user) {
+		Pageable pageable = PageRequest.of(0, 3);
+		return userVideoRepository.findTop3ByAuthorUserVideos(user, pageable);
+	}
+	
+	// UserVideo 중 lecture 중 watched가 true인 리스트를 가져오기
 	public List<UserVideo> getUserVideoByWatched(SiteUser user, Lecture lecture, boolean watched){
 		return userVideoRepository.findByUserAndLectureAndWatched(user, lecture, watched);
+	}
+	
+	// UserVideo 중 watched가 true인 리스트 가져오기
+	@Transactional(readOnly = true)
+	public List<UserVideo> getUserVideoByWatched(SiteUser user) {
+		return userVideoRepository.findByUserAndWatchedWithVideoAndLecture(user);
 	}
 	
 	public WeeklyWatchData getWeeklyWatchCount(SiteUser user, Integer weekOffset) {

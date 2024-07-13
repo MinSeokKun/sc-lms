@@ -28,7 +28,7 @@
 									<span>[[${lecture.value} + ' 명 수강중']]</span>
 									<span class="text-primary font-weight-bold">무료</span>
 									<div class="badge-wrap">
-										<span class="btn-warning text-gray-200">새강의</span>
+										<span class="btn-warning text-gray-100">새강의</span>
 									</div>
 									<a th:href="@{|/lecture/startlearn/${lecture.key.id}|}" id="reglec" class="text-gray-100 btn btn-success btn-icon-split p-1 mt-1 mb-1 border-radious-1" th:data-lecture-id="${lecture.key.id}">
 										수강신청
@@ -39,7 +39,7 @@
 					</div>
 				</div>
 		        
-		        <div class="paging" style="width: 100%; height: 30px; margin-top: 40px; background: purple;"></div>
+		        <!-- <div class="paging" style="width: 100%; height: 30px; margin-top: 40px; background: purple;"></div> -->
 
 		    </section>
 		    <!-- 강의 리스트 === E -->

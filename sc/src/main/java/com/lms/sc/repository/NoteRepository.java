@@ -28,8 +28,9 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
 			@Param("author") SiteUser author);
 	
 	List<Note> findByVideoAndAuthor(Video video, SiteUser author);
-
 	
+	@Query("SELECT n FROM Note n WHERE n.video = :video AND n.author = :author ORDER BY n.videoTime ASC")
+	List<Note> findByVideoAndAuthorOrderByVideoTime(@Param("video") Video video, @Param("author") SiteUser author);
 	
 	@Query("SELECT DISTINCT l "
 		       + "FROM Note n "

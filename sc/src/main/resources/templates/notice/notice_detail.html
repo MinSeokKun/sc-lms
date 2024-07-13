@@ -1,0 +1,43 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout}">
+
+	<th:block layout:fragment="content">
+		<div>
+			<h3 th:text="${notice.title}">제목</h3>
+			<p th:text="${#temporals.format(notice.createDate, 'yyyy-MM-dd HH:mm:ss')}">생성일</p>
+			<p th:text="${notice.content}">내용</p>
+		</div>
+		
+		<div>
+			<a th:href="@{|/notice/modify/${notice.id}|}"
+				class="btn btn-sm btn-outline-secondary"
+				sec:authorize="isAuthenticated()"
+				th:text="수정"></a>
+		</div>
+		
+		
+		
+	<a th:href="@{|/notice/delete/${notice.id}|}"
+		class="btn btn-sm btn-outline-secondary"
+		sec:authorize="isAuthenticated()"
+		th:text="삭제">삭제
+	</a>
+	<button type="button" value="취소" class="btn" onclick="window.history.back();">취소</button>
+	<script>
+		$(document).ready(function() {
+			$('.mod_btn').click(function() { 
+				let input = $(this).parent().find('.answerInput');
+				if(input.prop("readonly")) {
+					input.prop("readonly", false);
+					input.css("border", "1px solid black");
+				} else {
+					input.prop("readonly", true);
+					input.css("border", "none");
+				}
+			});
+		});
+
+	</script>
+	</th:block>
+</html>

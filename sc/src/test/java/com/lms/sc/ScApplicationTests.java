@@ -11,11 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.lms.sc.entity.Answer;
+import com.lms.sc.entity.Notice;
 import com.lms.sc.entity.Question;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.repository.AnswerRepository;
+import com.lms.sc.repository.NoticeRepository;
 import com.lms.sc.repository.QuestionRepository;
 import com.lms.sc.repository.UserRepository;
+import com.lms.sc.service.NoticeService;
 import com.lms.sc.service.QuestionService;
 import com.lms.sc.service.UserService;
 
@@ -37,6 +40,30 @@ class ScApplicationTests {
 	@Autowired
 	private QuestionService questionService;
 	
+	@Autowired
+	private NoticeRepository noticeRepository;
+	
+	@Autowired
+	private NoticeService noticeService;
+
+	@Test
+	void test8() {
+		for (int i = 1; i <= 2; i++) {
+			String title = String.format("테스트 데이터:[%03d]", i);
+			String content = "내용 없음";
+			SiteUser author = userservice.getUserByEmail("admin");
+			this.noticeService.create(title, content, author);
+		}
+	}
+	
+	//@Test
+	void test7() {
+		Notice n1 = new Notice();
+		n1.setTitle("공지사항");
+		n1.setContent("~~~~");
+		n1.setCreateDate(LocalDateTime.now());
+		this.noticeRepository.save(n1);
+	}
 	
 	//@Test
 	void userCreate() {
@@ -109,7 +136,7 @@ class ScApplicationTests {
 			this.questionRepository.save(q1);
 	}
 
-  @Test
+ // @Test
 		void test6() {
 			for (int i = 1; i <= 2; i++) {
 				String subject = String.format("테스트 데이터:[%03d]", i);

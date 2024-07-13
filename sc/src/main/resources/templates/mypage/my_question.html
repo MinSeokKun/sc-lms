@@ -10,15 +10,15 @@
 		<div class="container-fluid">
 
 			<div class="row">
-				<div class="course-list-title"><h2>강의노트</h2></div>
+				<div class="course-list-title"><h2>내 질문 목록</h2></div>
 			</div>
 	
-			<div id="note" class="card shadow mb-4" th:each="entry : ${noteList.entrySet()}">
+			<div id="note" class="card shadow mb-4" th:each="question : ${questionList}">
 				<div class="card-header">
 	
 					<div onclick="location.href=this.querySelector('a').href" style="cursor: pointer;">
-						<a th:href="@{|/note/list/${entry.key.id}|}" th:text="${entry.key.title}" class="py-3 d-block"></a>
-						<p th:text="'노트 수 : ' + ${entry.value}"></p>
+						<a th:href="@{|/question/detail/${question.id}|}" th:text="${question.title}" class="py-3 d-block"></a>
+						<p th:text="${question.content}"></p>
 					</a>
 					
 				</div>

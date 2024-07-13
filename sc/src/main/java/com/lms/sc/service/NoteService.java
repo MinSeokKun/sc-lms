@@ -78,7 +78,7 @@ public class NoteService {
 	public List<Note> getByVideo(long videoId, long userId){
 		SiteUser author = userRepository.findById(userId).get();
 		Video video = videoRepository.findById(videoId).get();
-		return noteRepository.findByVideoAndAuthor(video, author);
+		return noteRepository.findByVideoAndAuthorOrderByVideoTime(video, author);
 	}
 	
 	// 강의로 찾는 노트 리스트

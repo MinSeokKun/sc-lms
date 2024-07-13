@@ -29,6 +29,7 @@ public class UserLectureService {
 	private final VideoRepository vidRepo;
 	
 	// 나의 강의 리스트
+	@Transactional(readOnly = true)
 	public List<UserLecture> getMyList(SiteUser user){		
 		
 		List<UserLecture> userLectureList = userLectureRepository.findByUser(user);

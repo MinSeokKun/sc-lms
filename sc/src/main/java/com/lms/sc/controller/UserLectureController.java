@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.Note;
 import com.lms.sc.entity.Question;
 import com.lms.sc.entity.SiteUser;
@@ -90,6 +91,20 @@ public class UserLectureController {
 		return userLectureService.checkLec(user, lecId);
 	}
 	
+	// 내 질문 리스트
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("question")
+	public String myQuestion(Principal principal, Model model) {
+		if (principal == null) {
+			return "user/login";
+		}
+		SiteUser user = userService.getUserByEmail(principal.getName());
+		List<Question> questionList = questService.getListByAuthor(user);
+		
+		model.addAttribute("questionList", questionList);
+		
+		return "mypage/my_question";
+	}
 	
 	// 대시보드
 	@PreAuthorize("isAuthenticated()")
@@ -108,16 +123,41 @@ public class UserLectureController {
 		List<Note> noteList = noteService.getRecentNotes(user);
 		model.addAttribute("noteList", noteList);
 		
-		// 노트 리스트 가져오기
-		List<UserLecture> userLectureList = userLectureService.getMyList(user);
-		model.addAttribute("userLectureList", userLectureList);
+		// 최근 학습한 강의 가져오기
+		List<UserVideo> userVideoList = userVidService.getTop3UserVideo(user);
+		model.addAttribute("userVideoList", userVideoList);
+		
+//		List<UserLecture> userLectureList = userLectureService.getMyList(user);
+//		model.addAttribute("userLectureList", userLectureList);
 		
 		// 주간 학습 현황
 		WeeklyWatchData weeklyData = userVidService.getWeeklyWatchCount(user, weekOffset);
 	    model.addAttribute("weeklyWatchCount", weeklyData.getWatchCount());
 	    model.addAttribute("weekDateRange", weeklyData.getDateRange());
-	    System.out.println(weeklyData.getDateRange());
 	    model.addAttribute("weekOffset", weekOffset != null ? weekOffset : 0);
+	    
+	    // 완료한 강의가 몇개인지 파이그래프 그리기
+	    // 강의 완료 여부에 따라 UserVideo 리스트를 필터링합니다.
+	    List<UserVideo> pieUserVideo = userVidService.getUserVideoByWatched(user);
+	    List<UserLecture> pieUserLec = userLectureService.getMyList(user);
+	    Map<String, Integer> pieGraph = new HashMap<>();
+
+	    // UserLecture 리스트를 순회합니다.
+	    for (UserLecture userLecture : pieUserLec) {
+	        Lecture lecture = userLecture.getLecture(); // Lecture 객체 가져오기
+	        pieGraph.put(lecture.getTitle(), 0); // 초기 값 0으로 설정
+	    }
+
+	    // UserVideo 리스트를 순회합니다.
+	    for (UserVideo userVideo : pieUserVideo) {
+	        Lecture lecture = userVideo.getVideo().getLecture(); // Video의 Lecture 객체 가져오기
+	        if (pieGraph.containsKey(lecture.getTitle())) {
+	            pieGraph.put(lecture.getTitle(), pieGraph.get(lecture.getTitle()) + 1); // 값 증가
+	        }
+	    }
+	    
+	    model.addAttribute("pieGraph", pieGraph);
+
 		
         List<String> recentlyCompletedLectures = userVidService.getRecentlyCompletedLectures(user.getId());
         model.addAttribute("recentlyCompletedLectures", recentlyCompletedLectures);

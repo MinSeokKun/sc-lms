@@ -121,6 +121,13 @@
 	justify-content: space-around;
 }
 
+.text-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 25ch; /* 10글자 정도의 길이로 설정 */
+}
+
 .mypage_nav ul li a {
     color: black;
     text-decoration: none;
@@ -148,7 +155,7 @@
 /* 비디오 영상 부분 이전 다음 버튼 */
 .pre-next-btn {
 	display:flex;
-	justify-content: center;
+	justify-content: space-around;
 }
 
 .pre-btn,

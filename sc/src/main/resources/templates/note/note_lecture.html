@@ -3,42 +3,45 @@
 	layout:decorate="~{layout}">
 <th:block layout:fragment="content">
 	<section class="wrapper">
-		<div class="container-fluid">
+		<div class="mypage_wrap">
+		
+			<div class="container-fluid">
 
-			<div class="note">
-			
-				<h2>강의 노트</h2>
+				<div class="note">
+				
+					<h2>강의 노트</h2>
 
-				<div id="note" class="card shadow mb-4" th:each="entry : ${noteList.entrySet()}">
+					<div id="note" class="card shadow mb-4" th:each="entry : ${noteList.entrySet()}">
 
-					<div class="card-header">
-						<h5 th:text="${entry.key.title}"></h5>
-					</div>
-					
-					<div class="card-body">
+						<div class="card-header">
+							<h5 th:text="${entry.key.title}"></h5>
+						</div>
+						
+						<div class="card-body">
 
-						<ul>
-							<li th:each="note : ${entry.value}" class="py-2">
-								<div class="py-1 d-flex flex-row align-items-center justify-content-between">
-									<a th:href="@{|/video/viewer/${note.video.id}?n=${note.id}|}" class="text-gray-700"
-									th:with="minutes=${note.videoTime / 60},
-									seconds=${note.videoTime % 60}">
-									<i class="fa-solid fa-play"></i> [[${#numbers.formatInteger(minutes, 2) + ':' + #numbers.formatInteger(seconds, 2)}]]
-									<div>
-										<a href="#" class="btn btn-secondary">수정</a>
-										<a th:href="@{|/note/delete/${note.id}|}" class="btn btn-danger">삭제</a>
+							<ul>
+								<li th:each="note : ${entry.value}" class="py-2">
+									<div class="py-1 d-flex flex-row align-items-center justify-content-between">
+										<a th:href="@{|/video/viewer/${note.video.id}?n=${note.id}|}" class="text-gray-700"
+										th:with="minutes=${note.videoTime / 60},
+										seconds=${note.videoTime % 60}">
+										<i class="fa-solid fa-play"></i> [[${#numbers.formatInteger(minutes, 2) + ':' + #numbers.formatInteger(seconds, 2)}]]
+										<div>
+											<a th:href="@{|/note/delete/${note.id}|}" class="btn btn-danger">삭제</a>
+										</div>
 									</div>
-								</div>
-								</a>
-								<span class="text-gray-700" th:text="${note.content}"></span>
-								</span>
-							</li>
-						</ul>
+									</a>
+									<span class="text-gray-700" th:text="${note.content}"></span>
+									</span>
+								</li>
+							</ul>
+
+						</div>
 
 					</div>
 
 				</div>
-
+				
 			</div>
 			
 		</div>

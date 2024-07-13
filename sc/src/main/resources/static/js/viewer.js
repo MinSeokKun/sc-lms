@@ -145,7 +145,7 @@ $(document).ready(function() {
     videoId = $('#videoId').val();
     savedWatchingTime = $('#watchingTime').val();
 
-    sortNotes();
+    // sortNotes();
 
     // 이벤트 리스너 설정
     $('.lec_list > li > a').click(function(e) {

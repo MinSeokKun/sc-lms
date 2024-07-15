@@ -5,9 +5,9 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div id="content">
     <section class="wrapper">
-
-        <div class="container-fluid">
-
+	
+        <div class="container-fluid mt-5">
+			<h1 class="mb-3">[[${#authentication.principal.name}]]의 대시보드</h1>
 			<div class="row row-cols-1 row-cols-md-2 g-4">
 
 				<div class="col">
@@ -113,14 +113,13 @@
 				</div>
 
 				<div class="col">
-
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 							<h5>학습한 강의 목록</h5>
 						</div>
 						<div class="card-body p-0">
 							<div class="chart-container">
-								<canvas id="lectureChart" width="400" height="400"></canvas>
+								<canvas id="lectureChart"></canvas>
 							</div>
 						</div>
 					</div>
@@ -240,6 +239,8 @@
 				},
 				options: {
 					responsive: true,
+					maintainAspectRatio: false,
+			        aspectRatio: 1,
 					plugins: {
 						legend: {
 							position: 'top',

@@ -17,7 +17,13 @@
     /* text-align: center; */
     padding: 0;
 }
-
+.main_lec_tit{
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    width: 100%;
+}
 .grid-container {
     --bs-gutter-x: 1.5rem;
     --bs-gutter-y: 0;
@@ -142,7 +148,7 @@
 .chart-container {
     flex-grow: 1; /* 컨테이너가 남은 공간을 모두 차지하도록 설정 */
     width: 100%;
-    padding: 20px 20px 3px; /* 위, 좌, 우에만 패딩 적용 */
+    padding: 20px;
     position: relative;
 }
 

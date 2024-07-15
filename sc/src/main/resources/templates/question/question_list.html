@@ -128,6 +128,33 @@
 						</tbody>
 					</table>
 					<div class="write">
+				            <tr th:each="question, loop : ${paging}">
+				                <td>
+				                    <a th:href="@{|/question/detail/${question.id}|}" 
+				                       th:text="${question.title}">제목</a>
+				                </td>
+				                <td>
+				                    <a th:href="@{|/question/detail/${question.id}|}" 
+				                       th:text="${question.content}">내용</a>
+				                    <span class="text-danger small ms-2" 
+				                          th:if="${question.answerList != null and !#lists.isEmpty(question.answerList)}" 
+				                          th:text="${#lists.size(question.answerList)}"></span>
+				                </td>
+				                <td><a th:text="${question.author.name}"></a></td>
+				                <td>
+				                    <a th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd')}">
+				                        등록일
+				                    </a>
+				                </td>
+				                <td>
+				                    <a th:text="${#temporals.format(question.modifyDate, 'yyyy-MM-dd')}">
+				                        수정일
+				                    </a>
+				                </td>
+				            </tr>
+				        </tbody>
+				  	</table>
+			  		<div class="write" sec:authorize="isAuthenticated()">
 						<a th:href="@{/question/create}" class="write">글쓰기</a>
 					</div>
 				</section>

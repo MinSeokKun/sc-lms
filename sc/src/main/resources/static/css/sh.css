@@ -17,7 +17,7 @@ a {
 body{ font-family: "Noto Sans KR", sans-serif !important; }
 
 #container { display: flex; }
-#content { padding: 0 40px; min-height: calc(100vh - 124px); }
+#content { padding: 20px; min-height: calc(100vh - 124px); }
 .content_wrap { width: 100%; }
 .container-fluid { padding: 0 !important; }
 /* 헤더 */

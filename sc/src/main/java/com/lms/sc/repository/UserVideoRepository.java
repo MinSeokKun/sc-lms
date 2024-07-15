@@ -1,5 +1,6 @@
 package com.lms.sc.repository;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -60,4 +61,8 @@ public interface UserVideoRepository extends JpaRepository<UserVideo, Long> {
 	           "(SELECT COUNT(uv) FROM UserVideo uv WHERE uv.user.id = :userId AND uv.video.lecture.id = v.lecture.id AND uv.watched = true))" +
 	           "ORDER BY l.id DESC")
 	 List<String> findRecentlyCompletedLectureTitles(@Param("userId") Long userId, Pageable pageable);
+	
+	//일별 학습 현황 쿼리문
+    @Query("SELECT DATE(uv.watchedAt) as date, COUNT(uv) as count FROM UserVideo uv WHERE uv.user = :user AND uv.watchedAt BETWEEN :startDate AND :endDate GROUP BY DATE(uv.watchedAt)")
+    List<Object[]> getDailyWatchCount(@Param("user") SiteUser user, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

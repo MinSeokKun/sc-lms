@@ -1,6 +1,7 @@
 package com.lms.sc.controller;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -161,6 +162,13 @@ public class UserLectureController {
 		
         List<String> recentlyCompletedLectures = userVidService.getRecentlyCompletedLectures(user.getId());
         model.addAttribute("recentlyCompletedLectures", recentlyCompletedLectures);
+        
+     // 일별 학습 현황 데이터 추가
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusDays(6);
+        Map<String, Integer> dailyWatchCount = userVidService.getDailyWatchCount(user, startDate, endDate);
+        model.addAttribute("dailyWatchCount", dailyWatchCount);
+
         
 		return "mypage/dashboard";
 	}

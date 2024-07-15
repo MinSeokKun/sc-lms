@@ -3,27 +3,16 @@
       layout:decorate="~{layout}">
 	<th:block layout:fragment=content>
 		<div id="content">
-		    <!-- 검색섹션 === S -->
-<!-- 		    <section class="wrapper search"> -->
-<!-- 				<h3>인프런에서 가치를 높이세요</h3> -->
-<!-- 		        <div class="search_input"> -->
-<!-- 		            <input type="text" placeholder="배우고 싶은 지식을 입력하세요."> -->
-<!-- 		            <button type="button"><i class="fa-solid fa-magnifying-glass"></i></button> -->
-<!-- 		        </div> -->
-<!-- 		    </section> -->
-		    <!-- 검색섹션 === E -->
-		    <!-- 강의 리스트 === S -->
-		    <section class="wrapper">
-          
+		    <section class="wrapper" style="max-width: 1440px;">
 		        <div class="tit" style="margin: 20px;"><h2>강의 리스트</h2></div>
 				
-				<div class="container-fluid">
-					<div class="row row-cols-5 grid-gap-3">
-						<div class="col" th:each="lecture, loop : ${userLecture}">
+				<div class="swiper mySwiper">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide" th:each="lecture, loop : ${userLecture}">
 							<div class="card">
 								<img class="thumnail" th:src="${lecture.key.thumnailUrl}" alt="썸네일이미지">
 								<div class="card-subtitle d-flex align-items-start flex-sm-column p-2">
-									<a th:href="@{|/lecture/detail/${lecture.key.id}|}" class="text-lg text-gray-700">[[${lecture.key.title}]]</a>
+									<a th:href="@{|/lecture/detail/${lecture.key.id}|}" class="text-lg text-gray-700 main_lec_tit">[[${lecture.key.title}]]</a>
 									<input type="hidden" id="lecId" th:value="${lecture.key.id}">
 									<span>[[${lecture.value} + ' 명 수강중']]</span>
 									<span class="text-primary font-weight-bold">무료</span>
@@ -37,46 +26,43 @@
 							</div>
 						</div>
 					</div>
+					<div class="swiper-pagination" style="position: relative; display: block; margin-top: 30px;"></div>
+					<div class="swiper-button-next"></div>
+   					<div class="swiper-button-prev"></div>
 				</div>
-		        
-		        <!-- <div class="paging" style="width: 100%; height: 30px; margin-top: 40px; background: purple;"></div> -->
-
 		    </section>
 		    <!-- 강의 리스트 === E -->
 		</div>
 			
-		
 		<script>
-// 			$('#reglec').click(function(e) {
-// 				const lecId = $('#lecId').val();
-	
-// 				$.ajax({
-// 					url: '/my/lecCheck',
-// 					type: 'GET',
-// 					data: {lecId: lecId},
-// 					success: function(result){
-// 						if(result === "false"){
-// 							e.preventDefault();
-// 							alert('이미 수강 신청한 강의입니다.');
-// 						}else{
-// 							$.ajax({
-// 			                    url: '/lecture/startlearn/' + lecId,
-// 			                    type: 'GET',
-// 			                    success: function() {
-// 			                        alert('수강 신청 되었습니다.');
-// 			                        // 필요하다면 페이지 새로고침 또는 UI 업데이트
-// 			                    },
-// 			                    error: function() {
-// 			                        alert('수강신청 중 오류가 발생했습니다.');
-// 			                    }
-// 			                });
-// 						}
-// 					}, error: function(){
-// 						e.preventDefault();
-// 						alert('수강신청 중 오류가 발생했습니다.');
-// 					}
-// 				});
-// 			});
+			var swiper = new Swiper(".mySwiper", {
+			    slidesPerView: 5, // 한 화면에 보이는 슬라이드 수
+			    loop: true, // 무한 루프
+			    spaceBetween: 20,
+			    pagination: {
+			        el: ".swiper-pagination",
+			        clickable: true,
+			    },
+			    navigation: {
+			        nextEl: ".swiper-button-next",
+			        prevEl: ".swiper-button-prev",
+			    },
+			    breakpoints: {
+			        // 반응형 설정
+			        1024: {
+			            slidesPerView: 5,
+			        },
+			        768: {
+			            slidesPerView: 3,
+			        },
+			        480: {
+			            slidesPerView: 2,
+			        },
+			        0: {
+			            slidesPerView: 1,
+			        }
+			    },
+			});
 		</script>
 	</th:block>
 </html>

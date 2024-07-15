@@ -16,7 +16,8 @@
 						    <div class="card mb-4" th:each="entry, loop : ${list.entrySet()}">
 
 								<div class="card-header py-3" onclick="location.href=this.querySelector('a').href" style="cursor: pointer;">
-									<a th:href="@{|/video/study/list/${entry.key.lecture.id}|}" th:text="${entry.key.lecture.title}" style="text-decoration: none; color: inherit;"></a>
+									<a th:href="@{|/video/study/list/${entry.key.lecture.id}|}" th:if="${lectureVideoPresence[entry.key]}" th:text="${entry.key.lecture.title}" style="text-decoration: none; color: inherit;"></a>
+									<a href="javascript:void(0)" onclick="alert('해당 강의는 삭제되었습니다.')" th:if="${!lectureVideoPresence[entry.key]}">[[${entry.key.lecture.title}]] 강의는 삭제되었습니다.</a>
 								</div>
 								
 						        <div class="card-body" 

@@ -8,8 +8,6 @@ import java.util.Map;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +31,7 @@ import com.lms.sc.service.UserService;
 import com.lms.sc.service.UserVideoService;
 import com.lms.sc.service.VideoService;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 
@@ -218,16 +217,17 @@ public class VideoController {
 	
 	
 	@PreAuthorize("hasRole('ADMIN')") // 관리자만 삭제할 수 있도록 설정
-	@GetMapping("/delete/{vid_id}")
-	@Transactional
-	public String deleteVideo(@PathVariable("vid_id") Long vid_id, RedirectAttributes redirectAttributes) {
-        try {
-            // 비디오 삭제
-            videoService.deleteVideoById(vid_id);
-            redirectAttributes.addFlashAttribute("successMessage", "비디오가 성공적으로 삭제되었습니다.");
+	@GetMapping("/delete/{id}")
+    public String deleteVideo(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+		try {
+            videoService.deleteVideo(id);
+            System.out.println(redirectAttributes.addFlashAttribute("message", "비디오가 성공적으로 삭제되었습니다."));
+            
+        } catch (EntityNotFoundException e) {
+        	System.out.println(redirectAttributes.addFlashAttribute("error", e.getMessage()));
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "비디오 삭제 중 오류가 발생했습니다: " + e.getMessage());
+        	System.out.println(redirectAttributes.addFlashAttribute("error", "비디오 삭제 중 오류가 발생했습니다."));
         }
-        return "redirect:/admin/vidList";
+        return "redirect:/admin/vidList";  // 비디오 목록 페이지로 리다이렉트
     }
 }

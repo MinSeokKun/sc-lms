@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -65,4 +66,9 @@ public interface UserVideoRepository extends JpaRepository<UserVideo, Long> {
 	//일별 학습 현황 쿼리문
     @Query("SELECT DATE(uv.watchedAt) as date, COUNT(uv) as count FROM UserVideo uv WHERE uv.user = :user AND uv.watchedAt BETWEEN :startDate AND :endDate GROUP BY DATE(uv.watchedAt)")
     List<Object[]> getDailyWatchCount(@Param("user") SiteUser user, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+    
+    //비디오 삭제 시 유저 관련
+    @Modifying
+    @Query("DELETE FROM UserVideo uv WHERE uv.video = :video")
+    void deleteByVideo(@Param("video") Video video);
 }

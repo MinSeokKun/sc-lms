@@ -25,6 +25,14 @@
 						<form method="get" th:action="@{|/question/search|}">
 							<input type="search" placeholder="궁금한 질문 검색" name="keyword" id="ResearchQuestion">
 							<button type="submit">검색</button>
+				<section id="qustion" class="mt-5">
+					<div class="question-search dataTable-filter" style="display:flex; justify-content:space-between;">
+					<h1>질문리스트</h1>
+						<form method="get" th:action="@{|/question/search|}" class="dataTables_filter">
+							<label>
+								<input class="form-control form-control-sm" type="search" placeholder="궁금한 질문 검색" name="keyword" id="ResearchQuestion">
+							</label>	
+							<button type="submit" class="btn btn-success btn-icon-split"><span class="text">검색</span></button>
 						</form>
 					</div> -->
 					
@@ -80,6 +88,52 @@
 				</section>
 				<!--페이징-->
 				<div class="page" th:if="${!paging.isEmpty()}">
+					
+					<table class="table table-bordered" style="text-align:center;">
+						<caption></caption>
+						<thead>
+							<tr>
+								<th style="width: 20%">제목</th>
+								<th style="width: 45%">내용</th>
+								<th style="width: 15%">작성자</th>
+								<th style="width: 10%">등록일</th>
+								<th style="width: 10%">수정일</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="question, loop : ${paging}">
+								<td>
+									<a th:href="@{|/question/detail/${question.id}|}" 
+										th:text="${question.title}">제목</a>
+								</td>
+								<td>
+									<a th:href="@{|/question/detail/${question.id}|}" 
+										th:text="${question.content}">내용</a>
+									<span class="text-danger small ms-2" 
+											th:if="${question.answerList != null and !#lists.isEmpty(question.answerList)}" 
+											th:text="${#lists.size(question.answerList)}"></span>
+								</td>
+								<td><a th:text="${question.author.name}"></a></td>
+								<td>
+									<a th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd')}">
+										등록일
+									</a>
+								</td>
+								<td>
+									<a th:text="${#temporals.format(question.modifyDate, 'yyyy-MM-dd')}">
+										수정일
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="write">
+						<a th:href="@{/question/create}" class="write">글쓰기</a>
+					</div>
+				</section>
+				<!--페이징-->
+				<div class="page" th:if="${!paging.isEmpty()}">
+					
 					<ul class="pagination justify-content-center">
 						<li class="page_item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
 							<a class="page-link" th:href="@{|?page=${paging.number-1}|}">

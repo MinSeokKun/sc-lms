@@ -33,8 +33,17 @@ public class QuestionService {
 		sorts.add(Sort.Order.desc("createDate"));
 		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
 		Page<Question> questions = questionRepository.findAll(pageable);
-		   questions.forEach(question -> Hibernate.initialize(question.getAnswerList()));
+		questions.forEach(question -> Hibernate.initialize(question.getAnswerList()));
         return questions;
+	}
+	
+	// result 결과 리스트
+	public Page<Question> getListByResult(boolean result, int page) {
+		List<Sort.Order> sorts = new ArrayList<>();
+		sorts.add(Sort.Order.desc("createDate"));
+		Pageable pagealbe = PageRequest.of(page, 10, Sort.by(sorts));
+		Page<Question> questions = questionRepository.findByResultWithAnswers(result, pagealbe);
+		return questions;
 	}
 	
 	 public List<Question> getList() { 

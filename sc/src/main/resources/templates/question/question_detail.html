@@ -12,10 +12,12 @@
 			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 				<h5 class="m-0 font-weight-bold text-primary" th:text="${question.title}">제목</h5>
 				<div>
-					<button th:if="${question.result == false}" 
-							th:data-question-id="${question.id}"
-							onclick="confirmResolve(this)"
-							class="btn btn-primary btn-sm">
+					<button
+						sec:authorize="isAuthenticated()"
+						th:if="${#authentication.principal.username == question.author.email}"
+						th:data-question-id="${question.id}"
+						onclick="confirmResolve(this)"
+						class="btn btn-primary btn-sm">
 						<i class="fas fa-check fa-sm"></i> 해결완료
 					</button>
 					<span th:if="${question.result == true}" class="btn btn-success btn-circle btn-sm">
@@ -24,20 +26,30 @@
 				</div>
 			</div>
 			<div class="card-body">
-				<p class="mb-0 text-gray-800" th:text="${question.content}">내용</p>
+				<div id="viewer"></div>
 			</div>
 			<div class="card-footer">
 				<small class="text-muted" th:text="${'작성일: ' + #temporals.format(question.createDate, 'yyyy-MM-dd HH:mm:ss')}">생성일</small>
 				<small class="text-muted ms-2" th:if="${question.modifyDate != null}" th:text="'수정일: ' + ${#temporals.format(question.modifyDate, 'yyyy-MM-dd')}"></small>
 			</div>
 		</div>
-		
+		<div class="d-flex justify-content-between my-3">
+			<div>
+				<a th:href="@{|/question/modify/${question.id}|}"
+					class="btn btn-outline-secondary"
+					sec:authorize="isAuthenticated()"
+					th:if="${#authentication.principal.username == question.author.email}"
+					th:text="수정"></a>
+				<a th:href="@{|/question/delete/${question.id}|}"
+					class="btn btn-outline-danger"
+					sec:authorize="isAuthenticated()"
+					th:if="${#authentication.principal.username == question.author.email}"
+					th:text="삭제"></a>
+			</div>
+			<button type="button" class="btn btn-secondary" onclick="location.href='/question/list'">목록으로</button>
+		</div>
 		<div>
-			<a th:href="@{|/question/modify/${question.id}|}"
-				class="btn btn-sm btn-outline-secondary"
-				sec:authorize="isAuthenticated()"
-				th:if="${question.author != null and #authentication.getPrincipal().getName() == question.author.getName}"
-				th:text="수정"></a>
+			
 		</div>
 		
 		<div class="card shadow mb-4">
@@ -87,20 +99,43 @@
 			</div>
 		</div>
 		
-		<div class="d-flex justify-content-between mt-3">
-			<a th:href="@{|/question/delete/${question.id}|}"
-				class="btn btn-outline-danger"
-				sec:authorize="isAuthenticated()"
-				th:if="${question.author != null and #authentication.getPrincipal().getName() == question.author.getName}"
-				th:text="삭제">삭제
-			</a>
-			<button type="button" class="btn btn-secondary" onclick="location.href='/question/list'">목록으로</button>
-		</div>
+		
 
 		</div>
 
 	</div>
 </div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var content = /*[[${question.content}]]*/ '';
+    /*]]>*/
+
+    const viewer = new toastui.Editor.factory({
+        el: document.querySelector('#viewer'),
+        viewer: true,
+        height: 'auto',
+        initialValue: content,
+        customHTMLRenderer: {
+            paragraph(node) {
+                return {
+                    type: 'element',
+                    tagName: 'p',
+                    attributes: { style: 'font-size: 20px;' },
+                    children: node.children
+                };
+            }
+        }
+    });
+
+    // Toast UI Editor의 내부 콘텐츠에 스타일 적용
+    setTimeout(() => {
+        const contentEl = document.querySelector('#viewer .toastui-editor-contents');
+        if (contentEl) {
+            contentEl.style.fontSize = '20px';
+        }
+    }, 0);
+</script>
+
 	<script>
 		$(document).ready(function() {
 			$('.mod_btn').click(function() { 
@@ -116,10 +151,10 @@
 		});
 
 		function confirmResolve(button) {
-		    var questionId = button.getAttribute('data-question-id');
-		    if (confirm("해결이 완료되셨나요?")) {
-		        window.location.href = '/question/resolve/' + questionId;
-		    }
+			var questionId = button.getAttribute('data-question-id');
+			if (confirm("해결이 완료되셨나요?")) {
+				window.location.href = '/question/resolve/' + questionId;
+			}
 		}
 		
 	</script>

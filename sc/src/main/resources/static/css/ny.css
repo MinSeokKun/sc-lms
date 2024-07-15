@@ -176,6 +176,13 @@ input[type=submit]{
 .question-search {
 	text-align:right;
 }
+
+.card-body-p {
+	display: block;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 .tbl2{
 	margin: 20px;
 }

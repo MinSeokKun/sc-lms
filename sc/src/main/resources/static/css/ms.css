@@ -247,6 +247,16 @@
     }
 }
 
+.quest-link {
+    color: #6e707e; /* 기본 링크 색상 */
+    text-decoration: none;
+}
+
+.quest-link.active {
+    color: #4e73df; /* 활성화된 링크의 색상 */
+    font-weight: bold; /* 선택적으로 글씨를 굵게 할 수 있습니다 */
+}
+
 .course-list-title {
 	margin: 10px;
 }

@@ -59,6 +59,12 @@ public class QuestionService {
 		}
 	}
 	
+	public Question updateResolve(Question question) {
+		boolean resolved = true;
+		question.setResult(resolved);
+		return questionRepository.save(question);
+	}
+	
 	public void create(String title, String content, SiteUser author) {
 		Question q = new Question();
 		q.setTitle(title);

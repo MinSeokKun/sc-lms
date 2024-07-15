@@ -1,62 +1,64 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
-      layout:decorate="~{layout}">
-      
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout}">
+	
 	<th:block layout:fragment="content">
 		<div id="content">
 			<div class="wrapper">
-			  	<section id="qustion" class="tbl2">
-			  		<div class="question-search">
+				<section id="qustion" class="tbl2">
+					<div class="question-search">
 						<form method="get" th:action="@{|/question/search|}">
 							<input type="search" placeholder="궁금한 질문 검색" name="keyword" id="ResearchQuestion">
 							<button type="submit">검색</button>
 						</form>
 					</div>
-			  		
-			  		<div class="write">
+					
+					<div class="write">
 						<a th:href="@{/question/create}" class="write">글쓰기</a>
-			  		</div>
-			  		<table class="table table-bordered dataTable">
-			        	<caption></caption>
-			        	<thead>
-			        		<tr>
-			        			<th style="width: 20%">제목</th>
-			        			<th style="width: 45%">내용</th>
-			        			<th style="width: 15%">작성자</th>
-			        			<th style="width: 10%">등록일</th>
+					</div>
+					<table class="table table-bordered dataTable">
+						<caption></caption>
+						<thead>
+							<tr>
+								<th style="width: 20%">제목</th>
+								<th style="width: 45%">내용</th>
+								<th style="width: 15%">작성자</th>
+								<th style="width: 10%">등록일</th>
 								<th style="width: 10%">수정일</th>
-			        		</tr>
-			        	</thead>
+							</tr>
+						</thead>
 						<tbody>
-				            <tr th:each="question, loop : ${paging}">
-				                <td>
-				                    <a th:href="@{|/question/detail/${question.id}|}" 
-				                       th:text="${question.title}">제목</a>
-				                </td>
-				                <td>
-				                    <a th:href="@{|/question/detail/${question.id}|}" 
-				                       th:text="${question.content}">내용</a>
-				                    <span class="text-danger small ms-2" 
-				                          th:if="${question.answerList != null and !#lists.isEmpty(question.answerList)}" 
-				                          th:text="${#lists.size(question.answerList)}"></span>
-				                </td>
-				                <td><a th:text="${question.author.name}"></a></td>
-				                <td>
-				                    <a th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd')}">
-				                        등록일
-				                    </a>
-				                </td>
-				                <td>
-				                    <a th:text="${#temporals.format(question.modifyDate, 'yyyy-MM-dd')}">
-				                        수정일
-				                    </a>
-				                </td>
-				            </tr>
-				        </tbody>
-				  	</table>
-			  	</section>
-			  	<!--페이징-->
-			  	<div class="page" th:if="${!paging.isEmpty()}">
+							<tr th:each="question, loop : ${paging}">
+								<td>
+									<a th:href="@{|/question/detail/${question.id}|}">
+										<span th:text="${question.title}"></span>
+										<span th:if="${question.result == false}">미해결</span>
+									</a>
+								</td>
+								<td>
+									<a th:href="@{|/question/detail/${question.id}|}" 
+										th:text="${question.content}">내용</a>
+									<span class="text-danger small ms-2" 
+											th:if="${question.answerList != null and !#lists.isEmpty(question.answerList)}" 
+											th:text="${#lists.size(question.answerList)}"></span>
+								</td>
+								<td><a th:text="${question.author.name}"></a></td>
+								<td>
+									<a th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd')}">
+										등록일
+									</a>
+								</td>
+								<td>
+									<a th:text="${#temporals.format(question.modifyDate, 'yyyy-MM-dd')}">
+										수정일
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+				<!--페이징-->
+				<div class="page" th:if="${!paging.isEmpty()}">
 					<ul class="pagination justify-content-center">
 						<li class="page_item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
 							<a class="page-link" th:href="@{|?page=${paging.number-1}|}">

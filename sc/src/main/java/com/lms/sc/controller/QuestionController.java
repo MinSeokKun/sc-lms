@@ -53,6 +53,22 @@ public class QuestionController {
 		model.addAttribute("paging", paging);
 		return "question/question_list";
 	}
+	
+	// 해결된 리스트
+	@GetMapping("/list/resolved")
+	public String unresolvedList(Model model, @RequestParam(value ="page", defaultValue = "0") int page) {
+		Page<Question> paging = questionService.getListByResult(true, page);
+		model.addAttribute("paging", paging);
+		return "question/question_list";
+	}
+	
+	// 미해결 리스트
+	@GetMapping("/list/unresolved")
+	public String resolvedList(Model model, @RequestParam(value ="page", defaultValue = "0") int page) {
+		Page<Question> paging = questionService.getListByResult(false, page);
+		model.addAttribute("paging", paging);
+		return "question/question_list";
+	}
 
 	@GetMapping("/detail/{id}")
 	public String detail(Model model, @PathVariable("id") Integer id, AnswerCreateForm answerCreateForm) {

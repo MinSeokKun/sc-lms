@@ -4,10 +4,8 @@
 	
 	<th:block layout:fragment="content">
 		<div id="content">
-			<div class="wrapper">
-				<section id="qustion" class="tbl2">
 
-					<div class="mb-4" style="display: flex; justify-content: space-between;">
+					<div class="mt-5 mb-4" style="display: flex; justify-content: space-between;">
 						<h1>질문 목록</h1>
 						<div id="dataTable_filter" class="dataTables_filter">
 							<label style="white-space: nowrap; display: flex; gap: 10px; align-items: center;">검색:
@@ -21,71 +19,57 @@
 						<input type="hidden" id="page" name="page" th:value="${paging.number}">
 					</form>
 
-					<!-- <div class="question-search">
-						<form method="get" th:action="@{|/question/search|}">
-							<input type="search" placeholder="궁금한 질문 검색" name="keyword" id="ResearchQuestion">
-							<button type="submit">검색</button>
-				<section id="qustion" class="mt-5">
-					<div class="question-search dataTable-filter" style="display:flex; justify-content:space-between;">
-					<h1>질문리스트</h1>
-						<form method="get" th:action="@{|/question/search|}" class="dataTables_filter">
-							<label>
-								<input class="form-control form-control-sm" type="search" placeholder="궁금한 질문 검색" name="keyword" id="ResearchQuestion">
-							</label>	
-							<button type="submit" class="btn btn-success btn-icon-split"><span class="text">검색</span></button>
-						</form>
-					</div> -->
-					
 					<div class="card shadow mb-4">
 						
-						<div class="card-header py-3 d-flex justify-content-between">
-							<h3 class="m-0 font-weight-bold text-primary"></h3>
+						<div class="card-header py-3 d-flex justify-content-between align-items-center">
+							<div>
+								<a href="/question/list" class="quest-link mx-1" id="all">전체</a>
+								<a href="/question/list/resolved" class="quest-link mx-1" id="resolved">해결</a>
+								<a href="/question/list/unresolved" class="quest-link mx-1" id="unresolved">미해결</a>
+							</div>
 							<a th:href="@{/question/create}" class="btn btn-primary btn-icon-split">
 								<span class="text">글쓰기</span>
 							</a>
-					</div>
-
-					<div class="card-body">
-
-						<div class="table-responsive">
-							<div class="row">
-
-								<div class="col-md-6 mb-4" th:each="question, loop : ${paging}">
-									
-									<div class="card shadow h-100">
-										<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-											<h6 class="m-0 font-weight-bold text-primary" th:text="${question.title}"></h6>
-											<div class="dropdown no-arrow">
-												<span th:if="${question.result == false}" class="btn btn-warning btn-circle btn-sm"><i class="fa-solid fa-question"></i></span>
-												<span th:if="${question.result == true}" class="btn btn-success btn-circle btn-sm"><i class="fa-solid fa-check"></i></span>
-											</div>
-										</div>
-										<div class="card-body">
-											<p th:text="${question.content}"></p>
-											<p class="text-danger small" 
-												th:if="${question.answerList != null and !#lists.isEmpty(question.answerList)}" 
-												th:text="'답변 수: ' + ${#lists.size(question.answerList)}"></p>
-										</div>
-										<div class="card-footer">
-											<div class="d-flex justify-content-between align-items-center">
-												<small class="text-muted" th:text="'작성자: ' + ${question.author.name}"></small>
-												<div>
-													<small class="text-muted" th:text="'등록일: ' + ${#temporals.format(question.createDate, 'yyyy-MM-dd')}"></small>
-													<small class="text-muted ms-2" th:if="${question.modifyDate != null}" th:text="'수정일: ' + ${#temporals.format(question.modifyDate, 'yyyy-MM-dd')}"></small>
-												</div>
-											</div>
-										</div>
-										<a th:href="@{|/question/detail/${question.id}|}" class="stretched-link"></a>
-									</div>
-
-								</div>
-
-							</div>
 						</div>
 
+						<div class="card-body">
+	
+								<div class="row">
+	
+									<div class="col-md-6 mb-4" th:each="question, loop : ${paging}">
+										
+										<div class="card shadow h-100">
+											<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+												<h6 class="m-0 font-weight-bold text-primary" th:text="${question.title}"></h6>
+												<div class="dropdown no-arrow">
+													<span th:if="${question.result == false}" class="btn btn-warning btn-circle btn-sm"><i class="fa-solid fa-question"></i></span>
+													<span th:if="${question.result == true}" class="btn btn-success btn-circle btn-sm"><i class="fa-solid fa-check"></i></span>
+												</div>
+											</div>
+											<div class="card-body">
+												<p class="card-body-p" th:text="${question.content}" style="width: 574.5px;"></p>
+												<p class="text-danger small" 
+													th:if="${question.answerList != null and !#lists.isEmpty(question.answerList)}" 
+													th:text="'답변 수: ' + ${#lists.size(question.answerList)}"></p>
+											</div>
+											<div class="card-footer">
+												<div class="d-flex justify-content-between align-items-center">
+													<small class="text-muted" th:text="'작성자: ' + ${question.author.name}"></small>
+													<div>
+														<small class="text-muted" th:text="'등록일: ' + ${#temporals.format(question.createDate, 'yyyy-MM-dd')}"></small>
+														<small class="text-muted ms-2" th:if="${question.modifyDate != null}" th:text="'수정일: ' + ${#temporals.format(question.modifyDate, 'yyyy-MM-dd')}"></small>
+													</div>
+												</div>
+											</div>
+											<a th:href="@{|/question/detail/${question.id}|}" class="stretched-link"></a>
+										</div>
+	
+									</div>
+	
+								</div>
+	
+						</div>
 					</div>
-				</div>
-				</section>
 				<!--페이징-->
 				<div class="page" th:if="${!paging.isEmpty()}">
 					
@@ -106,7 +90,6 @@
 						</li>
 					</ul>
 				</div>
-			</div>	
 		</div>
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
@@ -128,6 +111,17 @@
 				}
 			});
 		});
+		document.addEventListener('DOMContentLoaded', function() {
+			const currentPath = window.location.pathname;
+			const links = document.querySelectorAll('.quest-link');
+			
+			links.forEach(link => {
+				if (link.getAttribute('href') === currentPath) {
+				link.classList.add('active');
+				}
+			});
+		});
+		
 	</script>
 	</th:block>
 </html>

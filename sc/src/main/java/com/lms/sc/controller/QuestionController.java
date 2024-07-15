@@ -98,11 +98,34 @@ public class QuestionController {
 		return "redirect:/question/list";
 	}
 	
+	// 질문 해결
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/resolve/{questId}")
+	public String questionResolved(@PathVariable("questId") Integer id, Principal principal) {
+	    Question question = questionService.getQuestion(id);
+	    
+	    if (question == null) {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Entity not found");
+	    }
+	    
+	    SiteUser author = userService.getUserByEmail(principal.getName());
+	    
+	    if (question.getAuthor().getId() != author.getId()) {
+	    	throw new ResponseStatusException(HttpStatus.FORBIDDEN, "이 질문에 대한 권한이 없습니다.");
+	    }
+	    
+	    questionService.updateResolve(question);
+	    
+	    return "redirect:/question/detail/" + question.getId();
+	}
+	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/modify/{id}")
 	public String questionModify(QuestionCreateForm questionCreateForm, @PathVariable("id") Integer id, Principal principal) {
 		Question question = this.questionService.getQuestion(id);
-		if(!question.getAuthor().getName().equals(principal.getName())) {
+		SiteUser author = userService.getUserByEmail(principal.getName());
+	    
+	    if (question.getAuthor().getId() != author.getId()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
 		}
 		questionCreateForm.setTitle(question.getTitle());
@@ -118,7 +141,9 @@ public class QuestionController {
 			return "question_form";
 		}
 		Question question = this.questionService.getQuestion(id);
-		if(!question.getAuthor().getName().equals(principal.getName())) {
+		SiteUser author = userService.getUserByEmail(principal.getName());
+	    
+	    if (question.getAuthor().getId() != author.getId()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
 		}
 		this.questionService.modify(question, questionCreateForm.getTitle(), questionCreateForm.getContent());

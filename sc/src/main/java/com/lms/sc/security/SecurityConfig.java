@@ -28,7 +28,7 @@ public class SecurityConfig {
 					.ignoringRequestMatchers("/userVideo/save", "/note/create/**", "/user/emailCheck"))
 //			.csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-				.requestMatchers(new AntPathRequestMatcher("/lecture/list")).hasRole("ADMIN")
+				.requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")
 				.requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
 				.formLogin((formLogin) -> formLogin.loginPage("/user/login")
 						.defaultSuccessUrl("/"))

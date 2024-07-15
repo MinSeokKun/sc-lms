@@ -8,12 +8,15 @@ import java.util.Map;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.Note;
@@ -204,13 +207,27 @@ public class VideoController {
 	}
 	
 	// 등록된 비디오 삭제
-	@PreAuthorize("isAuthenticated()")
+//	@PreAuthorize("isAuthenticated()")
+//	@GetMapping("/delete/{vid_id}")
+//	@Transactional
+//	public String deleteVideo(@PathVariable("vid_id") long vidId) throws Exception {
+//		Video video = videoService.getVideo(vidId);
+//		videoService.delVideo(video);
+//		return "redirect:/video/list/" + video.getLecture().getId();
+//	}
+	
+	
+	@PreAuthorize("hasRole('ADMIN')") // 관리자만 삭제할 수 있도록 설정
 	@GetMapping("/delete/{vid_id}")
-	public String deleteVideo(@PathVariable("vid_id") long vidId) throws Exception {
-		Video video = videoService.getVideo(vidId);
-		videoService.delVideo(video);
-		return "redirect:/video/list/" + video.getLecture().getId();
-	}
-	
-	
+	@Transactional
+	public String deleteVideo(@PathVariable("vid_id") Long vid_id, RedirectAttributes redirectAttributes) {
+        try {
+            // 비디오 삭제
+            videoService.deleteVideoById(vid_id);
+            redirectAttributes.addFlashAttribute("successMessage", "비디오가 성공적으로 삭제되었습니다.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "비디오 삭제 중 오류가 발생했습니다: " + e.getMessage());
+        }
+        return "redirect:/admin/vidList";
+    }
 }

@@ -138,5 +138,51 @@
 			</div>
 	    </div>
 	</div>
+	<script>
+		$(document).ready(function() {
+			let token = $("meta[name='_csrf']").attr("content");
+		    let header = $("meta[name='_csrf_header']").attr("content");
+
+		    $('#questionForm').submit(function(e) {
+		        e.preventDefault(); // 폼 제출 기본 동작 방지
+
+		        let videoId = $('#videoId').val();
+		        let title = $('input[name="title"]').val();
+		        let content = $('textarea[name="content"]').val();
+
+		        $.ajax({
+		            url: `/question/create/${videoId}`,
+		            method: 'POST',
+		            data: { title: title, content: content },
+		            beforeSend: function(xhr) {
+		                xhr.setRequestHeader(header, token);
+		            },
+		            dataType: 'json', // 응답 데이터 타입을 JSON으로 명시
+		            success: function(response) {
+		                // 새로운 질문을 리스트에 추가
+		                let newQuestion = `
+		                    <li>
+		                        <strong>${response.title}</strong>
+		                        <span class="desc">${response.content}</span>
+		                        <span class="author">${response.author}</span>
+		                        <span class="date">${response.createDate}</span>
+		                    </li>
+		                `;
+		                $('.quest_list').prepend(newQuestion);
+
+		                // 입력 필드 초기화
+		                $('input[name="title"]').val('');
+		                $('textarea[name="content"]').val('');
+
+		                alert('질문이 성공적으로 등록되었습니다.');
+		            },
+		            error: function(xhr, status, error) {
+		                console.error('Error:', error);
+		                alert('질문 등록 중 오류가 발생했습니다.');
+		            }
+		        });
+		    });
+		});
+	</script>
 </th:block>
 </html>

@@ -123,14 +123,101 @@
 							</div>
 						</div>
 					</div>
-
 				</div>
-
+				
+				<div class="col">
+					<div class="card shadow mb-4">
+						<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+							<h5>일별 학습 현황</h5>
+						</div>
+						<div class="card-body p-0">
+							<div class="chart-container">
+				                <canvas id="dailyWatchChart" height="300"></canvas>
+				            </div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
     </section>
 
     <script th:inline="javascript">
+		 // 일별 학습 현황 차트
+	    var dailyWatchCount = /*[[${dailyWatchCount}]]*/ {};
+	    var dailyLabels = Object.keys(dailyWatchCount);
+	    var dailyData = Object.values(dailyWatchCount);
+	
+	    var dailyCtx = document.getElementById('dailyWatchChart').getContext('2d');
+	    var dailyChart = new Chart(dailyCtx, {
+	        type: 'line',
+	        data: {
+	            labels: dailyLabels,
+	            datasets: [{
+	                label: '일별 시청한 영상 수',
+	                data: dailyData,
+	                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+	                borderColor: 'rgba(75, 192, 192, 1)',
+	                borderWidth: 2,
+	                pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+	                pointBorderColor: '#fff',
+	                pointHoverBackgroundColor: '#fff',
+	                pointHoverBorderColor: 'rgba(75, 192, 192, 1)'
+	            }]
+	        },
+	        options: {
+	            scales: {
+	                y: {
+	                    beginAtZero: true,
+	                    ticks: {
+	                        stepSize: 1,
+	                        font: {
+	                            size: 12
+	                        }
+	                    },
+	                    grid: {
+	                        color: 'rgba(0, 0, 0, 0.1)'
+	                    }
+	                },
+	                x: {
+	                    ticks: {
+	                        font: {
+	                            size: 12
+	                        }
+	                    },
+	                    grid: {
+	                        display: false
+	                    }
+	                }
+	            },
+	            responsive: true,
+	            maintainAspectRatio: false,
+	            plugins: {
+	                legend: {
+	                    position: 'top',
+	                    labels: {
+	                        font: {
+	                            size: 14,
+	                            weight: 'bold'
+	                        }
+	                    }
+	                },
+	                title: {
+	                    display: true,
+	                    text: '최근 7일간 일별 학습 현황',
+	                    font: {
+	                        size: 16,
+	                        weight: 'bold'
+	                    }
+	                }
+	            },
+	            animation: {
+	                duration: 1500,
+	                easing: 'easeOutQuart'
+	            }
+	        }
+	    });
+   
+    	//주간 학습
         var weeklyWatchCount = /*[[${weeklyWatchCount}]]*/ {};
 		var weekOffset = /*[[${weekOffset}]]*/ 0;
 		var labels = Object.keys(weeklyWatchCount);

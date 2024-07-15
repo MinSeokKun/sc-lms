@@ -32,15 +32,7 @@ public class LectureController {
 	private final UserService userService;
 	private final UserLectureService userLecService;
 	
-	//강의 리스트 이동
-	@PreAuthorize("isAuthenticated()")
-	@GetMapping("/list")
-	public String lecList(Model model, Principal principal) {
-		List<Lecture> lecture = lectureService.lecList();
-		model.addAttribute("lecture", lecture);
-
-		return "admin/lec_list";
-	}
+	
 	
 	//에러페이지 이동
 	@GetMapping("/error")

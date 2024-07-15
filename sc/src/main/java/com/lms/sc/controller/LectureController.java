@@ -67,7 +67,7 @@ public class LectureController {
 		
 		lectureService.regLecture(title, content);
 		
-		return "redirect:/lecture/list";
+		return "redirect:/admin/lecList";
 	}
 	
 	// 강의 시작
@@ -104,7 +104,7 @@ public class LectureController {
 		Lecture lecture = lectureService.getLecture(id);
 		
 		lectureService.modify(lecture, title, content);
-		return "redirect:/lecture/list";
+		return "redirect:/admin/lecList";
 	}
 	
 	// 강의 삭제
@@ -113,6 +113,6 @@ public class LectureController {
 	public String removeLec(@PathVariable("id") long id) throws Exception {
 		Lecture lecture = lectureService.getLecture(id);
 		lectureService.remove(lecture);
-		return "redirect:/lecture/list";
+		return "redirect:/admin/lecList";
 	}
 }

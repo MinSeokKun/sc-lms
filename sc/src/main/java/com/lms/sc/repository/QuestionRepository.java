@@ -49,7 +49,6 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>{
 	List<Question> findAllByVideo(Video video);
 	
 	@Modifying
-    @Transactional
-    @Query("UPDATE Question q SET q.video = null WHERE q.video.id = :videoId")
-    void nullifyVideoReferences(Long videoId);
+    @Query("UPDATE Question q SET q.video = null WHERE q.video = :video")
+    void nullifyVideoReference(@Param("video") Video video);
 }

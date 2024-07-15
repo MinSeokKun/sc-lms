@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -49,4 +50,8 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
 	@Query("SELECT n FROM Note n WHERE n.author = :author ORDER BY n.createDate DESC")
     List<Note> findTop3ByAuthor(@Param("author") SiteUser author, Pageable pageable);
 	
+	
+	@Modifying
+    @Query("UPDATE Note n SET n.video = null WHERE n.video = :video")
+    void nullifyVideoReference(@Param("video") Video video);
 }

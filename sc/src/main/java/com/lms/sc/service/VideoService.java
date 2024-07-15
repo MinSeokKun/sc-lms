@@ -14,6 +14,7 @@ import com.lms.sc.repository.QuestionRepository;
 import com.lms.sc.repository.UserVideoRepository;
 import com.lms.sc.repository.VideoRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -101,17 +102,25 @@ public class VideoService {
 //	}
 	
 	@Transactional
-	public void deleteVideoById(Long id) {
-	    try {
-	        // 비디오 삭제 전에 question 테이블에서 video_id를 null로 설정
-	        questionService.nullifyVideoReferences(id);
-	        // 비디오 삭제
-	        videoRepo.deleteById(id);
-	    } catch (Exception e) {
-	        // 예외처리 추가
-	        throw new RuntimeException("비디오 삭제 실패", e);
-	    }
-	}
+	public void deleteVideo(Long videoId) {
+        Video video = videoRepo.findById(videoId)
+            .orElseThrow(() -> new EntityNotFoundException("Video not found with id: " + videoId));
+        
+        // 관련된 질문들의 video 참조를 null로 설정
+        questionRepository.nullifyVideoReference(video);
+        
+        // Note의 video 참조를 null로 설정
+        noteRepo.nullifyVideoReference(video);
+        // UserVideo 엔티티 삭제
+        userVidRepo.deleteByVideo(video);
+        // 변경사항을 즉시 데이터베이스에 반영
+        questionRepository.flush();
+        noteRepo.flush();
+        userVidRepo.flush();
+        
+        // 비디오 삭제
+        videoRepo.delete(video);
+    }
 }
 
 

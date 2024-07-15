@@ -21,7 +21,6 @@ public class UserCreateForm {
 	private String password2;
 	
 	@NotEmpty(message="이메일 입력")
-	
 	@Email
 	private String email;
 	

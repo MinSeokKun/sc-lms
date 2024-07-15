@@ -56,7 +56,7 @@ public class UserLectureController {
 	    model.addAttribute("userLectureList", userLectureList);
 	    
 	    Map<UserLecture, Map<Integer, Integer>> list = new LinkedHashMap<>();
-	    
+	    Map<UserLecture, Boolean> lectureVideoPresence = new HashMap<>();
 	    for (UserLecture userLecture : userLectureList) {
 	        List<Video> videoList = vidService.VideoList(userLecture.getLecture());
 	        int watched = 0;
@@ -70,16 +70,22 @@ public class UserLectureController {
 	        Map<Integer, Integer> progress = new HashMap<Integer, Integer>();
 	        progress.put(videoList.size(), watched);
 	        
-	        double userLecProgress = (double) watched / videoList.size(); 
+	        double userLecProgress;
+	        if(videoList.size() > 0) {
+	        	userLecProgress = (double) watched / videoList.size(); 	        	
+	        }else {
+	        	userLecProgress = 0.0;
+	        }
 	        userLecture = userLectureService.updateProgress(user, userLecture.getLecture(), userLecProgress);
 	        
 	        list.put(userLecture, progress);
+	        lectureVideoPresence.put(userLecture, !videoList.isEmpty());
 	    }
 	    List<UserLecture> updateList = userLectureService.getMyList(user);
 	    model.addAttribute("userLecList", updateList);
 	    
 	    model.addAttribute("list", list);
-	    
+	    model.addAttribute("lectureVideoPresence", lectureVideoPresence);
 	    return "mypage/my_list";
 	}
 	

@@ -16,4 +16,5 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
 	List<Video> findAllByLecture(Lecture lecture);
 	
 	void deleteAllByLecture(Lecture lecture);
+	
 }

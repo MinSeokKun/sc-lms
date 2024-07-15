@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.Question;
@@ -42,5 +44,12 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>{
 	Page<Question> findByKeywordWithAnswers(@Param("keyword") String keyword, Pageable pageable);
   
 	@Query("SELECT q FROM Question q WHERE q.author = :author AND q.video.lecture = :lecture ORDER BY q.createDate DESC")
-  List<Question> findByAuthorAndLectureOrderByCreateDateAsc(@Param("author") SiteUser author, @Param("lecture") Lecture lecture);
+	List<Question> findByAuthorAndLectureOrderByCreateDateAsc(@Param("author") SiteUser author, @Param("lecture") Lecture lecture);
+
+	List<Question> findAllByVideo(Video video);
+	
+	@Modifying
+    @Transactional
+    @Query("UPDATE Question q SET q.video = null WHERE q.video.id = :videoId")
+    void nullifyVideoReferences(Long videoId);
 }

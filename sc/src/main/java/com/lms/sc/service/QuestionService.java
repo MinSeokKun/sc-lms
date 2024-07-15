@@ -129,4 +129,10 @@ public class QuestionService {
 	public List<Question> getQuestionByUserAndLectureSortedAsc(SiteUser user, Lecture lecture) {
         return questionRepository.findByAuthorAndLectureOrderByCreateDateAsc(user, lecture);
     }
+	
+	//비디오 삭제살 때 널값으로 넣기
+	@Transactional
+    public void nullifyVideoReferences(Long videoId) {
+        questionRepository.nullifyVideoReferences(videoId);
+    }
 }

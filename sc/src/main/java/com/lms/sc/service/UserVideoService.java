@@ -2,6 +2,9 @@ package com.lms.sc.service;
 
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -160,6 +163,25 @@ public class UserVideoService {
 	    List<String> watchedLectures = userVideoRepository.findRecentlyCompletedLectureTitles(userId, PageRequest.of(0, 3));
 	    return watchedLectures;
 	}
+	
+	//일별 학습율 그래프
+	public Map<String, Integer> getDailyWatchCount(SiteUser user, LocalDateTime startDate, LocalDateTime endDate) {
+        List<Object[]> results = userVideoRepository.getDailyWatchCount(user, startDate, endDate);
+        Map<String, Integer> dailyWatchCount = new LinkedHashMap<>();
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
+        
+        for (Object[] result : results) {
+            // java.sql.Date를 java.time.LocalDate로 직접 변환
+        	Date sqlDate = (Date) result[0];
+        	LocalDate date = LocalDate.parse(sqlDate.toString());
+            String formattedDate = date.format(formatter);
+            Integer count = ((Number) result[1]).intValue();
+            dailyWatchCount.put(formattedDate, count);
+        }
+        
+        return dailyWatchCount;
+    }
 }
 
 

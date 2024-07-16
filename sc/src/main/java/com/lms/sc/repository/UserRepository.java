@@ -26,4 +26,6 @@ public interface UserRepository extends JpaRepository<SiteUser, Long> {
 	Page<SiteUser> findAllByKeyword(@Param("kw") String kw, Pageable pageable);
 	
 	SiteUser findByTellNumber(String tellNumber);
+	
+//	void deleteAllByUser(SiteUser user);
 }

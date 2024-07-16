@@ -5,8 +5,9 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.lms.sc.entity.Video;
 import com.lms.sc.entity.Lecture;
+import com.lms.sc.entity.SiteUser;
+import com.lms.sc.entity.Video;
 
 
 
@@ -16,5 +17,4 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
 	List<Video> findAllByLecture(Lecture lecture);
 	
 	void deleteAllByLecture(Lecture lecture);
-	
 }

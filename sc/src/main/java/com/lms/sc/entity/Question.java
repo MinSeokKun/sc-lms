@@ -40,10 +40,12 @@ public class Question {
 	
 	private boolean result;
 	
-	@OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+//	@OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Answer> answerList;
 	
 	@ManyToOne
+	@JoinColumn(name = "author_id")
 	private SiteUser author;
 	
 	@ManyToOne

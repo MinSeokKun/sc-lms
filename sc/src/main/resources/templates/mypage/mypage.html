@@ -5,7 +5,7 @@
 	<style>
 		.input_box label { display: inline-block; width: 130px; }
 	</style>
-	<div id="content" style="height: calc(100vh - 80px);">
+	<div id="content" style="min-height: calc(100vh - 80px);">
 		<div class="wrapper">
 			<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 10px;">
 				<h2 style="margin-bottom: 40px;">개인정보수정</h2>
@@ -52,13 +52,45 @@
 				        <img th:src="${user.profileImage}" alt="현재 프로필 이미지" style="width: 100px; height: 100px;" />
 				    </div>
 				    
-				    <div>
-				        <button class="login-btn" type="submit" style="margin-top: 40px">수정</button>
+				    <div class="btn_box" style="flex-direction: column;">
+				        <button class="login-btn" type="submit">수정</button>
+						<a th:href="@{/user/delete/{id}(id=${user.id})}" id="deleteButton" class="btn btn-danger">
+					        <span class="text">회원탈퇴</span>
+					    </a>
 				    </div>
 				</form>
 			</div>
 		</div>
 	</div>
+	<script th:inline="javascript">
+	    document.getElementById('deleteButton').addEventListener('click', function(event) {
+	        event.preventDefault();
+	        
+	        var messages = [
+	            '정말로 탈퇴하시겠습니까?',
+	            '모든 데이터가 삭제됩니다. 계속하시겠습니까?',
+	            '복구가 불가능합니다. 그래도 진행하시겠습니까?',
+	            '마지막 경고입니다. 정말 탈퇴하시겠습니까?',
+	            '이 결정은 되돌릴 수 없습니다. 최종적으로 탈퇴하시겠습니까?'
+	        ];
+	        
+	        var currentIndex = 0;
+	        
+	        function showNextConfirm() {
+	            if (currentIndex < messages.length) {
+	                if (confirm(messages[currentIndex])) {
+	                    currentIndex++;
+	                    showNextConfirm();
+	                }
+	            } else {
+	                // 모든 확인을 통과한 경우 실제 삭제 URL로 이동
+	                window.location.href = /*[[@{/user/delete/{id}(id=${user.id})}]]*/ '';
+	            }
+	        }
+	        
+	        showNextConfirm();
+	    });
+	</script>
 <script>
 
 	document.getElementById('modifyForm').addEventListener('submit', function(e) {

@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.lms.sc.entity.Notice;
+import com.lms.sc.entity.Question;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.exception.DataNotFoundException;
 import com.lms.sc.repository.NoticeRepository;
@@ -40,6 +41,16 @@ public class NoticeService {
 		}else {
 			throw new DataNotFoundException("notice not found");
 		}
+	}
+	public void delete(Notice notice) {
+		this.noticeRepository.delete(notice);
+	}
+	
+	public void modify(Notice notice, String title, String content) {
+		notice.setTitle(title);
+		notice.setContent(content);
+		notice.setModifyDate(LocalDateTime.now());
+		this.noticeRepository.save(notice);
 	}
 
 }

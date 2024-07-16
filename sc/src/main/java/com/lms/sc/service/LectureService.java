@@ -1,12 +1,21 @@
 package com.lms.sc.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
@@ -30,6 +39,9 @@ public class LectureService {
 	private final UserVideoRepository userVidRepo;
 	private final QuestionRepository questRepo;
 	
+	@Value("${file.upload-dir-lecture}")
+	private String uploadDir;
+	
 	//강의 아이디 가져오기
 	@Transactional
 	public Lecture getLecture(long id) throws Exception {
@@ -50,6 +62,29 @@ public class LectureService {
 		lecture.setCreateDate(LocalDateTime.now());
 		return lecRepo.save(lecture);
 	}
+	
+	// 썸네일 업데이트
+	public Lecture updatethumnail(Long lecId, MultipartFile file) throws IOException {
+        Lecture lecture = lecRepo.findById(lecId).get();
+        
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String fileExtension = fileName.substring(fileName.lastIndexOf("."));
+        String newFileName = UUID.randomUUID().toString() + fileExtension;
+        
+        // file: 접두사 제거
+        String cleanUploadDir = uploadDir.startsWith("file:") ? uploadDir.substring(5) : uploadDir;
+        
+        Path uploadPath = Paths.get(cleanUploadDir);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+        
+        Path targetLocation = uploadPath.resolve(newFileName);
+        Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        
+        lecture.setThumnailUrl("/images/lecture/" + newFileName);
+        return lecRepo.save(lecture);
+    }
 	
 	//강의 리스트
 	public List<Lecture> lecList(){

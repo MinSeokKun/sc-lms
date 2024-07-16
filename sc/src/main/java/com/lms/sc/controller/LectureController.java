@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
@@ -100,10 +101,18 @@ public class LectureController {
 	//강의 수정
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify/{id}")
-	public String modify(@PathVariable("id") long id, @RequestParam("title") String title, @RequestParam("content") String content) throws Exception {
+	public String modify(@PathVariable("id") long id, 
+					@RequestParam("title") String title,
+					@RequestParam("content") String content,
+					@RequestParam(value = "thumnailUrl", required = false) MultipartFile thumnailUrl) throws Exception {
 		Lecture lecture = lectureService.getLecture(id);
 		
+		
 		lectureService.modify(lecture, title, content);
+		
+		if (thumnailUrl != null && !thumnailUrl.isEmpty()) {
+			lectureService.updatethumnail(lecture.getId(), thumnailUrl);
+		}
 		return "redirect:/admin/lecList";
 	}
 	

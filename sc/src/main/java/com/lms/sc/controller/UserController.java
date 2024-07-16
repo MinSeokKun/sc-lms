@@ -195,5 +195,28 @@ public class UserController {
 		
 		return "redirect:/user/login?success=true";
 	}
+	
+	//아이디 찾기
+	@GetMapping("/find-id")
+    public String findIdForm() {
+        return "user/find_id_form";
+    }
 
+    @PostMapping("/find-id")
+    public String findId(@RequestParam("tellNumber") String tellNumber, Model model) {
+        String maskedEmail = userService.findEmailByTellNumber(tellNumber);
+        if (maskedEmail != null) {
+            model.addAttribute("maskedEmail", maskedEmail);
+            return "user/find_id_result";
+        } else {
+            model.addAttribute("error", "일치하는 사용자를 찾을 수 없습니다.");
+            return "error/404";
+        }
+    }
+    
+    //아이디 찾기 결과 페이지
+//    @GetMapping("/find_id_result")
+//    public String resultId() {
+//        return "user/find_id_result";
+//    }
 }

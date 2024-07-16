@@ -136,4 +136,30 @@ public class UserService {
 		pms.sendSimpleMessage(email, tempPassword);
 	}
 	
+	
+	//아이디 찾기
+	public String findEmailByTellNumber(String tellNumber) {
+        SiteUser user = userRepository.findByTellNumber(tellNumber);
+        if (user != null) {
+            return maskEmail(user.getEmail());
+        }
+        return null;
+    }
+	
+	//이메일 정규식 수정
+	private String maskEmail(String email) {
+	    int atIndex = email.indexOf("@");
+	    if (atIndex > 1) {
+	        String localPart = email.substring(0, atIndex);
+	        String domain = email.substring(atIndex);
+	        
+	        int visibleLength = Math.max(localPart.length() / 2, 1);
+	        String visiblePart = localPart.substring(0, visibleLength);
+	        String maskedPart = "*".repeat(localPart.length() - visibleLength);
+	        
+	        return visiblePart + maskedPart + domain;
+	    }
+	    return email;
+	}
+	
 }

@@ -37,5 +37,8 @@ public class Notice {
 
 	@ManyToOne
 	private SiteUser author;
+	
+	@OneToMany(mappedBy = "notice", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<NoticeAnswer> noticeAnswer;
 }
 

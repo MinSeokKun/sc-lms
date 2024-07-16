@@ -37,4 +37,5 @@ public class NoticeAnswer {
 	
 	@ManyToOne
 	private SiteUser author;
+	
 }

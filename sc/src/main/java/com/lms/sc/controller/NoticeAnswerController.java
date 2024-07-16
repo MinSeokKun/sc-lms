@@ -40,27 +40,30 @@ public class NoticeAnswerController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create/{id}")
 	public String createNoticeAnswer(Model model, @PathVariable("id") Integer id,
-	@Valid NoticeAnswerCreateForm noticeAnswerCreateForm, BindingResult bindingResult, Principal principal) {
-		SiteUser user = userService.getUserByEmail(principal.getName());
-		Notice notice = this.noticeService.getNotice(id);
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("notice", notice);
-			List<NoticeAnswer> noticeAnswerList = noticeAnswerService.getNoticeAnswerList(notice);
-			model.addAttribute("noticeAnswerList", noticeAnswerList);
-			return "notice/notice_detail";
-		}
-		this.noticeAnswerService.create(notice, noticeAnswerCreateForm.getContent(), user);
-		return String.format("redirect:/notice/detail/%s", id);
+	                                 @Valid NoticeAnswerCreateForm noticeAnswerCreateForm, 
+	                                 BindingResult bindingResult, Principal principal) {
+	    SiteUser user = userService.getUserByEmail(principal.getName());
+	    Notice notice = this.noticeService.getNotice(id);
+	    
+	    if (bindingResult.hasErrors()) {
+	        model.addAttribute("notice", notice);
+	        List<NoticeAnswer> noticeAnswerList = noticeAnswerService.getNoticeAnswerList(notice);
+	        model.addAttribute("noticeAnswerList", noticeAnswerList);
+	        return "notice/notice_detail";
+	    }
+	    
+	    this.noticeAnswerService.create(notice, noticeAnswerCreateForm.getContent(), user);
+	    return String.format("redirect:/notice/detail/%s", id);
 	}
 	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify/{noticeAnswerId}")
 	public String noticeAnswerModify(@Valid NoticeAnswerCreateForm noticeAnswerCreateForm, BindingResult bindingResult, 
-			Principal principal, @PathVariable("noticeAnswerId") Integer answerId) {
+			Principal principal, @PathVariable("noticeAnswerId") Integer noticeAnswerId) {
 		if(bindingResult.hasErrors()) {
 			return "notice_detail{id}";
 		}
-		NoticeAnswer noticeAnswer = this.noticeAnswerService.getNoticeAnswer(answerId);
+		NoticeAnswer noticeAnswer = this.noticeAnswerService.getNoticeAnswer(noticeAnswerId);
 		if(!noticeAnswer.getAuthor().getEmail().equals(principal.getName())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
 		}
@@ -76,7 +79,6 @@ public class NoticeAnswerController {
 			throw new DataNotFoundException("NoticeAnswer not found"); 
 		} 
 		noticeAnswerService.delete(noticeAnswer);
-	 
 		return String.format("redirect:/notice/detail/%s", noticeAnswer.getNotice().getId());
 	}
 	 

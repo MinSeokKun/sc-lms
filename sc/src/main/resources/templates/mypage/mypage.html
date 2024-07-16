@@ -5,9 +5,9 @@
 	<style>
 		.input_box label { display: inline-block; width: 110px; }
 	</style>
-	<div id="content" style="height: calc(100vh - 190px);">
+	<div id="content" style="height: calc(100vh - 80px);">
 		<div class="wrapper">
-			<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 80px;">
+			<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 10px;">
 				<h2 style="margin-bottom: 40px;">개인정보수정</h2>
 				<form id="modifyForm" th:action="@{/user/modify}" method="post" enctype="multipart/form-data">
 				    <input type="hidden" name="id" th:value="${user.id}" />
@@ -21,19 +21,19 @@
 				        <label>이메일</label>
 				        <input type="email" name="email" th:value="${user.email}" readonly="readonly" style="border: none;" />
 				    </div>
+				    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 					<div class="input_box">
-				        <label>현재 비밀번호</label>
-				        <input type="password" name="password" id="pw" autofocus="autofocus" />
-				    </div>
-					<input type="hidden" id="currentPassword" th:value="${#authentication.principal.password}" />
-				    <div class="input_box">
-				        <label>수정할 비밀번호</label>
-				        <input type="password" name="changePassword" id="pw" autofocus="autofocus" />
-				    </div>
-				    <div class="input_box">
-				        <label>비밀번호 확인</label>
-				        <input type="password" id="pw_chk" required="required" />
-				    </div>
+					    <label>현재 비밀번호</label>
+					    <input type="password" name="currentPassword" id="currentPassword" required />
+					</div>
+					<div class="input_box">
+					    <label>새 비밀번호</label>
+					    <input type="password" name="newPassword" id="newPassword" />
+					</div>
+					<div class="input_box">
+					    <label>새 비밀번호 확인</label>
+					    <input type="password" id="newPasswordConfirm" />
+					</div>
 				    <div class="input_box">
 				        <label>전화번호</label>
 				        <input type="text" name="tellNumber" th:value="${user.tellNumber}" />
@@ -59,29 +59,49 @@
 			</div>
 		</div>
 	</div>
-</th:block>
 <script>
+
 	document.getElementById('modifyForm').addEventListener('submit', function(e) {
-		e.preventDefault();
-		
-		var formData = new FormData(this);
-		
-		fetch('/user/checkPassword', {
-			method: 'POST',
-			body: formData
-		})
-		.then(response => response.json())
-		.then(data => {
-			if (data.passwordCorrect) {
-				this.submit();
-			} else {
-				alert('현재 비밀번호가 일치하지 않습니다.');
-			}
-		})
-		.catch(error => {
-			console.error('Error:', error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요.');
-		});
+	    e.preventDefault(); // 폼 제출을 막습니다.
+	    console.log('Form submission event triggered');
+	
+	    var currentPassword = document.getElementById('currentPassword').value;
+	    var newPassword = document.getElementById('newPassword').value;
+	    var newPasswordConfirm = document.getElementById('newPasswordConfirm').value;
+	
+	    if (newPassword !== newPasswordConfirm) {
+	        alert('새 비밀번호가 일치하지 않습니다.');
+	        return;
+	    }
+	
+	    console.log('Sending fetch request to check password');
+	    
+	    var csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+	    var csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+	    fetch('/user/checkPassword', {
+	        method: 'POST',
+	        body: JSON.stringify({ password: currentPassword }),
+	        headers: {
+	            'Content-Type': 'application/json',
+	            [csrfHeader]: csrfToken
+	        }
+	    })
+	    .then(response => response.json())
+	    .then(data => {
+	        console.log('Password check response:', data);
+	        if (data.passwordCorrect) {
+	            alert('개인정보가 수정되었습니다.');
+	            this.submit(); // 비밀번호가 맞으면 폼을 제출합니다.
+	        } else {
+	            alert('현재 비밀번호가 일치하지 않습니다.');
+	        }
+	    })
+	    .catch(error => {
+	        console.error('Error:', error);
+	        alert('오류가 발생했습니다. 다시 시도해 주세요.');
+	    });
 	});
 </script>
+</th:block>
 </html>

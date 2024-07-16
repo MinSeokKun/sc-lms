@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.lms.sc.entity.Lecture;
 import com.lms.sc.entity.SiteUser;
+import com.lms.sc.entity.Video;
 import com.lms.sc.service.LectureService;
 import com.lms.sc.service.UserLectureService;
 import com.lms.sc.service.UserService;
+import com.lms.sc.service.VideoService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +26,7 @@ public class MainController {
 	private final LectureService lectureService;
 	private final UserService userService;
 	private final UserLectureService userLecService;
+	private final VideoService videoService;
 	
 	@GetMapping("/")
 	public String root(Model model, Principal principal) {
@@ -39,7 +42,10 @@ public class MainController {
 			if (userLecService.getStudents(lec) != 0) {
 				students = userLecService.getStudents(lec);
 			}
-			userLecture.put(lec, students);
+			List<Video> videos = videoService.VideoList(lec);
+			if (videos != null && !videos.isEmpty()) {
+				userLecture.put(lec, students);
+			}
 		}
 		
 		model.addAttribute("userLecture", userLecture);

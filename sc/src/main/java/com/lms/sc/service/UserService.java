@@ -1,12 +1,10 @@
 package com.lms.sc.service;
 
 import java.io.IOException;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -105,14 +102,13 @@ public class UserService {
 	}
 	
 	// 유저 정보 수정
-	public void modify(SiteUser user, String name, String password, String tellNumber) {
-		user.setName(name);
-		if(password != null && !password.isEmpty()) {
-			user.setPassword(passwordEncoder.encode(password));			
-		}
-		user.setTellNumber(tellNumber);
-		
-		userRepository.save(user);
+	public void modify(SiteUser user, String name, String newPassword, String tellNumber) {
+	    user.setName(name);
+	    if (newPassword != null) {
+	        user.setPassword(newPassword);
+	    }
+	    user.setTellNumber(tellNumber);
+	    userRepository.save(user);
 	}
 	
 	// 회원 목록 - 어드민

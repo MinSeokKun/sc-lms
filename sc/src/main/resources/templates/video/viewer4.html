@@ -3,6 +3,10 @@
     layout:decorate="~{layout}">
     
 <th:block layout:fragment="content">
+	<script>
+		$('.navbar-nav.bg-gradient-primary').hide();
+		$('.content_wrap').css('width', '100%');
+	</script>
 	<script th:src="@{/js/viewer.js}"></script>
 	<div id="wrap">
 	    <div id="video-content" class="videoViewer">
@@ -31,18 +35,19 @@
 					<li class="curriculum">
 		        		<div class="view_tit">
 		        			<h2>커리큘럼</h2>
-		        			<button type="button">X</button>
         				</div>
 			        	<div class="lec_info">
 			        		<h4>[[${lecture.title}]]</h4>
-			        		<div style="display: flex; gap: 10px;">
+			        		<div style="display: flex; gap: 10px; flex-direction: column;">
 			        			<span>전체 강의 학습율 : </span>
 								<div th:each="entry : ${progressMap.entrySet()}" th:if="${entry.key.lecture.id == lecture.id}">
-							        <div class="course-progress" th:each="progress : ${entry.value.entrySet()}" style="display: flex; align-items: center;">
-							            <div class="progress-bar">
-							                <div class="progress-fill" th:style="'width:' + (${progress.value * 100.0 / progress.key}) + '%'"></div>
-							            </div>
-							            <span class="progress-text" th:text="${progress.value != null ? (progress.value * 100.0 / progress.key == 0 ? '0' : #numbers.formatDecimal((progress.value * 100.0 / progress.key), 0, 1)) : '0'} + '%'"></span>
+							        <div th:each="progress : ${entry.value.entrySet()}" style="display: flex; align-items: center;">
+							        	<div class="progress progress-sm">
+								            <div class="progress-bar" role="progressbar" style="background-color: #e0e0e0;">
+								                <div class="progress-fill" th:style="'width:' + (${progress.value * 100.0 / progress.key}) + '%; background: #4e73df;'"></div>
+								            </div>
+							        	</div>
+					            		<span class="progress-text" th:text="${progress.value != null ? (progress.value * 100.0 / progress.key == 0 ? '0' : #numbers.formatDecimal((progress.value * 100.0 / progress.key), 0, 1)) : '0'} + '%'"></span>
 							        </div>
 							    </div>
 						    </div>
@@ -68,7 +73,6 @@
 							<div>
 								<div class="view_tit">
 				        			<h2>노트</h2>
-				        			<button type="button">X</button>
 		        				</div>
 					            <!-- 노트 리스트 창 열기 -->
 					            <ul id="notesContainer">
@@ -99,7 +103,6 @@
 			        <li style="display: none">
 			        	<div class="view_tit">
 		        			<h2>커뮤니티</h2>
-		        			<button type="button">X</button>
         				</div>
         				<ul class="quest_list" style="height: 400px">
 			        		<li th:each="question : ${qustList}">

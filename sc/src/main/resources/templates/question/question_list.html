@@ -40,7 +40,7 @@
 										
 										<div class="card shadow h-100">
 											<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-												<h6 class="m-0 font-weight-bold text-primary" th:text="${question.title}"></h6>
+												<h6 class="m-0 font-weight-bold text-primary" th:text="${question.video?.title != null ? question.video.title + ' - ' + question.title : question.title}"></h6>
 												<div class="dropdown no-arrow">
 													<span th:if="${question.result == false}" class="btn btn-warning btn-circle btn-sm"><i class="fa-solid fa-question"></i></span>
 													<span th:if="${question.result == true}" class="btn btn-success btn-circle btn-sm"><i class="fa-solid fa-check"></i></span>

@@ -3,10 +3,9 @@
       layout:decorate="~{layout}">
 	<th:block layout:fragment=content>
 		<div id="content">
-		    <section class="wrapper" style="max-width: 1440px;">
-		        <div class="tit" style="margin: 20px;"><h2>강의 리스트</h2></div>
-				
-				<div class="swiper mySwiper">
+		    <section class="wrapper" style="position: relative;">
+		        <div class="tit mt-4 mb-4"><h2>강의 리스트</h2></div>
+				<div class="swiper mySwiper" style="max-width: 1380px;">
 					<div class="swiper-wrapper">
 						<div class="swiper-slide" th:each="lecture, loop : ${userLecture}">
 							<div class="card">
@@ -27,9 +26,9 @@
 						</div>
 					</div>
 					<div class="swiper-pagination" style="position: relative; display: block; margin-top: 30px;"></div>
-					<div class="swiper-button-next"></div>
-   					<div class="swiper-button-prev"></div>
 				</div>
+				<div class="swiper-button-next"></div>
+				<div class="swiper-button-prev"></div>
 		    </section>
 		    <!-- 강의 리스트 === E -->
 		</div>

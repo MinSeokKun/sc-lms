@@ -42,8 +42,9 @@
 							</div>
 							<div class="card-body">
 								<ul th:if="${not #lists.isEmpty(recentlyCompletedLectures)}">
-									<li th:each="lecture : ${recentlyCompletedLectures}">
-										<a href="" class="text-gray-700" th:text="${lecture}"></a>
+									<li th:each="lecture : ${recentlyCompletedLectures}" style="display: flex; justify-content: space-between;">
+										<span class="text-gray-700" th:text="${lecture[0]}"></span>
+										<span class="text-muted ml-2" th:text="${#dates.format(lecture[1], 'yyyy-MM-dd HH:mm')}"></span>
 									</li>
 								</ul>
 								<p th:if="${#lists.isEmpty(recentlyCompletedLectures)}">최근 학습 완료한 강의가 없습니다.</p>
@@ -143,8 +144,8 @@
     <script th:inline="javascript">
 		 // 일별 학습 현황 차트
 	    var dailyWatchCount = /*[[${dailyWatchCount}]]*/ {};
-	    var dailyLabels = Object.keys(dailyWatchCount);
-	    var dailyData = Object.values(dailyWatchCount);
+	    var dailyLabels = Object.keys(dailyWatchCount).reverse();
+	    var dailyData = Object.values(dailyWatchCount).reverse();
 	
 	    var dailyCtx = document.getElementById('dailyWatchChart').getContext('2d');
 	    var dailyChart = new Chart(dailyCtx, {

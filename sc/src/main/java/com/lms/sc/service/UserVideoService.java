@@ -122,46 +122,14 @@ public class UserVideoService {
 	    return result;
 	}
 	
-//	public Map<String, Long> getWeeklyWatchCount(SiteUser user, Integer weekOffset) {
-//		Calendar cal = Calendar.getInstance();
-//        if (weekOffset != null) {
-//            cal.add(Calendar.WEEK_OF_YEAR, -weekOffset);
-//        }
-//        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-//        Date startDate = cal.getTime();
-//
-//        cal.add(Calendar.DATE, 7);
-//        Date endDate = cal.getTime();
-//
-//        List<UserVideo> watchedVideos = userVideoRepository.findByUserAndWatchedAtBetween(user, startDate, endDate);
-//
-//        String[] daysOfWeek = {"월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"};
-//        Map<String, Long> orderedDailyCount = new LinkedHashMap<>();
-//        for (String day : daysOfWeek) {
-//            orderedDailyCount.put(day, 0L);
-//        }
-//
-//        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
-//        for (UserVideo video : watchedVideos) {
-//            String dayOfWeek = sdf.format(video.getWatchedAt());
-//            orderedDailyCount.put(dayOfWeek, orderedDailyCount.get(dayOfWeek) + 1);
-//        }
-//
-//        return orderedDailyCount;
-//    }
-	
 	//최근 학습 완료한 강의(성장로그)
 //	public List<String> getRecentlyCompletedLectures(long userId) {
-//        List<Lecture> completedLectures = userVideoRepository.findCompletedLecturesByUserId(userId, PageRequest.of(0, 3));
-//        return completedLectures.stream()
-//                .map(Lecture::getTitle)
-//                .collect(Collectors.toList());
-//    }
+//	    List<String> watchedLectures = userVideoRepository.findRecentlyCompletedLectureTitles(userId, PageRequest.of(0, 3));
+//	    return watchedLectures;
+//	}
 	
-	
-	public List<String> getRecentlyCompletedLectures(long userId) {
-	    List<String> watchedLectures = userVideoRepository.findRecentlyCompletedLectureTitles(userId, PageRequest.of(0, 3));
-	    return watchedLectures;
+	public List<Object[]> getRecentlyCompletedLectures(long userId) {
+	    return userVideoRepository.findRecentlyCompletedLectureTitlesAndDates(userId, PageRequest.of(0, 3));
 	}
 	
 	//일별 학습율 그래프

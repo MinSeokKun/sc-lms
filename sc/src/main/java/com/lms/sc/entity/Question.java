@@ -50,4 +50,3 @@ public class Question {
 	@JoinColumn(name = "video_id", nullable = true)
 	private Video video;
 }
-

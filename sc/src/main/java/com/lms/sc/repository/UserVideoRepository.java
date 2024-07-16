@@ -53,15 +53,22 @@ public interface UserVideoRepository extends JpaRepository<UserVideo, Long> {
 	@Query("SELECT uv FROM UserVideo uv JOIN FETCH uv.video v JOIN FETCH v.lecture WHERE uv.user = :user ORDER BY uv.watchedAt DESC")
 	List<UserVideo> findTop3ByAuthorUserVideos(@Param("user") SiteUser user, Pageable pageable);
 
+	// 성장 로그
+//	@Query("SELECT l.title FROM Lecture l WHERE l.id IN " +
+//	           "(SELECT DISTINCT v.lecture.id FROM Video v WHERE v.lecture.id IN " +
+//	           "(SELECT DISTINCT uv.video.lecture.id FROM UserVideo uv WHERE uv.user.id = :userId) " +
+//	           "GROUP BY v.lecture.id " +
+//	           "HAVING COUNT(v) = " +
+//	           "(SELECT COUNT(uv) FROM UserVideo uv WHERE uv.user.id = :userId AND uv.video.lecture.id = v.lecture.id AND uv.watched = true))" +
+//	           "ORDER BY l.id DESC")
+//	 List<String> findRecentlyCompletedLectureTitles(@Param("userId") Long userId, Pageable pageable);
 	
-	@Query("SELECT l.title FROM Lecture l WHERE l.id IN " +
-	           "(SELECT DISTINCT v.lecture.id FROM Video v WHERE v.lecture.id IN " +
-	           "(SELECT DISTINCT uv.video.lecture.id FROM UserVideo uv WHERE uv.user.id = :userId) " +
-	           "GROUP BY v.lecture.id " +
-	           "HAVING COUNT(v) = " +
-	           "(SELECT COUNT(uv) FROM UserVideo uv WHERE uv.user.id = :userId AND uv.video.lecture.id = v.lecture.id AND uv.watched = true))" +
-	           "ORDER BY l.id DESC")
-	 List<String> findRecentlyCompletedLectureTitles(@Param("userId") Long userId, Pageable pageable);
+	@Query("SELECT DISTINCT v.lecture.title, MAX(uv.watchedAt) " +
+		       "FROM UserVideo uv JOIN uv.video v " +
+		       "WHERE uv.user.id = :userId AND uv.watched = true " +
+		       "GROUP BY v.lecture.title " +
+		       "ORDER BY MAX(uv.watchedAt) DESC")
+	List<Object[]> findRecentlyCompletedLectureTitlesAndDates(@Param("userId") long userId, Pageable pageable);
 	
 	//일별 학습 현황 쿼리문
     @Query("SELECT DATE(uv.watchedAt) as date, COUNT(uv) as count FROM UserVideo uv WHERE uv.user = :user AND uv.watchedAt BETWEEN :startDate AND :endDate GROUP BY DATE(uv.watchedAt)")

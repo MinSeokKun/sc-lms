@@ -21,6 +21,8 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>{
 //	@EntityGraph(attributePaths = {"answerList"})
 	Page<Question> findAll(Pageable pageable);
 	
+	void deleteAllByAuthor(SiteUser user);
+	
 	@Query(value = "SELECT q FROM Question q LEFT JOIN FETCH q.answerList WHERE q.result = :result",
 		       countQuery = "SELECT COUNT(q) FROM Question q WHERE q.result = :result")
 	Page<Question> findByResultWithAnswers(@Param("result") boolean result, Pageable pageable);

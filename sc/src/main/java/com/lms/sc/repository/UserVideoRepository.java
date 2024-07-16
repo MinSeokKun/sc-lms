@@ -27,6 +27,7 @@ public interface UserVideoRepository extends JpaRepository<UserVideo, Long> {
 	
 	void deleteByVideoAndUser(Video video, SiteUser user);
 
+	void deleteAllByUser(SiteUser user);
 	
 	@Query("SELECT uv FROM UserVideo uv JOIN uv.video v JOIN v.lecture l WHERE uv.user = :user AND l = :lecture AND uv.watched = :watched")
     List<UserVideo> findByUserAndLectureAndWatched(

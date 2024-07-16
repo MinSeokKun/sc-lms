@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,8 +27,14 @@ import com.lms.sc.entity.CommonUtil;
 import com.lms.sc.entity.SiteUser;
 import com.lms.sc.exception.DataNotFoundException;
 import com.lms.sc.exception.EmailException;
+import com.lms.sc.repository.AnswerRepository;
+import com.lms.sc.repository.NoteRepository;
+import com.lms.sc.repository.QuestionRepository;
+import com.lms.sc.repository.UserLectureRepository;
 import com.lms.sc.repository.UserRepository;
+import com.lms.sc.repository.UserVideoRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -38,9 +45,32 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 	private final PasswordMailService pms;
 	private final CommonUtil cu;
+	private final QuestionRepository questionRepository;
+	private final AnswerRepository answerRepository;
+	private final NoteRepository noteRepository;
+	private final UserLectureRepository userLectureRepository;
+	private final UserVideoRepository userVideoRepository;
 	
 	@Value("${file.upload-dir}")
 	private String uploadDir;
+	
+	// 우저 삭제
+	@Transactional
+	public void deleteUser(Long userId) {
+        SiteUser user = userRepository.findById(userId)
+        		.orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+
+        // 사용자와 관련된 데이터 삭제
+        questionRepository.deleteAllByAuthor(user);
+        answerRepository.deleteAllByAuthor(user);
+        noteRepository.deleteAllByAuthor(user);
+        userLectureRepository.deleteAllByUser(user);
+        userVideoRepository.deleteAllByUser(user);
+
+        // 사용자 삭제 플래그 설정
+        //user.setDeleted(true);
+        userRepository.delete(user);
+    }
 	
 	//회원가입
 	public SiteUser create(String username, String email, String password, String tellNumber, String profileImage) {

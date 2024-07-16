@@ -38,6 +38,12 @@ public class MsTest {
 	private VideoService vs;
 	
 	@Test
+	void minseok() {
+		SiteUser minseok = us.getUserByEmail("minseok@test.com");
+		us.modify(minseok, "김민석", "1234", "0105156");
+	}
+	
+//	@Test
 	void adminUser() {
 		us.create("admin", "admin", "1234", "01012340101", null);
 	}

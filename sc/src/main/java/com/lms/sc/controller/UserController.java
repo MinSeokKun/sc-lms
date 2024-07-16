@@ -16,10 +16,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.lms.sc.createForm.TempPasswordForm;
 import com.lms.sc.createForm.UserCreateForm;
@@ -125,21 +127,34 @@ public class UserController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify")
 	public String modify(@AuthenticationPrincipal UserDetails userDetails,
-						 @RequestParam("id") long id,
+	                     @RequestParam("id") long id,
 	                     @RequestParam("name") String name,
-	                     @RequestParam("password") String password,
+	                     @RequestParam("currentPassword") String currentPassword,
+	                     @RequestParam(value = "newPassword", required = false) String newPassword,
 	                     @RequestParam("tellNumber") String tellNumber,
-	                     @RequestParam(value = "profileImage", required = false) MultipartFile profileImage) throws IOException {
-		if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-            return "redirect:/user/mypage?error=password";
-        }
+	                     @RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
+	                     RedirectAttributes redirectAttributes) throws IOException {
 	    SiteUser user = userService.getUserById(id);
-	    userService.modify(user, name, password, tellNumber);
 	    
+	    // 현재 비밀번호 확인
+	    if (!passwordEncoder.matches(currentPassword, userDetails.getPassword())) {
+	    	redirectAttributes.addFlashAttribute("error", "현재 비밀번호가 일치하지 않습니다.");
+	        return "redirect:/user/mypage?error=currentPassword";
+	    }
+	    
+	    // 새 비밀번호가 제공된 경우에만 변경
+	    String passwordToUpdate = null;
+	    if (newPassword != null && !newPassword.isEmpty()) {
+	        passwordToUpdate = passwordEncoder.encode(newPassword);
+	    }
+	    userService.modify(user, name, passwordToUpdate, tellNumber);
+
 	    if (profileImage != null && !profileImage.isEmpty()) {
 	        userService.updateProfileImage(user.getId(), profileImage);
 	    }
 	    
+	    redirectAttributes.addFlashAttribute("message", "수정이 완료되었습니다.");
+
 	    return "redirect:/user/mypage";
 	}
 	
@@ -147,9 +162,10 @@ public class UserController {
 	@PostMapping("/checkPassword")
 	@ResponseBody
 	public Map<String, Boolean> checkPassword(@AuthenticationPrincipal UserDetails userDetails,
-	            @RequestParam String password) {
-		boolean isPasswordCorrect = passwordEncoder.matches(password, userDetails.getPassword());
-		return Collections.singletonMap("passwordCorrect", isPasswordCorrect);
+	        @RequestBody Map<String, String> payload) {
+	    String password = payload.get("password");
+	    boolean isPasswordCorrect = passwordEncoder.matches(password, userDetails.getPassword());
+	    return Collections.singletonMap("passwordCorrect", isPasswordCorrect);
 	}
 	
 	

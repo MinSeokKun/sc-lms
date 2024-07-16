@@ -21,7 +21,7 @@
                                         <i class="fa-solid fa-play"></i> [[${#numbers.formatInteger(minutes, 2) + ':' + #numbers.formatInteger(seconds, 2)}]]
                                         </a>
                                         <div>
-                                            <a th:href="@{|/note/delete/${note.id}|}" class="btn btn-danger">삭제</a>
+                                            <a th:href="@{|/note/delete/${note.id}|}" onclick="return confirm('삭제하시겠습니까?')" class="btn btn-danger">삭제</a>
                                         </div>
                                     </div>
                                     <div th:id="'viewer-' + ${noteStat.index}" th:data-content="${note.content}"></div>

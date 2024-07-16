@@ -44,7 +44,7 @@
 					class="btn btn-outline-danger"
 					sec:authorize="isAuthenticated()"
 					th:if="${#authentication.principal.username == question.author.email}"
-					th:text="삭제"></a>
+					th:text="삭제" onclick="return confirm('삭제하시겠습니까?')"></a>
 			</div>
 			<button type="button" class="btn btn-secondary" onclick="location.href='/question/list'">목록으로</button>
 		</div>
@@ -69,7 +69,7 @@
 								<div class="input-group-append">
 									<button th:attr="data-id=${answer.id}" class="btn btn-outline-secondary mod_btn" type="button"><i class="fa-regular fa-pen-to-square"></i></button>
 									<button th:attr="data-id=${answer.id}" class="btn btn-outline-primary" type="submit">수정</button>
-									<a th:href="@{|/answer/delete/${answer.id}|}" class="btn btn-outline-danger"><i class="fa-solid fa-xmark"></i></a>
+									<a th:href="@{|/answer/delete/${answer.id}|}" onclick="return confirm('삭제하시겠습니까?')" class="btn btn-outline-danger"><i class="fa-solid fa-xmark"></i></a>
 								</div>
 							</div>
 						</form>

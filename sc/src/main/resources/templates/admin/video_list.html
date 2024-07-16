@@ -27,7 +27,7 @@
 								</td>
 								<td>[[${video.url}]]</td>
 								<td>[[${video.duration}]]</td>							
-								<td><a th:href="@{|/video/delete/${video.id}|}" class="btn btn-danger btn-circle"><i class="fas fa-trash"></i></a></td>
+								<td><a th:href="@{|/video/delete/${video.id}|}" onclick="return confirm('삭제하시겠습니까?')" class="btn btn-danger btn-circle"><i class="fas fa-trash"></i></a></td>
 							</tr>
 		                </tbody>
 		            </table>

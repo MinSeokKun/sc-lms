@@ -38,4 +38,7 @@ public class SiteUser {
 	@CreatedDate
 	@Column
 	private LocalDateTime createDate;
+	
+	@Column
+	private boolean temppassword = false;
 }

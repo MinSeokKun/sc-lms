@@ -165,7 +165,7 @@ public class UserLectureController {
 	    
 	    model.addAttribute("pieGraph", pieGraph);
 
-		
+		// 성장로그
         List<String> recentlyCompletedLectures = userVidService.getRecentlyCompletedLectures(user.getId());
         model.addAttribute("recentlyCompletedLectures", recentlyCompletedLectures);
         

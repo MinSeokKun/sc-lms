@@ -14,7 +14,7 @@
 				<div>
 					<button
 						sec:authorize="isAuthenticated()"
-						th:if="${#authentication.principal.username == question.author.email}"
+						th:if="${#authentication.principal.username == question.author.email and question.result == false}"
 						th:data-question-id="${question.id}"
 						onclick="confirmResolve(this)"
 						class="btn btn-primary btn-sm">

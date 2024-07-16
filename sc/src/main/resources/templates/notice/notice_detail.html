@@ -3,28 +3,64 @@
 	layout:decorate="~{layout}">
 
 	<th:block layout:fragment="content">
-		<div>
-			<h3 th:text="${notice.title}">제목</h3>
-			<p th:text="${#temporals.format(notice.createDate, 'yyyy-MM-dd HH:mm:ss')}">생성일</p>
-			<p th:text="${notice.content}">내용</p>
+	<div id="content" style="height: calc(100vh - 105px);">
+		<div class="container-fluid">
+			<div>
+				<h3 th:text="${notice.title}">제목</h3>
+				<p th:text="${#temporals.format(notice.createDate, 'yyyy-MM-dd HH:mm:ss')}">생성일</p>
+				<div id="viewer"></div>
+			</div>
+			
+			<div class="d-flex my-3">
+				<div sec:authorize="hasRole('ADMIN')" class="mr-3">
+					<a th:href="@{|/notice/modify/${notice.id}|}"
+						class="btn btn-sm btn-outline-secondary"
+						sec:authorize="isAuthenticated()"
+						th:text="수정"></a>
+				</div>
+				
+				
+				<div sec:authorize="hasRole('ADMIN')">	
+					<a th:href="@{|/notice/delete/${notice.id}|}"
+						class="btn btn-sm btn-outline-secondary"
+						sec:authorize="isAuthenticated()"
+						th:text="삭제">삭제
+					</a>
+				</div>
+			</div>
+			<button type="button" value="취소" class="btn" onclick="window.history.back();">취소</button>
 		</div>
+	</div>
+		<script th:inline="javascript">
+		    /*<![CDATA[*/
+		    var content = /*[[${notice.content}]]*/ '';
+		    /*]]>*/
 		
-		<div sec:authorize="hasRole('ADMIN')">
-			<a th:href="@{|/notice/modify/${notice.id}|}"
-				class="btn btn-sm btn-outline-secondary"
-				sec:authorize="isAuthenticated()"
-				th:text="수정"></a>
-		</div>
+		    const viewer = new toastui.Editor.factory({
+		        el: document.querySelector('#viewer'),
+		        viewer: true,
+		        height: 'auto',
+		        initialValue: content,
+		        customHTMLRenderer: {
+		            paragraph(node) {
+		                return {
+		                    type: 'element',
+		                    tagName: 'p',
+		                    attributes: { style: 'font-size: 20px;' },
+		                    children: node.children
+		                };
+		            }
+		        }
+		    });
 		
-		
-		<div sec:authorize="hasRole('ADMIN')">	
-			<a th:href="@{|/notice/delete/${notice.id}|}"
-				class="btn btn-sm btn-outline-secondary"
-				sec:authorize="isAuthenticated()"
-				th:text="삭제">삭제
-			</a>
-		</div>
-		<button type="button" value="취소" class="btn" onclick="window.history.back();">취소</button>
+		    // Toast UI Editor의 내부 콘텐츠에 스타일 적용
+		    setTimeout(() => {
+		        const contentEl = document.querySelector('#viewer .toastui-editor-contents');
+		        if (contentEl) {
+		            contentEl.style.fontSize = '20px';
+		        }
+		    }, 0);
+		</script>
 		<script>
 			$(document).ready(function() {
 				$('.mod_btn').click(function() { 

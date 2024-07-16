@@ -23,5 +23,7 @@ public interface UserRepository extends JpaRepository<SiteUser, Long> {
 		       "WHERE (:kw IS NULL OR u.name LIKE %:kw% " +
 		       "OR u.email LIKE %:kw% " +
 		       "OR u.tellNumber LIKE %:kw%)")
-		Page<SiteUser> findAllByKeyword(@Param("kw") String kw, Pageable pageable);
+	Page<SiteUser> findAllByKeyword(@Param("kw") String kw, Pageable pageable);
+	
+	SiteUser findByTellNumber(String tellNumber);
 }

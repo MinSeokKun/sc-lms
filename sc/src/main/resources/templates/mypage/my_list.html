@@ -37,7 +37,7 @@
 											<span th:text="${videoProgress.key} + '강'"></span>
 										</div>
 										<span th:text="${progress == 0 ? '0%' : #numbers.formatDecimal(progress * 100, 1, 1) + '%'}"></span>
-										<a th:href="@{|/user/lec/delete/${entry.key.lecture.id}|}" class="btn btn-danger btn-circle">
+										<a th:href="@{|/user/lec/delete/${entry.key.lecture.id}|}" onclick="return confirm('삭제하시겠습니까?')" class="btn btn-danger btn-circle">
 											<i class="fas fa-trash"></i>
 										</a>
 									</div>

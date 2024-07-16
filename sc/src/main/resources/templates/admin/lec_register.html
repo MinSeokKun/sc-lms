@@ -5,21 +5,21 @@
 		<div id="content">
 			<section>
 				<div>
-					<div class="tit">
+					<div class="tit mb-4 mt-3">
 						<h2>강의 등록</h2>
 					</div>
 				</div>
 		        <form method="post" th:action="@{/lecture/regist}">
-		            <div>
-		                <label for="title">강의 제목</label>
-		                <input type="text" id="title" name="title">
+		            <div class="input_box">
+		                <label for="title" class="form-label">강의 제목</label>
+		                <input type="text" class="form-control" id="title" name="title">
 		            </div>
-		            <div>
-		                <label for="content">강의 설명</label>
-		                <textarea id="content" name="content"></textarea>
+		            <div class="input_box">
+		                <label for="content" class="form-label">강의 설명</label>
+		                <textarea name="content" class="form-control"></textarea>
 		            </div>
 					<div>
-						<button type="submit">등록</button>
+						<button type="submit" value="등록" class="btn btn-success btn-icon-split"><span class="text">등록</span></button>
 					</div>
 				</form>
 			</section>

@@ -4,30 +4,22 @@
 <th:block layout:fragment="content">
 
 <section class="wrapper">
-
 	<div class="mypage_wrap">
-		
 		<div class="container-fluid">
-
 			<div class="row">
 				<div class="course-list-title"><h2>강의노트</h2></div>
 			</div>
-	
 			<div id="note" class="card shadow mb-4" th:each="entry : ${noteList.entrySet()}">
 				<div class="card-header">
-	
 					<div onclick="location.href=this.querySelector('a').href" style="cursor: pointer;">
-						<a th:href="@{|/note/list/${entry.key.id}|}" th:text="${entry.key.title}" class="py-3 d-block"></a>
+						<a th:href="@{|/note/list/${entry.key.id}|}" th:text="${entry.key.title}" class="py-3 d-block">
+						</a>
 						<p th:text="'노트 수 : ' + ${entry.value}"></p>
-					</a>
-					
+					</div>
 				</div>
-	
 			</div>
-	
 		</div>
 	</div>
-	
 </section>
 
 </th:block>

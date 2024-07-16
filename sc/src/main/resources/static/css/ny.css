@@ -37,7 +37,7 @@ input[type=submit]{
   box-sizing: border-box;
 }
 
-.btn_box { display: flex; gap: 16px; }
+.btn_box { display: flex; gap: 16px; margin-top:20px; }
 .btn {
   display: block;
   padding: 10px;
@@ -52,6 +52,9 @@ input[type=submit]{
   background-color: #45a049;
 }
 
+.form-control { width: 100% !important; }
+textarea.form-control { height: 400px !important; resize: none; }
+
 /*회원가입*/
 
     /* 전체 레이아웃 */
@@ -61,7 +64,6 @@ input[type=submit]{
 	align-items: center;
 	justify-content: center;
 	height: 100vh;
-	background-color: rgb(255, 255, 255);
 	font-family: Arial, sans-serif;
 	}
 

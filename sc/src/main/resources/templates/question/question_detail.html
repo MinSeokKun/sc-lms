@@ -65,8 +65,8 @@
 						</div>
 						<form th:action="@{|/answer/modify/${answer.id}|}" method="post" th:if="${#authentication.name == answer.author.name}" class="mb-2">
 							<div class="input-group">
-								<input name="content" class="form-control answerInput" th:value="${answer.content}" readonly>
-								<div class="input-group-append">
+								<input name="content" style="width: calc(100% - 143px) !important; border: none; background: none;" class="form-control answerInput" th:value="${answer.content}" readonly>
+								<div class="input-group-append" style="margin-left: 10px;">
 									<button th:attr="data-id=${answer.id}" class="btn btn-outline-secondary mod_btn" type="button"><i class="fa-regular fa-pen-to-square"></i></button>
 									<button th:attr="data-id=${answer.id}" class="btn btn-outline-primary" type="submit">수정</button>
 									<a th:href="@{|/answer/delete/${answer.id}|}" onclick="return confirm('삭제하시겠습니까?')" class="btn btn-outline-danger"><i class="fa-solid fa-xmark"></i></a>
@@ -92,7 +92,7 @@
 						<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
 					</div>
 					<div class="form-group">
-						<textarea th:field="*{content}" class="form-control" rows="5"></textarea>
+						<textarea th:field="*{content}" class="form-control" rows="5" style="min-height: 400px !important;"></textarea>
 					</div>
 					<button type="submit" class="btn btn-primary">답변 등록</button>
 				</form>
@@ -105,47 +105,50 @@
 
 	</div>
 </div>
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    var content = /*[[${question.content}]]*/ '';
-    /*]]>*/
-
-    const viewer = new toastui.Editor.factory({
-        el: document.querySelector('#viewer'),
-        viewer: true,
-        height: 'auto',
-        initialValue: content,
-        customHTMLRenderer: {
-            paragraph(node) {
-                return {
-                    type: 'element',
-                    tagName: 'p',
-                    attributes: { style: 'font-size: 20px;' },
-                    children: node.children
-                };
-            }
-        }
-    });
-
-    // Toast UI Editor의 내부 콘텐츠에 스타일 적용
-    setTimeout(() => {
-        const contentEl = document.querySelector('#viewer .toastui-editor-contents');
-        if (contentEl) {
-            contentEl.style.fontSize = '20px';
-        }
-    }, 0);
-</script>
+	<script th:inline="javascript">
+	    /*<![CDATA[*/
+	    var content = /*[[${question.content}]]*/ '';
+	    /*]]>*/
+	
+	    const viewer = new toastui.Editor.factory({
+	        el: document.querySelector('#viewer'),
+	        viewer: true,
+	        height: 'auto',
+	        initialValue: content,
+	        customHTMLRenderer: {
+	            paragraph(node) {
+	                return {
+	                    type: 'element',
+	                    tagName: 'p',
+	                    attributes: { style: 'font-size: 20px;' },
+	                    children: node.children
+	                };
+	            }
+	        }
+	    });
+	
+	    // Toast UI Editor의 내부 콘텐츠에 스타일 적용
+	    setTimeout(() => {
+	        const contentEl = document.querySelector('#viewer .toastui-editor-contents');
+	        if (contentEl) {
+	            contentEl.style.fontSize = '20px';
+	        }
+	    }, 0);
+	</script>
 
 	<script>
 		$(document).ready(function() {
 			$('.mod_btn').click(function() { 
-				let input = $(this).parent().find('.answerInput');
+				let input = $(this).closest('.input-group').find('.answerInput');
 				if(input.prop("readonly")) {
 					input.prop("readonly", false);
-					//input.css("border", "1px solid black");
+					input.focus();
+					input.css("border", "1px solid #d1d3e2");
+					input.css("background", "none");
 				} else {
 					input.prop("readonly", true);
-					//input.css("border", "none");
+					input.css("border", "none");
+					input.css("background", "none");
 				}
 			});
 		});

@@ -3,7 +3,7 @@
       layout:decorate="~{layout}">
 <th:block layout:fragment="content">
 	<style>
-		.input_box label { display: inline-block; width: 110px; }
+		.input_box label { display: inline-block; width: 130px; }
 	</style>
 	<div id="content" style="height: calc(100vh - 80px);">
 		<div class="wrapper">
@@ -37,7 +37,7 @@
 				    <div class="input_box">
 				        <label>전화번호</label>
 				        <input type="text" name="tellNumber" th:value="${user.tellNumber}" />
-				        <p>-를 빼고 입력해주세요.</p>
+				        <p style="text-align: right;">-를 빼고 입력해주세요.</p>
 				    </div>
 				    
 				    <!-- 프로필 이미지 업로드 필드 추가 -->

@@ -131,6 +131,11 @@ public class UserService {
 		return user.isPresent() ? "false" : "true";
 	}
 	
+	public String checkPhone(String tellNumber) {
+		Optional<SiteUser> user = userRepository.findByTellNumber(tellNumber);
+		return user.isPresent() ? "false" : "true";
+	}
+	
 	// 유저 정보 수정
 	public void modify(SiteUser user, String name, String newPassword, String tellNumber) {
 	    user.setName(name);
@@ -169,7 +174,7 @@ public class UserService {
 	
 	//아이디 찾기
 	public String findEmailByTellNumber(String tellNumber) {
-        SiteUser user = userRepository.findByTellNumber(tellNumber);
+        SiteUser user = userRepository.findByTellNumber(tellNumber).orElse(null);
         if (user != null) {
             return maskEmail(user.getEmail());
         }

@@ -20,7 +20,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-body-p" th:text="${question.content}" style="width: 574.5px;"></p>
+                            <p class="card-body-p" th:text="${question.content}" style="width: 90%;"></p>
                             <p class="text-danger small" 
                                 th:if="${question.answerList != null and !#lists.isEmpty(question.answerList)}" 
                                 th:text="'답변 수: ' + ${#lists.size(question.answerList)}"></p>

@@ -51,7 +51,7 @@ public interface UserVideoRepository extends JpaRepository<UserVideo, Long> {
 //	@Query("SELECT uv FROM UserVideo uv JOIN FETCH uv.video WHERE uv.user = :user ORDER BY uv.watchedAt ASC")
 //	List<UserVideo> findTop3ByAuthorUserVideos(@Param("user") SiteUser user);
 	
-	@Query("SELECT uv FROM UserVideo uv JOIN FETCH uv.video v JOIN FETCH v.lecture WHERE uv.user = :user ORDER BY uv.watchedAt DESC")
+	@Query("SELECT uv FROM UserVideo uv JOIN FETCH uv.video v JOIN FETCH v.lecture WHERE uv.user = :user AND uv.watchingTime > 0 ORDER BY uv.watchedAt DESC")
 	List<UserVideo> findTop3ByAuthorUserVideos(@Param("user") SiteUser user, Pageable pageable);
 
 	// 성장 로그

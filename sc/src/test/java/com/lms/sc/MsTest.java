@@ -38,6 +38,12 @@ public class MsTest {
 	private VideoService vs;
 	
 	@Test
+	void tellNumberCheck() {
+		String result = us.checkPhone("01051567115");
+		System.out.println(result);
+	}
+	
+//	@Test
 	void minseok() {
 		SiteUser minseok = us.getUserByEmail("minseok@test.com");
 		us.modify(minseok, "김민석", "1234", "0105156");

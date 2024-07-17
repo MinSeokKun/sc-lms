@@ -29,6 +29,9 @@ public class SecurityConfig {
 //			.csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
 				.requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")
+				.requestMatchers(new AntPathRequestMatcher("/video/list/**")).hasRole("ADMIN")
+				.requestMatchers(new AntPathRequestMatcher("/lecture/modify/**")).hasRole("ADMIN")
+				.requestMatchers(new AntPathRequestMatcher("/video/addVideo/**")).hasRole("ADMIN")
 				.requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
 				.formLogin((formLogin) -> formLogin.loginPage("/user/login")
 						.defaultSuccessUrl("/"))

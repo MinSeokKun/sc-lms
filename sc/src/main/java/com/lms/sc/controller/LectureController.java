@@ -75,6 +75,9 @@ public class LectureController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/startlearn/{lecId}")
 	public String startLearn(@PathVariable("lecId") long lecId, Principal principal) throws Exception {
+		if (principal == null) {
+			return "user/login";
+		}
 		SiteUser user = userService.getUserByEmail(principal.getName());
 		Lecture lecture = lectureService.getLecture(lecId);
 		// 중복 신청 체크

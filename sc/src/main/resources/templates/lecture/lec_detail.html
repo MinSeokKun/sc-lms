@@ -1,76 +1,47 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
-      layout:decorate="~{layout}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout}">
 <th:block layout:fragment="content">
-	<div id="content">
-	    <!-- 강의이미지 -->
-	    <img src="lec_id.png" alt="강의이미지">
-	    <!-- 강의 간략 설명 -->
-	    <div>
-	        <div id="title">
-<!-- 	            <h5><span>BEST</span>카테고리 > 상세분류</h5> -->
-	            <h4 th:text="${lecture.title}"></h4>
-	        </div>
-	        <!-- 평점, 수강인원, 강사 -->
-	        <div>
-	            <div>
-	                <span>별점(4.8)</span>
-	                <span>n개의 수강평</span>
-	                <span></span>
-	                <span>강사명</span>
-	            </div>
-	            <button type="button">수강하기</button>
+	<div id="content" class="container-md mt-5" style="max-width: 800px;">
+	    <!-- 강의이미지 및 간략 설명 -->
+	    <div class="row mb-4">
+			<div id="title" class="col-lg-8">
+				<h4 class="mb-3" th:text="${lecture.title}"></h4>
+				<img class="img-fluid rounded" th:src="${lecture.thumnailUrl}" alt="썸네일이미지" style="max-width: 300px;">
 	        </div>
 	    </div>
-	
-	    <section>
-	        <div>
-	            <h3>강의 소개</h3>
-	            <p th:text="|${lecture.title} 입니다.|"></p>
-	            <p th:text="${lecture.content}"></p>
+		
+		<button type="button" class="btn btn-primary mb-3" th:attr="onclick=|location.href='/lecture/startlearn/${lecture.id}'|">수강하기</button>
+	    <section class="mb-5">
+	        <div class="card mb-4">
+	            <div class="card-body">
+	                <h3 class="card-title h5">강의 소개</h3>
+	                <p class="card-text" th:text="|${lecture.title} 입니다.|"></p>
+	                <p class="card-text" th:text="${lecture.content}"></p>
+	            </div>
 	        </div>
 	
-	        <div>
-	            <h3>커리큘럼</h3>
-	            <span th:text="|총 ${#lists.size(videoList)} 개의 수업|">총 n개, m시간의 수업</span>
-<!-- 	            <button>모두펼치기</button> -->
+	        <div class="card">
+	            <div class="card-body">
+	                <h3 class="card-title h5">커리큘럼</h3>
+	                <span th:text="|총 ${#lists.size(videoList)} 개의 수업|">총 n개, m시간의 수업</span>
 	
-	            <ul>
-	                <li th:each="video : ${videoList}">
-	                    <span th:text="${video.title}">제목</span>
-<!-- 	                    <span>2개의 영상 - 20분</span> -->
-	                </li>
-	            </ul>
+	                <ul class="list-group list-group-flush">
+	                    <li class="list-group-item d-flex flex-row align-items-center justify-content-between" th:each="video, loop : ${videoList}">
+	                        <span th:text="${loop.index + 1} + ': ' + ${video.title}">제목</span>
+							<span th:with="minutes=${video.duration / 60}, seconds=${video.duration % 60}">
+								[[${#numbers.formatInteger(minutes, 2)}]]:[[${#numbers.formatInteger(seconds, 2)}]]
+							</span>
+	                    </li>
+	                </ul>
+	            </div>
 	        </div>
-	
 	    </section>
 	    
 	    <!-- 수강평 -->
 	    <section>
 	    
 	    </section>
-	
-	    <!-- 리뷰 -->
-<!-- 	    <section> -->
-	
-<!-- 	        <div> -->
-<!-- 	            <span>VIEW</span> -->
-<!-- 	            <input type="radio" name="recent" id="review"><span>최신순</span> -->
-<!-- 	            <input type="radio" name="recent" id="review"><span>높은평점순</span> -->
-<!-- 	            <input type="radio" name="recent" id="review"><span>낮은평점순</span> -->
-<!-- 	            <div> -->
-<!-- 	                <ul> -->
-<!-- 	                    <li> -->
-<!-- 	                        <span>수강생이름</span> -->
-<!-- 	                        <span>점수</span> -->
-<!-- 	                        <p>좋은 강의 감사요</p> -->
-<!-- 	                        <span>등록 날짜</span> -->
-<!-- 	                    </li> -->
-<!-- 	                </ul> -->
-<!-- 	            </div> -->
-<!-- 	        </div> -->
-	
-<!-- 	    </section> -->
 	
 	</div>
 </th:block>

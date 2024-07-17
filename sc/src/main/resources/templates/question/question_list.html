@@ -33,9 +33,10 @@
 						</div>
 
 						<div class="card-body">
-	
+
 								<div class="row">
-	
+									<div class="noResult" th:if="${paging.isEmpty()}" style="display: flex; justify-content: center; align-items: center; height: 100px; margin: 0 auto;">검색 결과가 없습니다.</div>
+
 									<div class="col-md-6 mb-4" th:each="question, loop : ${paging}">
 										
 										<div class="card shadow h-100">
@@ -70,6 +71,7 @@
 	
 						</div>
 					</div>
+				
 				<!--페이징-->
 				<div class="page" th:if="${!paging.isEmpty()}">
 					

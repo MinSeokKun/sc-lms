@@ -43,7 +43,7 @@
 							<div class="card-body">
 								<ul th:if="${not #lists.isEmpty(recentlyCompletedLectures)}">
 									<li th:each="lecture : ${recentlyCompletedLectures}" style="display: flex; justify-content: space-between;">
-										<span class="text-gray-700" th:text="${lecture[0]}"></span>
+										<span class="text-gray-700" th:text="${lecture[0].lecture.title}"></span>
 										<span class="text-muted ml-2" th:text="${#dates.format(lecture[1], 'yyyy-MM-dd HH:mm')}"></span>
 									</li>
 								</ul>

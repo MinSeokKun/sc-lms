@@ -103,6 +103,12 @@ public class UserController {
 		return userService.checkEmail(email);
 	}
 	
+	@GetMapping("/phoneCheck")
+	@ResponseBody
+	public String phoneCheck(@RequestParam("tellNumber") String tellNumber) {
+	    return userService.checkPhone(tellNumber);
+	}
+	
 //	@GetMapping("/getUser")
 //	public SiteUser getUser(Principal principal) {
 //		SiteUser user = userService.getUser(principal.getName());

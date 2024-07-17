@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,6 +83,12 @@ public class UserLectureService {
 			userVidRepo.deleteByVideoAndUser(video, user);
 		}
 		userLectureRepository.delete(userLec);
+	}
+	
+	// progress가 1인 userLecture 조회
+	public List<Object[]> recentProgress(SiteUser user) {
+		Pageable pageable = PageRequest.of(0, 3);
+		return userLectureRepository.findByUserAndProgressWithLastWatchedAt(user, 1, pageable);
 	}
 	
 }

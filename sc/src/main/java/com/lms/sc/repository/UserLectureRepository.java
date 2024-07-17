@@ -3,6 +3,7 @@ package com.lms.sc.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -31,4 +32,14 @@ public interface UserLectureRepository extends JpaRepository<UserLecture, Long> 
 	boolean existsByUserAndLecture(SiteUser user, Lecture lecture);
 	
 	List<UserLecture> findByLecture(Lecture lecture);
+	
+	@Query("SELECT ul, MAX(uv.watchedAt) as lastWatchedAt " +
+		       "FROM UserLecture ul " +
+		       "LEFT JOIN UserVideo uv ON uv.video.lecture = ul.lecture AND uv.user = ul.user " +
+		       "WHERE ul.user = :user AND ul.progress = :progress " +
+		       "GROUP BY ul " +
+		       "ORDER BY lastWatchedAt DESC")
+		List<Object[]> findByUserAndProgressWithLastWatchedAt(@Param("user") SiteUser user, 
+		                                                      @Param("progress") double progress, 
+		                                                      Pageable pageable);
 }

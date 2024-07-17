@@ -25,7 +25,8 @@ public interface UserRepository extends JpaRepository<SiteUser, Long> {
 		       "OR u.tellNumber LIKE %:kw%)")
 	Page<SiteUser> findAllByKeyword(@Param("kw") String kw, Pageable pageable);
 	
-	SiteUser findByTellNumber(String tellNumber);
+	@Query("SELECT u FROM SiteUser u WHERE u.tellNumber = :tellNumber")
+	Optional<SiteUser> findByTellNumber(@Param("tellNumber") String tellNumber);
 	
 //	void deleteAllByUser(SiteUser user);
 }

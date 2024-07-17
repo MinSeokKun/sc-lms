@@ -31,13 +31,14 @@ input[type=submit]{
 .input_box input,
 .input_box textarea {
   width: 400px;
+  height: 45px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
 }
 
-.btn_box { display: flex; gap: 16px; margin-top:20px; }
+.btn_box { display: flex; gap: 10px; margin-top:20px; }
 .btn {
   display: block;
   padding: 10px;

@@ -96,7 +96,7 @@
 					        </div>
 					        <div class="editor_wrap">
 				        		<div id="editor"></div>
-		    					<button class="login-btn" id="saveButton">저장</button>
+		    					<button class="login-btn" style="margin-top: 10px;" id="saveButton">저장</button>
 					        </div>
 						</div>
 			        </li>
@@ -104,7 +104,7 @@
 			        	<div class="view_tit">
 		        			<h2>커뮤니티</h2>
         				</div>
-        				<ul class="quest_list" style="height: 400px">
+        				<ul class="quest_list" style="height: 271px">
 			        		<li th:each="question : ${qustList}">
 			        			<strong>[[${question.title}]]</strong>
 			        			<span class="desc">[[${question.content}]]</span>

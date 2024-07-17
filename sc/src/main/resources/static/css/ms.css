@@ -74,15 +74,15 @@
 }
 
 #notesContainer {
-	height: 300px;
+	height: 287px;
 	overflow: hidden;
 	overflow-y: scroll;
 }
 
 .note_area .editor_wrap {
-	height: 350px;
+	height: 340px;
 }
-
+.toastui-editor-defaultUI-toolbar { padding: 0 !important; }
 .mypage_wrap {
 	display: flex;
     margin: 40px;

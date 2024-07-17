@@ -3,30 +3,21 @@
       layout:decorate="~{layout}">
 	<th:block layout:fragment="content">
 		<section class="login-wrapper">
-			<div class="login-container">
+			<div class="login-container" id="content">
 				<h1>LMS 학습관리시스템</h1>
 				<p>로그인 또는 회원가입을 해주세요.</p>
 				<form th:action="@{/user/login}" method="post">
 				  	<input type="text" placeholder="이메일" name="username" id="username" required>
 				  	<input type="password" placeholder="비밀번호" name="password" id="password" required>
-				  	<button type="submit" class="login-btn">로그인</button>
+				  	<button type="submit" class="btn btn-primary btn-icon-split" style="width: 100%;"><span class="text">로그인</span></button>
+		      		<a class="btn btn-secondary btn-icon-split mt-2" style="width: 100%;" th:href="@{|/user/signup|}"><span class="text">회원가입</span></a>
 				</form>
-		    	<div class="signup-options" style="text-align: center;">
-		      		<a class="signup-btn" th:href="@{|/user/signup|}">회원가입</a>
+		    	<div class="signup-options mt-2">
 		      		<div class="text-center">
                         <a class="small" th:href="@{|/user/find-id|}">아이디 찾기</a>
-                    </div>
-		      		<div class="text-center">
+                        <span>ㆍ</span>
                         <a class="small" th:href="@{|/user/tempPassword|}">비밀번호 찾기</a>
                     </div>
-		     		<div class="oauth-buttons">
-			       		 <button class="oauth-btn" id="kakao-login">
-			         		 <img src="kakao-icon.png" alt="Kakao Login">
-			        	</button>
-				        <button class="oauth-btn" id="google-login">
-				          <img src="google-icon.png" alt="Google Login">
-				        </button>
-		      		</div>
 		    	</div>
 	  		</div>
   		</section>

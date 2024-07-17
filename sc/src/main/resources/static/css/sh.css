@@ -17,7 +17,7 @@ a {
 body{ font-family: "Noto Sans KR", sans-serif !important; }
 
 #container { display: flex; }
-#content { padding: 20px; min-height: calc(100vh - 124px); }
+#content { padding: 20px; min-height: calc(100vh - 104px); }
 .content_wrap { width: calc(100% - 224px); }
 .container-fluid { padding: 0 !important; }
 /* 헤더 */
@@ -32,11 +32,12 @@ body{ font-family: "Noto Sans KR", sans-serif !important; }
 #header > .wrapper {
 	justify-content: end;
 	display: flex; 
-	align-items: center; 
+	align-items: center;
+	height: 100%;
 }
 .wrapper { 
 /* 	max-width: 1440px; */
-	height: 100%;	
+/* 	height: 100%;	 */
 	margin: 0 auto;
 }
 
@@ -177,7 +178,7 @@ body{ font-family: "Noto Sans KR", sans-serif !important; }
     flex-direction: column;
 	width: 100%;
 }
-.video iframe { height: 807px; }
+.video iframe { height: 694px; }
 #nav2 {
 	position: relative;
 	display: flex;
@@ -231,7 +232,7 @@ body{ font-family: "Noto Sans KR", sans-serif !important; }
 }
 
 .lec_list { 
-	max-height: 655px;
+	max-height: 510px;
     overflow: hidden;
     overflow-y: scroll;
 }
@@ -266,14 +267,16 @@ body{ font-family: "Noto Sans KR", sans-serif !important; }
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   margin: 0;
   font-family: Arial, sans-serif;
 }
 
 .login-container {
-  width: 400px;
-  text-align: center;
+  width: 440px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 #username, #password {
@@ -316,6 +319,12 @@ body{ font-family: "Noto Sans KR", sans-serif !important; }
   color: #333;
 }
 
+/* 회원가입 */
+.input_box.email { display: flex; }
+.input_box.email > input { width: calc(100% - 91px); }
+.input_box.email > button { height: 45px; margin-left: 6px; }
+.input_box.email > button span { line-height: 30px; }
+
 /* 비디오 커뮤니티 */
 #questionForm .input_box > input, #questionForm .input_box > textarea { width: 100%; }
 .quest_list{ height: 400px; overflow-y: auto; padding: 0; }
@@ -329,7 +338,7 @@ body{ font-family: "Noto Sans KR", sans-serif !important; }
 .quest_list li .date { font-size: 12px; color: #ccc; }
 /* 푸터 */
 #footer { width: 100%; height: 40px; text-align: center; background-color: #f1f1f1; }
-address { line-height: 40px; color: #666; font-size: 15px; }
+address { line-height: 40px !important; color: #666; font-size: 15px; }
 
 
 @media (max-width: 768px) {

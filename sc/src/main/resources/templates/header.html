@@ -57,6 +57,16 @@
 			my.click(function(){
 				dropMenu.fadeToggle();
 			});
+			
+			//undraw_profile
+			let img_profile = $('.img-profile');
+			if(img_profile.attr('src').includes("undraw_profile")){
+				$('.img-profile').css('opacity', '0.5');
+			} else{
+				$('.img-profile').css('opacity', '1');
+			}
 		});
+		
+			
 	</script>
 </header>

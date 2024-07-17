@@ -6,17 +6,13 @@
 			<div class="wrapper">
 			    <section>
 		            <div class="container-fluid">
-
-				        <div>
-				            <div><h2>리스트 제목</h2></div>
+				        <div class="mt-4 mb-4">
+				            <div><h2>강의 영상 리스트</h2></div>
 				        </div>
-
 					    <div class="card mb-4" th:each="entry, loop : ${userVideoList.entrySet()}">
-
 					        <div class="card-header py-3" onclick="location.href=this.querySelector('a').href" style="cursor: pointer;">
 					            <a th:href="@{|/video/viewer/${entry.key.id}|}" th:text="${entry.key.title}"></a>
 					        </div>
-							
 					        <div class="card-body" th:with="progressPercentage=${entry.key.duration == 0 ? 0 : (entry.value.watchingTime * 100.0 / entry.key.duration)}, displayPercentage=${progressPercentage >= 99 ? 100 : progressPercentage}">
 							    <div class="progress progress-sm mb-2">
 							        <div class="progress-bar" role="progressbar"
@@ -29,9 +25,7 @@
 							    </div>
 							    <span class="progress-text" th:text="${displayPercentage == 0 ? '0%' : #numbers.formatDecimal(displayPercentage, 0, 1) + '%'}"></span>
 							</div>
-												        
 					    </div>
-
 					</div>
 			    </section>
 		    </div>

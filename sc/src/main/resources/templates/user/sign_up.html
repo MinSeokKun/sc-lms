@@ -3,43 +3,35 @@
       layout:decorate="~{layout}">
 	<th:block layout:fragment="content">
 		<div class="wrapper">
-		    <section id="sign" class="container">
+		    <section id="sign">
+		    	<div id="content" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
 		        <h2 class="title">회원가입</h2>
-<!-- 		        <h4>전체 필수 입력 값입니다.</h4> -->
-		        <form th:action="@{/user/signup}" method="post" id="joinForm">
-		            <div class="input_box">
-		                <input type="text" id="email" name="email" placeholder="이메일">
-		                <button type="button" onclick="idChk()">중복확인</button>
-		            </div>
-		            <div class="input_box">
-		                <input type="password" oninput="pwChk();" id="pwd" name="password1" placeholder="비밀번호">
-		            </div>
-		            <div class="input_box">
-		                <input type="password" oninput="pwChk();" id="pwd_check" name="password2" placeholder="비밀번호 확인">
-						<p id="pwConfirm" style="display: none;"></p>
-						<p>비밀번호는 영문, 숫자, 특수기호를 포함되게 입력하세요.</p>
-		            </div>
-		            <div class="input_box" >
-		                <input type="text" name="name"id="name" placeholder="이름">
-		            </div>
-		            <div class="input_box">
-		                <input type="text" name="tellNumber" id="phone" placeholder="전화번호">
-		                <p>-를 빼고 입력해주세요.</p>
-		            </div>
-		           <!-- <div>
-		
-		                <label for="roll">
-		                    수강생
-		                    <input type="radio" name="roll">
-		                </label>
-		                <label for="roll">
-		                    강사
-		                    <input type="radio" name="roll">
-		                </label>
-		            </div>-->
-		            <button type="submit" id="joinBtn" class="button">회원가입</button>
-		            <button type="button" onclick="location.href='/../user/login'" class="button">돌아가기</button>
-		        </form>
+			        <form th:action="@{/user/signup}" method="post" id="joinForm">
+			            <div class="input_box email">
+			                <input type="text" id="email" name="email" placeholder="이메일">
+			                <button type="button" onclick="idChk()" class="btn btn-secondary btn-icon-split"><span class="text">중복확인</span></button>
+			            </div>
+			            <div class="input_box">
+			                <input type="password" oninput="pwChk();" id="pwd" name="password1" placeholder="비밀번호">
+			            </div>
+			            <div class="input_box">
+			                <input type="password" oninput="pwChk();" id="pwd_check" name="password2" placeholder="비밀번호 확인">
+							<p id="pwConfirm" style="display: none;"></p>
+							<p>비밀번호는 영문, 숫자, 특수기호를 포함되게 입력하세요.</p>
+			            </div>
+			            <div class="input_box" >
+			                <input type="text" name="name"id="name" placeholder="이름">
+			            </div>
+			            <div class="input_box">
+			                <input type="text" name="tellNumber" id="phone" placeholder="전화번호">
+			                <p>-를 빼고 입력해주세요.</p>
+			            </div>
+			          	<div class="btn_box" style="flex-direction: column;">
+				            <button type="submit" id="joinBtn" class="btn btn-primary btn-icon-split"><span class="text">회원가입</span></button>
+				            <button type="button" onclick="location.href='/../user/login'" class="btn btn-secondary btn-icon-split"><span class="text">돌아가기</span></button>
+			            </div>
+			        </form>
+		        </div>
 		    </section>
 	    </div>
 		<script>

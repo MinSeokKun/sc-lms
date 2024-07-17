@@ -49,8 +49,8 @@ public class UserController {
 	private final PasswordEncoder passwordEncoder;
 	
 	// 회원 삭제
-    //@DeleteMapping("/delete/{userId}")
-    @GetMapping("/delete/{userId}")
+    @DeleteMapping("/delete/{userId}")
+//    @GetMapping("/delete/{userId}")
     @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
     public ResponseEntity<String> deleteUser(@PathVariable("userId") Long userId) {
         try {

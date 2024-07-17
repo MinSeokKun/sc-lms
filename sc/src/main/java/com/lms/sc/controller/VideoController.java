@@ -215,12 +215,15 @@ public class VideoController {
 //		return "redirect:/video/list/" + video.getLecture().getId();
 //	}
 	
-	
+	//비디오 삭제
 	@PreAuthorize("hasRole('ADMIN')") // 관리자만 삭제할 수 있도록 설정
 	@GetMapping("/delete/{id}")
-    public String deleteVideo(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+    public String deleteVideo(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) throws Exception {
+		Video video = videoService.getVideo(id);
+		long lecId = video.getLecture().getId();
 		try {
             videoService.deleteVideo(id);
+            
             System.out.println(redirectAttributes.addFlashAttribute("message", "비디오가 성공적으로 삭제되었습니다."));
             
         } catch (EntityNotFoundException e) {
@@ -228,6 +231,6 @@ public class VideoController {
         } catch (Exception e) {
         	System.out.println(redirectAttributes.addFlashAttribute("error", "비디오 삭제 중 오류가 발생했습니다."));
         }
-        return "redirect:/admin/vidList";  // 비디오 목록 페이지로 리다이렉트
+        return "redirect:/video/list/" + lecId;  // 비디오 목록 페이지로 리다이렉트
     }
 }

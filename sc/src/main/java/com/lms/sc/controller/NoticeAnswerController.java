@@ -58,19 +58,20 @@ public class NoticeAnswerController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify/{noticeAnswerId}")
-	public String noticeAnswerModify(@Valid NoticeAnswerCreateForm noticeAnswerCreateForm, BindingResult bindingResult, 
-			Principal principal, @PathVariable("noticeAnswerId") Integer noticeAnswerId) {
-		if(bindingResult.hasErrors()) {
-			return "notice_detail{id}";
-		}
-		NoticeAnswer noticeAnswer = this.noticeAnswerService.getNoticeAnswer(noticeAnswerId);
-		if(!noticeAnswer.getAuthor().getEmail().equals(principal.getName())) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
-		}
-		this.noticeAnswerService.modify(noticeAnswer, noticeAnswerCreateForm.getContent());
-		return String.format("redirect:/notice/detail/%s", noticeAnswer.getNotice().getId());
+	public String noticeAnswerModify(@Valid NoticeAnswerCreateForm noticeAnswerCreateForm, 
+	                                 BindingResult bindingResult, 
+	                                 Principal principal, 
+	                                 @PathVariable("noticeAnswerId") Integer noticeAnswerId) {
+	    if(bindingResult.hasErrors()) {
+	        return "notice/notice_detail";
+	    }
+	    NoticeAnswer noticeAnswer = this.noticeAnswerService.getNoticeAnswer(noticeAnswerId);
+	    if(!noticeAnswer.getAuthor().getEmail().equals(principal.getName())) {
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
+	    }
+	    this.noticeAnswerService.modify(noticeAnswer, noticeAnswerCreateForm.getContent());
+	    return String.format("redirect:/notice/detail/%s", noticeAnswer.getNotice().getId());
 	}
-	
 	
 	 @GetMapping("/delete/{id}") 
 	 public String noticeAnswerDelete(Model model, @PathVariable("id") Integer id) {

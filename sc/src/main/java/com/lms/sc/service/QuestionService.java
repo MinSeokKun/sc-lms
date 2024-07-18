@@ -50,8 +50,11 @@ public class QuestionService {
 		 return this.questionRepository.findAll(); 
 	 	}
 	 
-	 public List<Question> getListByAuthor(SiteUser author) {
-		 return this.questionRepository.findByAuthor(author);
+	 public Page<Question> getListByAuthor(SiteUser author, int page) {
+		 List<Sort.Order> sorts = new ArrayList<>();
+		 sorts.add(Sort.Order.desc("createDate"));
+		 Pageable pageable = PageRequest.of(page, 10);
+		 return this.questionRepository.findByAuthor(author, pageable);
 	 }
 
 	 public List<Question> getRecentQuestions(SiteUser author) {

@@ -2,12 +2,12 @@ package com.lms.sc.controller;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -102,12 +102,12 @@ public class UserLectureController {
 	// 내 질문 리스트
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("question")
-	public String myQuestion(Principal principal, Model model) {
+	public String myQuestion(Principal principal, Model model, @RequestParam(value ="page", defaultValue = "0") int page) {
 		if (principal == null) {
 			return "user/login";
 		}
 		SiteUser user = userService.getUserByEmail(principal.getName());
-		List<Question> questionList = questService.getListByAuthor(user);
+		Page<Question> questionList = questService.getListByAuthor(user, page);
 		
 		model.addAttribute("questionList", questionList);
 		

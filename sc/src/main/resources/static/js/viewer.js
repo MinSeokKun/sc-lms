@@ -184,6 +184,45 @@ $(document).ready(function() {
         });
     });
 
+    // 디바운스 함수
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    // 저장 중 플래그
+    let isSaving = false;
+
+    // 저장 함수
+    function saveNote() {
+        if (isSaving) return; // 이미 저장 중이면 무시
+        isSaving = true;
+
+        const content = editor.getMarkdown();
+        let videoTime = player ? player.getCurrentTime() : 0;
+        const tempNoteElement = createNoteElement('저장 중...', videoTime, '');
+        $('#notesContainer').append(tempNoteElement);
+        
+        saveNoteToServer(videoId, content, videoTime, tempNoteElement, editor)
+            .then(() => {
+                isSaving = false; // 저장 완료 후 플래그 해제
+            })
+            .catch((error) => {
+                console.error('저장 중 오류 발생:', error);
+                isSaving = false; // 오류 발생 시에도 플래그 해제
+            });
+    }
+
+    // 디바운스된 저장 함수
+    const debouncedSave = debounce(saveNote, 300); // 300ms 대기
+
     // Toast UI Editor 초기화
     const editor = new toastui.Editor({
         el: document.querySelector('#editor'),
@@ -191,6 +230,45 @@ $(document).ready(function() {
         initialEditType: 'markdown',
         previewStyle: 'tab'
     });
+
+    // Editor 요소에 키다운 이벤트 리스너 추가
+    const editorElement = editor.getEditorElements().mdEditor;
+    editorElement.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' && !event.shiftKey && !event.ctrlKey && !event.altKey) {
+            event.preventDefault();
+            event.stopPropagation(); // 이벤트 전파 중지
+            debouncedSave(); // 디바운스된 저장 함수 호출
+        }
+    });
+
+    // 기존의 저장 버튼 클릭 이벤트 수정
+    $(document).on('click', '#saveButton', function(event) {
+        event.preventDefault();
+        debouncedSave();
+    });
+
+    // saveNoteToServer 함수를 Promise를 반환하도록 수정
+    function saveNoteToServer(videoId, content, videoTime, noteElement, editor) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `/note/create/${videoId}`,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ content: content, videoTime: videoTime }),
+                success: function(newNote) {
+                    const newNoteElement = createNoteElement(newNote.content, newNote.videoTime, newNote.id);
+                    noteElement.replaceWith(newNoteElement);
+                    editor.setMarkdown('');
+                    sortNotes();
+                    resolve();
+                },
+                error: function(xhr, status, error) {
+                    noteElement.find('span:first').text('저장 실패');
+                    reject(error);
+                }
+            });
+        });
+    }
 
     // 노트 저장 버튼 클릭 이벤트
     $(document).on('click', '#saveButton', function() {

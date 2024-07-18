@@ -8,7 +8,7 @@
 				<div class="swiper mySwiper" style="max-width: 1380px;">
 					<div class="swiper-wrapper">
 						<div class="swiper-slide" th:each="lecture, loop : ${userLecture}">
-							<div class="card">
+							<div class="card" th:onclick="'location.href=\'' + @{|/lecture/detail/${lecture.key.id}|} + '\''" style="cursor: pointer;">
 								<img class="thumnail" th:src="${lecture.key.thumnailUrl}" alt="썸네일이미지">
 								<div class="card-subtitle d-flex align-items-start flex-sm-column p-2">
 									<a th:href="@{|/lecture/detail/${lecture.key.id}|}" class="text-lg text-gray-700 main_lec_tit">[[${lecture.key.title}]]</a>

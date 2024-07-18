@@ -2,6 +2,9 @@
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
     layout:decorate="~{layout}">
 <th:block layout:fragment="content">
+<div id="content">
+
+
 <section class="wrapper">
     <div class="mypage_wrap">
         <div class="container-fluid" id="content">
@@ -38,8 +41,13 @@
                     </div>
                 </div>
             </div>
+            <div th:if="${#lists.isEmpty(questionList)}" class="alert alert-info">
+                작성하신 질문이 없습니다.
+            </div>
+            
         </div>
     </div>
 </section>
+</div>
 </th:block>
 </html>

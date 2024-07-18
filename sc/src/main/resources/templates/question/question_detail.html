@@ -46,7 +46,10 @@
 					th:if="${#authentication.principal.username == question.author.email}"
 					th:text="삭제" onclick="return confirm('삭제하시겠습니까?')"></a>
 			</div>
-			<button type="button" class="btn btn-secondary" onclick="location.href='/question/list'">목록으로</button>
+			<div>
+				<button type="button" class="btn btn-secondary" onclick="location.href='/question/list'">전체질문</button>
+				<button type="button" class="btn btn-secondary" onclick="location.href='/my/question'">내질문</button>
+			</div>
 		</div>
 		<div>
 			

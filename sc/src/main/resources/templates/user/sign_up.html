@@ -78,19 +78,24 @@
 			// 전화번호 중복 체크 함수
 			function tellCheck() {
 				let tellNumber = $('#phone').val();
-				console.log(tellNumber);
-
+				console.log("Original number:", tellNumber);
+			
+				// 전화번호 유효성 검사
 				let phoneRegex = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
-
+			
 				if (!phoneRegex.test(tellNumber)) {
 					alert("올바른 전화번호 형식이 아닙니다. 다시 확인해주세요.");
 					return;
 				}
-
+			
+				// 하이픈 제거
+				let cleanTellNumber = tellNumber.replace(/-/g, '');
+				console.log("Cleaned number:", cleanTellNumber);
+			
 				$.ajax({
 					type: "GET",
 					url: "/user/phoneCheck",
-					data: {tellNumber: tellNumber},
+					data: {tellNumber: cleanTellNumber},  // 하이픈이 제거된 번호 사용
 					success: function(result) {
 						console.log("Raw response:", result);
 						if (result.trim() === "true") {
@@ -115,6 +120,14 @@
 				});
 			}
 
+
+			// 비밀번호 유효성 검사 함수
+			function isValidPassword(password) {
+				// 8자리 이상, 특수문자 포함 여부 확인
+				const passwordRegex = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+				return passwordRegex.test(password);
+			}
+
 			// 비밀번호 일치 확인 함수
 			function pwChk() {
 				let pwInput = document.getElementById('pwd');
@@ -122,6 +135,11 @@
 				
 				if (pwInput.value.trim() === '' || pwChkInput.value.trim() === '') {
 					$('#pwConfirm').text('비밀번호를 입력해 주세요.').css('color', 'red').css('display', 'block');
+					return false;
+				}
+				
+				if (!isValidPassword(pwInput.value)) {
+					$('#pwConfirm').text('비밀번호는 8자리 이상이며, 특수문자를 포함해야 합니다.').css('color', 'red').css('display', 'block');
 					return false;
 				}
 				

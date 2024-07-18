@@ -1,8 +1,8 @@
 <header id="header" class="normal_header">
 	<div class="wrapper">
-<!-- 	    <a th:href="@{|/|}" class="logo"> -->
-<!-- 			<img src="/images/newLogo.png"> -->
-<!-- 		</a> -->
+	    <a th:href="@{|/|}" class="btn btn-primary btn-icon-split mainGo" style="display: none">
+			<span class="text">메인으로 가기</span>
+		</a>
 		<div class="util" sec:authorize="isAnonymous">
 			<a th:href="@{/user/login}">로그인</a>
 			<a th:href="@{/user/signup}">회원가입</a>

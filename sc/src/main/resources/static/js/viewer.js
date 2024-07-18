@@ -178,6 +178,9 @@ $(document).ready(function() {
         $(this).click(function () {                   
             tab_area.hide();
             tab_area.eq(index).show();
+            
+            tabAbtn.removeClass('on');
+            tabAbtn.eq(index).addClass('on');
         });
     });
 

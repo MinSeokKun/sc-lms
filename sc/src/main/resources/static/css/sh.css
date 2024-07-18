@@ -20,6 +20,38 @@ body{ font-family: "Noto Sans KR", sans-serif !important; }
 #content { padding: 20px; min-height: calc(100vh - 104px); }
 .content_wrap { width: calc(100% - 224px); }
 .container-fluid { padding: 0 !important; }
+
+/* 내용 없을 때 */
+.none_cont { display: flex; justify-content: center; align-items: center; }
+
+.nav-link.on, .nav-link.on > i { color: #fff !important; }
+
+
+/* 모달 */
+.modal_all {
+    display: none;
+    position: fixed;
+    z-index: 99999999999999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+.modal-content_1 {
+    background-color: #fff;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
 /* 헤더 */
 #header { 
 	padding: 0 20px;
@@ -39,6 +71,11 @@ body{ font-family: "Noto Sans KR", sans-serif !important; }
 /* 	max-width: 1440px; */
 /* 	height: 100%;	 */
 	margin: 0 auto;
+}
+
+.btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .logo {
@@ -201,11 +238,14 @@ body{ font-family: "Noto Sans KR", sans-serif !important; }
     font-size: 14px;
     cursor: pointer;
     border: none;
-    background-color: rgb(229, 249, 241);
+    background-color: #fff;
     color: #666;
     width: 100%;
     height: 68px;
+    transition: all .3s;
 }
+
+.side_menu > div button:hover, .side_menu > div button.on { background: #4e73df; color: #fff; }
 
 .tab_area{ width: 400px; padding: 0; }
 
@@ -328,7 +368,7 @@ body{ font-family: "Noto Sans KR", sans-serif !important; }
 /* 비디오 커뮤니티 */
 #questionForm .input_box > input, #questionForm .input_box > textarea { width: 100%; }
 .quest_list{ height: 400px; overflow-y: auto; padding: 0; }
-.quest_list li { padding: 16px 20px; border: 1px solid #ddd; margin: 16px 20px; border-radius: 5px; }
+.quest_list li { width: 278px; padding: 16px 20px; border: 1px solid #ddd; margin: 16px 20px; border-radius: 5px; }
 .quest_list li:frist-of-type { margin-top: 0px; }
 .quest_list li span { display: block; }
 

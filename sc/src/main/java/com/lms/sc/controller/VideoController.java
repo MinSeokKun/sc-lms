@@ -65,6 +65,19 @@ public class VideoController {
 		model.addAttribute("video", video);
 		model.addAttribute("lecture", lecture);
 		
+		boolean hasPreVideo = true;// 다음 비디오 존재 여부를 확인하는 로직
+		boolean hasNextVideo = true;// 다음 비디오 존재 여부를 확인하는 로직
+		Video nextVideo = videoService.getNextVideo(vidId);
+		if (nextVideo != null) {
+			hasNextVideo = false;
+		}
+		Video preVideo = videoService.getPreVideo(vidId);
+		if (preVideo != null) {
+			hasPreVideo = false;
+		}
+	    model.addAttribute("hasNextVideo", hasNextVideo);
+	    model.addAttribute("hasPreVideo", hasPreVideo);
+		
 		SiteUser user = userService.getUserByEmail(principal.getName());
 		List<Note> noteList = noteService.getByVideo(vidId, user.getId());
 		model.addAttribute("noteList", noteList);

@@ -35,6 +35,7 @@ import com.lms.sc.service.UserLectureService;
 import com.lms.sc.service.UserService;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -50,11 +51,11 @@ public class UserController {
 	
 	// 회원 삭제
     @DeleteMapping("/delete/{userId}")
-//    @GetMapping("/delete/{userId}")
     @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
-    public ResponseEntity<String> deleteUser(@PathVariable("userId") Long userId) {
+    public ResponseEntity<String> deleteUser(@PathVariable("userId") Long userId, HttpSession session) {
         try {
             userService.deleteUser(userId);
+            session.invalidate();
             return ResponseEntity.ok("User successfully deleted");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -72,22 +73,31 @@ public class UserController {
 	// 회원가입
 	@PostMapping("/signup")
 	public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
-		if(bindingResult.hasErrors()) {
-			System.out.println(bindingResult.getErrorCount());
-			System.out.println(bindingResult.getObjectName());
-			bindingResult.getAllErrors().forEach(error -> {
-		        System.out.println("Error: " + error.getObjectName() + " - " + error.getDefaultMessage());
-		    });
-		    
-			return "user/sign_up";
-		}
-		if(!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
-			bindingResult.rejectValue("password2", "passwordInCorrect", "2개의 비밀번호가 일치하지 않습니다.");
-			return "user/sign_up";
-		}
-		
-		userService.create(userCreateForm.getName(), userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getTellNumber(), userCreateForm.getProfileImg());		
-		return "redirect:/user/login";
+	    if (bindingResult.hasErrors()) {
+	        System.out.println(bindingResult.getErrorCount());
+	        System.out.println(bindingResult.getObjectName());
+	        bindingResult.getAllErrors().forEach(error -> {
+	            System.out.println("Error: " + error.getObjectName() + " - " + error.getDefaultMessage());
+	        });
+	        return "user/sign_up";
+	    }
+	    
+	    if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
+	        bindingResult.rejectValue("password2", "passwordInCorrect", "2개의 비밀번호가 일치하지 않습니다.");
+	        return "user/sign_up";
+	    }
+
+	    // 전화번호에서 하이픈 제거
+	    String cleanedTellNumber = userCreateForm.getTellNumber().replaceAll("-", "");
+	    userCreateForm.setTellNumber(cleanedTellNumber);
+
+	    userService.create(userCreateForm.getName(), 
+	                       userCreateForm.getEmail(), 
+	                       userCreateForm.getPassword1(), 
+	                       cleanedTellNumber,  // 정제된 전화번호 사용
+	                       userCreateForm.getProfileImg());
+	    
+	    return "redirect:/user/login";
 	}
 	
 	// 로그인 이동

@@ -21,13 +21,20 @@
 				<div id="player" class="url-link" th:data-url="${video.url}"></div>
 				<div id="playerTime" th:data-time="${videoTime ?: 0}"></div>
 				<div class="pre-next-btn">
-					<a th:href="@{|/video/viewer/${video.id}/pre|}" class="btn btn-primary btn-icon-split">
+					<a th:if="!${hasPreVideo}" th:href="@{|/video/viewer/${video.id}/next|}" class="btn btn-primary btn-icon-split">
 						<span class="text">이전</span>
 					</a>
-					<a th:href="@{|/video/viewer/${video.id}/next|}" class="btn btn-primary btn-icon-split">
+					<span th:if="${hasPreVideo}" class="btn btn-secondary btn-icon-split">
+						<span class="text">이전</span>
+					</span>
+					<a th:if="!${hasNextVideo}" th:href="@{|/video/viewer/${video.id}/pre|}" class="btn btn-primary btn-icon-split">
 						<span class="text">다음</span>
 					</a>
+					<a th:if="${hasNextVideo}" href="/my/list" class="btn btn-primary btn-icon-split">
+						<span class="text">완료</span>
+					</a>
 				</div>
+				
 			</div>
 			<!-- 사이드바 -->
 			<div id="nav2">

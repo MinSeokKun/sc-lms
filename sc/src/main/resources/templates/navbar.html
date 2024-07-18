@@ -97,5 +97,26 @@
 	        </a>
 	    </div>
     </li>
+	<script>
+		$(document).ready(function() {
+		    var currentUrl = window.location.pathname;
+		    var gnbBtn = $('.nav-item > a');
+	
+		    gnbBtn.each(function() {
+		        var href = $(this).attr('href');
+		        if (href === '/') {
+		            // 루트 경로인 경우 정확히 일치할 때만 'on' 클래스 추가
+		            if (currentUrl === '/') {
+		                $(this).addClass('on');
+		            }
+		        } else {
+		            // 다른 경로의 경우 현재 URL이 해당 href로 시작하는지 확인
+		            if (currentUrl.startsWith(href)) {
+		                $(this).addClass('on');
+		            }
+		        }
+		    });
+		});
+	</script>
 </ul>
 <!-- End of Sidebar -->

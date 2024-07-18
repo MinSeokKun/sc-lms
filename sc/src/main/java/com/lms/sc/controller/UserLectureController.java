@@ -175,7 +175,7 @@ public class UserLectureController {
 	    List<Object[]> recentlyCompletedLectures = userLectureService.recentProgress(user);
 	    model.addAttribute("recentlyCompletedLectures", recentlyCompletedLectures);
 	    
-     // 일별 학습 현황 데이터 추가
+	    // 일별 학습 현황 데이터 추가
         LocalDateTime endDate = LocalDateTime.now();
         LocalDateTime startDate = endDate.minusDays(6);
         Map<String, Integer> dailyWatchCount = userVidService.getDailyWatchCount(user, startDate, endDate);

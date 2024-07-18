@@ -30,7 +30,7 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>{
 	void deleteAllByVideo(Video video);
 	
 	@Query("SELECT DISTINCT q FROM Question q LEFT JOIN FETCH q.answerList WHERE q.author = :author ORDER BY q.createDate DESC")
-	List<Question> findByAuthor(@Param("author") SiteUser author);
+	Page<Question> findByAuthor(@Param("author") SiteUser author, Pageable pageable);
 	
 	List<Question> findByAuthorAndVideo_Lecture(SiteUser author, Lecture lecture);
 	List<Question> findByVideo_Lecture(Lecture lecture);

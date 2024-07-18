@@ -62,10 +62,9 @@
 							<button class="btn btn-info" id="nextWeek">다음 주</button>
 						</div>
 						<div class="card-body p-0">
-							<div class="chart-container" th:if="${not #lists.isEmpty(weeklyWatchChart)}">
+							<div class="chart-container">
 								<canvas id="weeklyWatchChart"></canvas>
 							</div>
-							<p class="none_cont" style="height: 228px;" th:if="${#lists.isEmpty(weeklyWatchChart)}">주간 학습한 강의가 없습니다.</p>
 						</div>
 					</div>
 				</div>
@@ -117,10 +116,9 @@
 							<h5>학습한 강의 목록</h5>
 						</div>
 						<div class="card-body p-0">
-							<div class="chart-container" th:if="${not #lists.isEmpty(lectureChart)}">
+							<div class="chart-container" >
 								<canvas id="lectureChart"></canvas>
 							</div>
-							<p class="none_cont" style="height: 324px;" th:if="${#lists.isEmpty(lectureChart)}">최근 학습한 강의가 없습니다.</p>
 						</div>
 					</div>
 				</div>
@@ -131,10 +129,9 @@
 							<h5>일별 학습 현황</h5>
 						</div>
 						<div class="card-body p-0">
-							<div class="chart-container" th:if="${not #lists.isEmpty(dailyWatchChart)}">
+							<div class="chart-container" >
 				                <canvas id="dailyWatchChart" height="300"></canvas>
 				            </div>
-				            <p class="none_cont" style="height: 324px;" th:if="${#lists.isEmpty(dailyWatchChart)}">최근 일별 학습 현황이 없습니다.</p>
 						</div>
 					</div>
 				</div>
@@ -219,9 +216,10 @@
 	    });
    
     	//주간 학습
-		var dailyWatchCount = /*[[${dailyWatchCount}]]*/ {};
-		var dailyLabels = Object.keys(dailyWatchCount).sort();
-		var dailyData = dailyLabels.map(label => dailyWatchCount[label]);
+		var weeklyWatchCount = /*[[${weeklyWatchCount}]]*/ {};
+		var weekOffset = /*[[${weekOffset}]]*/ 0;
+		var labels = Object.keys(weeklyWatchCount);
+		var data = Object.values(weeklyWatchCount);
 
 		var ctx = document.getElementById('weeklyWatchChart').getContext('2d');
 		var chart = new Chart(ctx, {

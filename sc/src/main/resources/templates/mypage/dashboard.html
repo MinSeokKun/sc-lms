@@ -79,8 +79,8 @@
 							<ul th:if="${not #lists.isEmpty(noteList)}">
 								<li th:each="note : ${noteList}">
 									<a th:href="${note.video != null && note.video.lecture != null} ? @{|/note/list/${note.video.lecture.id}|} : '#'" class="py-1 d-flex flex-row align-items-center justify-content-between">
-										<span class="text-gray-700" th:text="${#strings.length(note.content) > 10 ? note.content.substring(0, 10) + '...' : note.content}"></span>
-										<span class="text-gray-700" th:text="${#temporals.format(note.createDate, 'MM-dd HH:mm')}"></span>
+										<span class="text-gray-700" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 400px; display: block;" th:text="${note.content}"></span>
+										<span class="text-gray-700" style="white-space: nowrap;" th:text="${#temporals.format(note.createDate, 'MM-dd HH:mm')}"></span>
 									</a>
 								</li>
 							</ul>

@@ -54,7 +54,7 @@ public class UserService {
 	@Value("${file.upload-dir}")
 	private String uploadDir;
 	
-	// 우저 삭제
+	// 유저 삭제
 	@Transactional
 	public void deleteUser(Long userId) {
         SiteUser user = userRepository.findById(userId)

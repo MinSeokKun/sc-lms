@@ -6,6 +6,7 @@
 	<script>
 		$('.navbar-nav.bg-gradient-primary').hide();
 		$('.content_wrap').css('width', '100%');
+		$('.mainGo').css('display', 'block')
 	</script>
 	<script th:src="@{/js/viewer.js}"></script>
 	<div id="wrap">
@@ -55,7 +56,7 @@
 			        	<ul class="lec_list">
 			        		<li th:each="entry : ${videoMap.entrySet()}">
 			        			<a th:href="@{|/video/viewer/${entry.key.id}|}" th:data-watching-time="${entry.value.watchingTime ?: 0}">
-				        			<strong class="lec_tit">[[${entry.key.title}]]</strong>
+				        			<strong class="lec_tit" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 254px;">[[${entry.key.title}]]</strong>
 				        			<span style="display: flex">
 					        			<span class="VideoTime" data-time="${entry.value.watchingTime}">[[${entry.value.watchingTime ?: 0}]]</span>
 					        			<span>/</span>
@@ -78,7 +79,7 @@
 					            <ul id="notesContainer">
 					                <li th:each="note : ${noteList}" class="d-flex">
 										<div class="d-flex flex-column">
-											<span th:text="${note.content}"></span>
+											<span style="word-break: break-all;" th:text="${note.content}"></span>
 											<div>
 												<i class="fa-solid fa-play"></i>
 												<span class="VideoTime" data-time="${note.videoTime}">
@@ -129,7 +130,7 @@
 			    </ul>
 			    <div class="side_menu">
 			        <div>
-			        	<button>커리큘럼</button>
+			        	<button class="on">커리큘럼</button>
 			        </div>
 			        <div>
 			            <button id="noteLink">강의노트</button>
@@ -143,6 +144,7 @@
 	</div>
 	<script>
 		$(document).ready(function() {
+			//커리큘럼
 			let token = $("meta[name='_csrf']").attr("content");
 		    let header = $("meta[name='_csrf_header']").attr("content");
 

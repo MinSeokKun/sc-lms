@@ -63,11 +63,15 @@ public class LectureController {
 	//강의 등록
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/regist")
-	public String regLecture(@RequestParam(name = "title") String title, 
-			@RequestParam(name = "content") String content){
+	public String regist(@RequestParam("title") String title,
+						@RequestParam("content") String content,
+						@RequestParam(value = "thumnailUrl", required = false) MultipartFile thumnailUrl) throws Exception {
+//		Lecture lecture = lectureService.getLecture(id);
+		Lecture lecture = lectureService.regLecture(title, content);
 		
-		lectureService.regLecture(title, content);
-		
+		if (thumnailUrl != null && !thumnailUrl.isEmpty()) {
+			lectureService.updatethumnail(lecture.getId(), thumnailUrl);
+		}
 		return "redirect:/admin/lecList";
 	}
 	

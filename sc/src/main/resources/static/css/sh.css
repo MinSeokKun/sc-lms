@@ -215,7 +215,7 @@ body{ font-family: "Noto Sans KR", sans-serif !important; }
     flex-direction: column;
 	width: 100%;
 }
-.video iframe { height: 694px; }
+.video iframe { height: 777px; }
 #nav2 {
 	position: relative;
 	display: flex;
@@ -272,7 +272,7 @@ body{ font-family: "Noto Sans KR", sans-serif !important; }
 }
 
 .lec_list { 
-	max-height: 526px;
+	max-height: 610px;
     overflow: hidden;
     overflow-y: scroll;
 }

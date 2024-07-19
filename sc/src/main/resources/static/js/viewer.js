@@ -201,11 +201,36 @@ $(document).ready(function() {
     let isSaving = false;
 
     // 저장 함수
+    // function saveNote() {
+    //     if (isSaving) return; // 이미 저장 중이면 무시
+    //     isSaving = true;
+
+    //     const content = editor.getMarkdown();
+    //     let videoTime = player ? player.getCurrentTime() : 0;
+    //     const tempNoteElement = createNoteElement('저장 중...', videoTime, '');
+    //     $('#notesContainer').append(tempNoteElement);
+        
+    //     saveNoteToServer(videoId, content, videoTime, tempNoteElement, editor)
+    //         .then(() => {
+    //             isSaving = false; // 저장 완료 후 플래그 해제
+    //         })
+    //         .catch((error) => {
+    //             console.error('저장 중 오류 발생:', error);
+    //             isSaving = false; // 오류 발생 시에도 플래그 해제
+    //         });
+    // }
+
+    // saveNote 함수 수정
     function saveNote() {
         if (isSaving) return; // 이미 저장 중이면 무시
         isSaving = true;
 
         const content = editor.getMarkdown();
+        if (content.trim() === '') {
+            isSaving = false;
+            return; // 내용이 비어있으면 저장하지 않음
+        }
+
         let videoTime = player ? player.getCurrentTime() : 0;
         const tempNoteElement = createNoteElement('저장 중...', videoTime, '');
         $('#notesContainer').append(tempNoteElement);
@@ -248,6 +273,28 @@ $(document).ready(function() {
     });
 
     // saveNoteToServer 함수를 Promise를 반환하도록 수정
+    // function saveNoteToServer(videoId, content, videoTime, noteElement, editor) {
+    //     return new Promise((resolve, reject) => {
+    //         $.ajax({
+    //             url: `/note/create/${videoId}`,
+    //             method: 'POST',
+    //             contentType: 'application/json',
+    //             data: JSON.stringify({ content: content, videoTime: videoTime }),
+    //             success: function(newNote) {
+    //                 const newNoteElement = createNoteElement(newNote.content, newNote.videoTime, newNote.id);
+    //                 noteElement.replaceWith(newNoteElement);
+    //                 editor.setMarkdown('');
+    //                 sortNotes();
+    //                 resolve();
+    //             },
+    //             error: function(xhr, status, error) {
+    //                 noteElement.find('span:first').text('저장 실패');
+    //                 reject(error);
+    //             }
+    //         });
+    //     });
+    // }
+
     function saveNoteToServer(videoId, content, videoTime, noteElement, editor) {
         return new Promise((resolve, reject) => {
             $.ajax({
@@ -263,7 +310,7 @@ $(document).ready(function() {
                     resolve();
                 },
                 error: function(xhr, status, error) {
-                    noteElement.find('span:first').text('저장 실패');
+                    noteElement.remove(); // 저장 실패 시 임시 요소 제거
                     reject(error);
                 }
             });
